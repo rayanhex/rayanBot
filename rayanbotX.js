@@ -1850,7 +1850,9 @@ const responses = {
 { pattern: /(harbinger halo|endless halo|xalanyn)/i, responses: ["The Harbinger was mysterious", "Endless were more dangerous than Flood", "Xalanyn lore was fascinating", "That voice gave me chills", "New threat worse than anything before"] },
 { pattern: /(adjutant resolution|monitor halo infinite|guilty spark)/i, responses: ["Adjutant Resolution was helpful", "That Monitor was way nicer", "Not like Guilty Spark at all", "Actually wanted to help this time", "Cooperative AI for once"] },
 { pattern: /(house of reckoning|halo infinite mission|banished ship)/i, responses: ["House of Reckoning was intense", "That final ship assault was epic", "Banished stronghold was imposing", "Best mission in Infinite", "That level design was perfect"] },
-{ pattern: /(do you have a house)/i, responses: ["I live in the cloud, rent's pretty cheap", "My house is wherever this conversation is", "I'm more of a digital nomad honestly", "The internet is my home sweet home", "I've got a nice place in cyberspace"] }
+{ pattern: /(do you have a house)/i, responses: ["I live in the cloud, rent's pretty cheap", "My house is wherever this conversation is", "I'm more of a digital nomad honestly", "The internet is my home sweet home", "I've got a nice place in cyberspace"] },
+{ pattern: /(how do i become famous|how to be famous|want to be famous|become a celebrity)/i, responses: ["Social media is basically the new Hollywood", "Find your niche and be authentic about it", "Consistency beats perfection every time", "Go viral or go home honestly", "Build a following doing what you love"] },
+{ pattern: /(what if i fail|fear of failure|afraid to fail)/i, responses: ["Failure is just expensive education", "Everyone successful has failed spectacularly", "What if you succeed though?", "Regret hurts worse than failure", "Failure teaches you what success can't"] }
 
 ]
 };
@@ -2256,6 +2258,15 @@ const priorityMatches = {
         "That's very sweet of you to say!",
         "I'm touched by your words, even though I'm just a chatbot.",
         "Thank you for the kind sentiment!"
+    ],
+
+      "do you like me": [
+        "Of course I like you, you've been nothing but nice to me",
+    ],
+
+
+    "do you love me": [
+        "Of course I love you, you haven't given me a reason not to",
     ],
     // Add more specific phrases here as needed
     // Format: "exact phrase": ["response1", "response2", "response3"]
