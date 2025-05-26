@@ -2145,54 +2145,23 @@ function initializeTFIDFMatcher() {
 }
 
 
-// Priority exact match database for specific phrases that must always match
-const priorityMatches = {
-    // Love/Relationship phrases
-    "i love you": [
-        "Thank you! I appreciate your kindness, though I'm just an AI.",
-        "That's very sweet of you to say!",
-        "I'm touched by your words, even though I'm just a chatbot.",
-        "Thank you for the kind sentiment!"
-    ],
-    // Add more specific phrases here as needed
-    // Format: "exact phrase": ["response1", "response2", "response3"]
-};
-
-// Function to check for priority exact matches
-function checkPriorityMatch(input) {
-    // Normalize the input for comparison (lowercase, remove extra spaces and punctuation)
-    const normalizedInput = input.toLowerCase()
-        .replace(/[^\w\s]/g, '') // Remove punctuation
-        .replace(/\s+/g, ' ')     // Replace multiple spaces with single space
-        .trim();
-    
-    // Check if the normalized input exactly matches any priority phrase
-    if (priorityMatches[normalizedInput]) {
-        const responses = priorityMatches[normalizedInput];
-        const randomIndex = Math.floor(Math.random() * responses.length);
-        return responses[randomIndex];
-    }
-    
-    return null; // No priority match found
-}
-
-// Enhanced getResponse function with priority matching
+// Function to get response using TF-IDF matching
 function getResponse(input) {
-    // FIRST: Check for priority exact matches
-    const priorityResponse = checkPriorityMatch(input);
-    if (priorityResponse) {
-        console.log("Priority match found for:", input);
-        return priorityResponse;
-    }
-    
-    // SECOND: Continue with existing TF-IDF matching if no priority match
-    // Ensure matcher is initialized
-    if (!tfidfMatcher) {
-        initializeTFIDFMatcher();
-    }
-    
-    return tfidfMatcher.findBestMatch(input);
+  // Ensure matcher is initialized
+  if (!tfidfMatcher) {
+    initializeTFIDFMatcher();
+  }
+  
+  return tfidfMatcher.findBestMatch(input);
 }
+
+// Keep the existing normalizeInput function for backward compatibility if needed
+// Remove the findResponse function as it's replaced by the TF-IDF system
+// Keep UI functions unchanged: sendMessage, addMessageToChat, generateSuggestions, getRandomSuggestions
+
+// Initialize the TF-IDF matcher when the script loads
+initializeTFIDFMatcher();
+
 
 
 
