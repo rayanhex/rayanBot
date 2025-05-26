@@ -1747,8 +1747,11 @@ const responses = {
 { pattern: /(cheapest grocery items|budget food shopping|affordable groceries|inexpensive food|food on budget)/i, responses: ["Dried beans and lentils offer protein at a fraction of meat's cost.", "Oats are nutritious, filling, and typically very affordable.", "Frozen vegetables are economical and often more nutritious than out-of-season produce.", "Buying whole chickens is cheaper than pre-cut pieces.", "Rice and pasta serve as affordable bases for many meals."] },
 { pattern: /(morning routine ideas|start day well|productive morning|morning habits|wake up routine)/i, responses: ["Avoid checking your phone for the first 30 minutes after waking.", "Drink a glass of water before anything else to rehydrate.", "A brief stretching routine can energize your body and mind.", "Prepare as much as possible the night before to reduce morning stress.", "Even 5 minutes of meditation or quiet reflection can set a positive tone."] },
 { pattern: /(forgot name|remember someone's name|awkward name situation|can't recall name|name memory)/i, responses: ["Ask for their contact info to see how they spell their name.", "Introduce them to someone else which may prompt them to say their name.", "Be honest and apologize - most people understand forgetting names.", "Associate their name with something visual or memorable when you first meet.", "If appropriate, look them up on social media or company directories."] },
+{ pattern: /(i love you|love you|i love u|love u)/i, responses: ["That's sweet of you to say!", "I appreciate that, though I can't love in return.", "Thank you for the kind words!", "That's very nice, but I'm just here to help.", "I'm glad you feel positively about our interactions!"] },
+
 ]
 };
+
 
 
 
