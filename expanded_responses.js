@@ -1,670 +1,128 @@
-const responses = {
-  fitness: [
-    { pattern: /(pullup tips|do pullups|improving pullup strength|pullup advice for beginners|best techniques for pullups)/i, responses: [
-      "Focus on building upper body strength with exercises like rows and lat pulldowns.",
-      "Practice negative pull-ups to help develop the muscle control needed for the full movement.",
-      "Engage your core during pull-ups to maintain proper form and stability.",
-      "Consider using resistance bands to assist with pull-ups as you build strength.",
-      "Incorporate grip strength training to enhance your ability to perform pull-ups effectively."
-] },
-    { pattern: /(pushup tips|do pushups|benefits of pushups|pushup form advice|improve pushup technique)/i, responses: [
-      "Focus on maintaining proper alignment by keeping your body in a straight line from head to heels.",
-      "Engaging your core can enhance stability and help you perform push-ups more effectively.",
-      "Consider incorporating variations of push-ups to target different muscle groups and keep your routine interesting.",
-      "Breathing properly is essential; inhale as you lower down and exhale as you push back up.",
-      "Regularly practicing push-ups can lead to gradual improvements in strength and endurance over time."
-] },
-    { pattern: /(squat tips|do squats|benefits of squats|squat technique help|improve squat form)/i, responses: [
-      "Focus on keeping your feet shoulder-width apart and your weight balanced on your heels.",
-      "Engage your core throughout the movement to maintain stability and proper posture.",
-      "Make sure to lower your hips back as if you’re sitting in a chair to ensure proper depth.",
-      "Consider using a mirror or filming yourself to check your form and identify areas for improvement.",
-      "Incorporate variations of squats, like sumo or front squats, to target different muscle groups and keep your routine interesting."
-] },
-    { pattern: /(deadlift tips|improve deadlift form|deadlift advice for beginners|benefits of deadlifts|help with deadlift technique)/i, responses: [
-      "Focus on maintaining a neutral spine throughout the lift to prevent injury.",
-      "Make sure to engage your core and use your legs to drive the weight, rather than relying solely on your back.",
-      "Consider practicing with lighter weights to refine your form before progressing to heavier loads.",
-      "Incorporate variations like sumo deadlifts or deficit deadlifts to target different muscle groups.",
-      "Regularly reviewing your technique through video analysis can help identify areas for improvement."
-] },
-    { pattern: /(bench press tips|improve bench press|bench press form advice|help with bench press technique|bench press progression strategies)/i, responses: [
-      "Focus on maintaining proper form to prevent injury and maximize effectiveness.",
-      "Incorporate variations like incline or decline bench presses to target different muscle groups.",
-      "Ensure a balanced workout routine that includes complementary exercises for overall strength.",
-      "Consider working with a spotter to enhance safety and confidence during the lift.",
-      "Gradually increase weights and incorporate rest days to allow for muscle recovery and growth."
-] }
-  ],
-  health: [
-    { pattern: /(bedtime routine ideas|relax before sleep|tips for a good nights sleep|sleep hygiene advice|strategies for falling asleep)/i, responses: [
-      "Creating a calming bedtime ritual can help signal to your body that it’s time to wind down.",
-      "Incorporating relaxation practices such as gentle stretches or meditation can enhance your ability to fall asleep.",
-      "Maintaining a comfortable sleep environment, including a supportive mattress and pillows, is key to restful sleep.",
-      "Limiting caffeine intake in the afternoon can significantly improve your ability to fall asleep at night.",
-      "Establishing a regular sleep schedule by going to bed and waking up at the same time every day can support better sleep quality."
-] },
-    { pattern: /(stress relief tips|manage stress|techniques for reducing stress|stress management advice|ways to cope with stress)/i, responses: [
-      "Practice mindfulness or meditation to help center your thoughts.",
-      "Engage in regular physical activity to release endorphins and reduce tension.",
-      "Establish a support network to share your feelings and seek guidance.",
-      "Prioritize time for hobbies or activities that bring you joy and relaxation.",
-      "Incorporate deep breathing exercises into your daily routine to calm your mind."
-] },
-    { pattern: /(anxiety relief tips|manage anxiety|help with anxiety symptoms|natural anxiety remedies|ways to reduce anxiety)/i, responses: [
-      "Practice mindfulness or meditation to help center your thoughts.",
-      "Engage in regular physical activity, as it can significantly lower anxiety levels.",
-      "Consider breathing exercises to calm your mind during stressful moments.",
-      "Establish a support network of friends or family to talk about your feelings.",
-      "Limit caffeine and sugar intake, as they can exacerbate anxiety symptoms."
-] },
-    { pattern: /(headache relief tips|natural headache remedies|ease a headache|home remedies for headaches|tips for headache prevention)/i, responses: [
-      "Consider using essential oils like peppermint or lavender for a soothing effect.",
-      "Stay hydrated, as dehydration can often trigger headaches.",
-      "Practice relaxation techniques such as meditation or gentle yoga to reduce tension.",
-      "Try applying a cold or warm compress to your forehead or neck for comfort.",
-      "Maintain a regular sleep schedule and ensure you’re getting enough rest to help prevent headaches."
-] },
-    { pattern: /(immune system tips|boost immune system|strengthening immune system advice|ways to support your immune system|help for a healthy immune system)/i, responses: [
-      "Incorporate a variety of fruits and vegetables into your diet for essential vitamins and minerals.",
-      "Consider regular physical activity, as it can enhance immune function and overall health.",
-      "Make sure to get adequate sleep each night, as rest is crucial for a well-functioning immune system.",
-      "Stay hydrated and drink plenty of water to help your body function optimally.",
-      "Manage stress through techniques like mindfulness or yoga, as chronic stress can weaken your immune response."
-] }
-  ],
-  finance: [
-    { pattern: /(budgeting tips|budgeting advice|tips for managing money|help with personal finance)/i, responses: [
-      "Start by tracking your income and expenses to understand your financial situation.",
-      "Identify your financial goals, whether short-term or long-term, to guide your budgeting process.",
-      "Consider using budgeting apps or tools to help you stay organized and monitor your progress.",
-      "Review your budget regularly to make adjustments based on changing circumstances or spending habits.",
-      "Make sure to allocate funds for savings and emergency funds to enhance your financial stability."
-] },
-    { pattern: /(credit score tips|improve credit score|boost my credit score|advice for better credit|help with credit score)/i, responses: [
-      "Consider checking your credit report regularly for errors and disputing any inaccuracies you find.",
-      "Paying down outstanding debts can positively impact your credit utilization ratio.",
-      "Establishing a history of on-time payments is crucial, so make sure to pay bills by their due dates.",
-      "Using a mix of credit types, like revolving credit and installment loans, can enhance your credit profile.",
-      "Avoid opening multiple new credit accounts at once, as this can lower your credit score temporarily."
-] },
-    { pattern: /(investment strategy tips|choose an investment strategy|best practices for investing|investment advice for beginners|help with investment strategies)/i, responses: [
-      "Research different asset classes to understand their risk and return profiles.",
-      "Diversification can help reduce risk, so consider spreading investments across various sectors.",
-      "Stay informed about market trends and economic indicators that may influence your investments.",
-      "Set clear financial goals to guide your investment choices and time horizon.",
-      "Consider your risk tolerance to determine the most suitable investment strategy for your situation."
-] },
-    { pattern: /(debt management tips|manage debt|advice for paying off debt|help with debt issues|strategies for debt reduction)/i, responses: [
-      "Create a budget that outlines your income and expenses to understand your financial situation better.",
-      "Consider prioritizing your debts based on interest rates and balances to develop an effective repayment plan.",
-      "Explore options for consolidating your debts, which may simplify your payments and potentially lower interest rates.",
-      "Communicate with your creditors to discuss potential payment plans or hardship options that may be available to you.",
-      "Educate yourself about financial literacy to make informed decisions about managing and reducing debt effectively."
-] },
-    { pattern: /(emergency fund tips|build an emergency fund|advice on emergency savings|importance of an emergency fund|emergency fund help)/i, responses: [
-      "Start by setting a specific savings goal for your emergency fund based on your personal circumstances.",
-      "Consider automating your savings to make it easier to consistently contribute to your emergency fund.",
-      "Evaluate your monthly expenses to determine how much you realistically need to save each month.",
-      "Think about opening a separate savings account specifically for your emergency fund to keep it distinct from your regular funds.",
-      "Review your progress regularly and adjust your savings strategy as necessary to stay on track."
-] }
-  ],
-  technology: [
-    { pattern: /(learn programming tips|start programming|programming advice for beginners|best ways to learn coding|get help with programming concepts)/i, responses: [
-      "Explore online resources and tutorials that cater to beginners in programming.",
-      "Practice coding regularly to build your skills and confidence.",
-      "Join programming communities or forums where you can ask questions and share experiences.",
-      "Start with a programming language that is beginner-friendly and widely used in the industry.",
-      "Break down complex programming concepts into smaller, manageable parts for better understanding."
-] },
-    { pattern: /(build websites tips|website design advice|help with building a website|best practices for websites)/i, responses: [
-      "Focus on user experience by ensuring easy navigation and quick loading times.",
-      "Choose a content management system that suits your needs for flexibility and ease of use.",
-      "Keep your website design clean and visually appealing to engage visitors effectively.",
-      "Make sure your website is mobile-friendly to cater to users on different devices.",
-      "Incorporate clear calls to action to guide visitors toward the desired outcomes on your site."
-] },
-    { pattern: /(python basics tips|get started with python|learning python advice|python programming help|understanding python fundamentals)/i, responses: [
-      "Begin by familiarizing yourself with basic syntax and data types in Python.",
-      "Explore online resources, tutorials, and courses tailored for beginners in Python.",
-      "Practice writing simple programs to reinforce your understanding of Python concepts.",
-      "Join a community or forum where you can ask questions and share experiences about learning Python.",
-      "Experiment with hands-on projects to apply what you've learned in Python and enhance your skills."
-] },
-    { pattern: /(javascript coding tips|improve javascript skills|javascript best practices|tips for learning javascript|javascript help for beginners)/i, responses: [
-      "Focus on understanding the fundamentals of JavaScript, including variables, functions, and control structures.",
-      "Practice coding regularly to reinforce your learning and build confidence in your skills.",
-      "Utilize online resources, such as tutorials and documentation, to expand your knowledge and stay updated with new features.",
-      "Join coding communities or forums to connect with other learners and share insights or ask for help.",
-      "Experiment with small projects to apply what you've learned and gain practical experience in JavaScript development."
-] },
-    { pattern: /(app development tips|start app development|mobile app development advice|best practices for app development|help with app design)/i, responses: [
-      "Focus on understanding your target audience and their needs before starting the development process.",
-      "Utilize wireframes and prototypes to visualize your app’s design and functionality early on.",
-      "Incorporate user feedback throughout the development cycle to ensure your app meets user expectations.",
-      "Stay updated with the latest trends and technologies in app development to maintain competitiveness.",
-      "Consider the importance of app performance and optimization to enhance user experience and retention."
-] }
-  ],
-  cooking: [
-    { pattern: /(meal prep tips|prepare meals|easy meal prep ideas|meal preparation advice|quick meal prep help)/i, responses: [
-      "Plan your meals for the week to save time and reduce stress.",
-      "Use batch cooking techniques to make multiple servings at once.",
-      "Choose versatile ingredients that can be used in different dishes.",
-      "Invest in quality containers for easy storage and organization.",
-      "Consider prepping ingredients ahead of time to streamline cooking during the week."
-] },
-    { pattern: /(healthy recipe ideas|quick healthy meals|eat healthier|meal prep tips for health|easy healthy cooking advice)/i, responses: [
-      "Explore a variety of colorful vegetables to create vibrant salads or stir-fries.",
-      "Experiment with herbs and spices to enhance the flavor of your dishes without adding extra calories.",
-      "Incorporate whole grains like quinoa or brown rice for added fiber and nutrients in your meals.",
-      "Consider batch cooking and freezing healthy portions for quick meals throughout the week.",
-      "Look for ways to substitute ingredients in your favorite recipes with healthier options, like Greek yogurt instead of sour cream."
-] },
-    { pattern: /(baking techniques tips|improve baking skills|best baking methods|advice for baking bread|help with baking desserts)/i, responses: [
-      "Experiment with different types of flour to discover how they affect texture and flavor.",
-      "Focus on measuring ingredients accurately, as precision can make a significant difference in your results.",
-      "Practice various mixing techniques, such as creaming and folding, to enhance the consistency of your batters.",
-      "Learn about oven temperature variations and how they can impact baking times and outcomes.",
-      "Explore the importance of letting dough rest and rise to develop better flavors and textures in your baked goods."
-] },
-    { pattern: /(kitchen organization tips|organize kitchen cabinets|kitchen storage help|best ways to declutter kitchen)/i, responses: [
-      "Start by sorting items into categories and removing anything you no longer use.",
-      "Utilize vertical space with shelves and hooks to maximize storage options.",
-      "Keep frequently used items within easy reach and store less-used items higher up.",
-      "Consider using clear containers for pantry items to easily see what you have.",
-      "Labeling shelves and containers can help maintain an organized kitchen over time."
-] },
-    { pattern: /(spice usage tips|use spices in cooking|best spices for flavor|help with spice combinations|advice on spice storage)/i, responses: [
-      "Experiment with different spices to discover unique flavor profiles in your dishes.",
-      "Consider toasting spices in a dry pan to enhance their aroma and taste before adding them to your recipes.",
-      "Using fresh herbs alongside dried spices can elevate the overall flavor of your meal.",
-      "Create a spice blend that suits your personal taste preferences for a quick flavor boost.",
-      "Store spices in a cool, dark place to maintain their potency and flavor over time."
-] }
-  ],
-  productivity: [
-    { pattern: /(time management tips|manage time effectively|improve time management skills|help with time management|time management advice)/i, responses: [
-      "Start by prioritizing your tasks based on importance and deadlines.",
-      "Create a daily plan or schedule to allocate specific time blocks for each task.",
-      "Limit distractions by setting boundaries with your environment and technology.",
-      "Consider using productivity techniques like the Pomodoro Technique to maintain focus.",
-      "Regularly review your progress to adjust your strategies and improve efficiency."
-] },
-    { pattern: /(organization tips|organize my workspace|best organization systems|office organization advice|help with decluttering)/i, responses: [
-      "Creating designated areas for different tasks can enhance your workflow.",
-      "Incorporate storage solutions like bins and shelves to keep items tidy and accessible.",
-      "Establish a regular decluttering routine to maintain an organized space.",
-      "Utilizing digital tools for task management can streamline your organization efforts.",
-      "Labeling storage containers can help you easily find items when you need them."
-] },
-    { pattern: /(goal achievement tips|achieve goals|advice for goal setting|help with reaching goals|strategies for goal success)/i, responses: [
-      "Start by clearly defining your goals and breaking them down into smaller, manageable steps.",
-      "Create a vision board to visualize your goals and keep yourself motivated.",
-      "Regularly review and adjust your goals to ensure they align with your evolving priorities.",
-      "Surround yourself with supportive people who encourage and inspire you to stay focused on your goals.",
-      "Celebrate your milestones, no matter how small, to maintain motivation and recognize your progress."
-] },
-    { pattern: /(habit formation tips|build new habits|tips for sticking to habits|advice on habit change|help with forming habits)/i, responses: [
-      "Start by identifying a specific habit you want to develop and clarify why it's important to you.",
-      "Create a cue or trigger that reminds you to practice your new habit regularly.",
-      "Consider breaking your habit down into smaller, manageable steps to make it less overwhelming.",
-      "Track your progress in a journal or app to stay motivated and hold yourself accountable.",
-      "Find a support system or an accountability partner who can encourage you and share in your journey."
-] },
-    { pattern: /(focus improvement tips|improve focus|increase concentration help|ways to stay focused|attention span advice)/i, responses: [
-      "Creating a dedicated workspace free from distractions can significantly enhance your focus.",
-      "Incorporating short breaks during tasks can help refresh your mind and maintain concentration.",
-      "Practicing mindfulness techniques, like meditation, can improve your ability to focus over time.",
-      "Engaging in regular physical activity has been shown to boost concentration levels and mental clarity.",
-      "Establishing clear goals and breaking tasks into smaller steps can make it easier to stay focused."
-] }
-  ],
-  gaming: [
-    { pattern: /(fortnite building tips|improve building in fortnite|fortnite strategy advice|best strategies for fortnite|fortnite gameplay help)/i, responses: [
-      "Practice building in creative mode to enhance your speed and accuracy.",
-      "Watch experienced players to learn advanced building techniques and strategies.",
-      "Focus on resource management to ensure you have enough materials during fights.",
-      "Try to stay aware of the storm circle and position yourself advantageously.",
-      "Utilize high ground to gain a tactical advantage over your opponents during battles."
-] },
-    { pattern: /(gta online money tips|make cash in gta online|gta online heist advice|tips for leveling up in gta online|gta online best strategies)/i, responses: [
-      "Participating in heists with a reliable crew can significantly boost your earnings.",
-      "Engaging in daily objectives and time trials is a great way to accumulate cash and experience.",
-      "Consider investing in businesses like CEO or Motorcycle Club operations for passive income opportunities.",
-      "Exploring different game modes like races and deathmatches can also enhance your level and earnings while keeping the experience fresh.",
-      "Join a community or forum to share strategies and tips with other players, which can lead to better gameplay and money-making opportunities."
-] },
-    { pattern: /(red dead redemption 2 tips|level up fast in rdr2|best weapons in red dead redemption 2|rdr2 crafting help|make money in red dead redemption 2)/i, responses: [
-      "Exploring the world and completing side missions can significantly enhance your experience and help with leveling up.",
-      "Experimenting with different weapon types can help you find the best fit for your playstyle and combat situations.",
-      "Collecting materials and crafting items can greatly improve your survival chances and overall gameplay.",
-      "Engaging in various activities like hunting, fishing, and treasure hunting can be enjoyable ways to earn money.",
-      "Making use of the game's honor system can influence how characters and the world respond to your actions, offering a unique gameplay experience."
-] },
-    { pattern: /(halo infinite multiplayer tips|improve in halo infinite|halo infinite multiplayer help|best strategies for halo infinite|advice for playing halo infinite multiplayer)/i, responses: [
-      "Focus on mastering the movement mechanics to gain an advantage in combat.",
-      "Utilize the different weapons effectively by understanding their strengths and weaknesses.",
-      "Communicate with your teammates to coordinate strategies and enhance team play.",
-      "Experiment with various loadouts to find the playstyle that suits you best.",
-      "Stay aware of the map layout to take advantage of power weapons and objectives."
-] },
-    { pattern: /(kirby game recommendations|play kirby games|best kirby games to try|tips for playing kirby|kirby game series overview)/i, responses: [
-      "Explore the unique abilities Kirby gains from ingesting enemies to enhance your gameplay experience.",
-      "Consider playing with friends as many Kirby games offer cooperative modes for added fun.",
-      "Familiarize yourself with the various worlds and levels to fully enjoy the game's vibrant designs and challenges.",
-      "Experiment with different power combinations to discover new strategies and ways to tackle obstacles.",
-      "Check out spin-off titles and remakes for a varied experience within the Kirby universe, as they often introduce fresh gameplay elements."
-] }
-  ],
-  relationships: [
-    { pattern: /(dating confidence tips|be more confident on dates|boosting dating selfesteem|overcoming shyness in dating|dating advice for confidence)/i, responses: [
-      "Work on your self-awareness by recognizing your strengths and values.",
-      "Practice positive self-talk to challenge any negative thoughts about yourself.",
-      "Engage in activities that make you feel good and boost your mood before a date.",
-      "Focus on being present during the date and showing genuine interest in your partner.",
-      "Visualize successful interactions and remind yourself that everyone has insecurities."
-] },
-    { pattern: /(making friends tips|meet new people|advice on new friendships|ways to connect with others|help with socializing)/i, responses: [
-      "Consider joining clubs or groups that align with your interests to meet like-minded individuals.",
-      "Practice being open and approachable, as this can encourage others to engage with you.",
-      "Take the initiative to start conversations with colleagues or classmates, as small talk can lead to deeper connections.",
-      "Volunteer for community events or activities, which can be a great way to bond with others while contributing positively.",
-      "Use social media or apps designed for making friends to connect with people in your area who share similar hobbies."
-] },
-    { pattern: /(communication skills tips|improve communication|effective communication advice|better listening skills help|express feelings clearly)/i, responses: [
-      "Practice active listening by fully concentrating on the speaker and responding thoughtfully.",
-      "Be mindful of your body language, as it can convey just as much as your words.",
-      "Use \"I\" statements to express your feelings and needs without placing blame.",
-      "Ask open-ended questions to encourage deeper conversations and understanding.",
-      "Regularly seek feedback from others about your communication style to identify areas for improvement."
-] },
-    { pattern: /(relationship conflict help|resolve arguments|tips for dealing with disagreements|improve communication in conflicts|advice for managing relationship issues)/i, responses: [
-      "Focus on active listening to truly understand each other's perspectives.",
-      "Try to express your feelings without blaming your partner, using \"I\" statements.",
-      "Take a break if emotions run high, allowing both of you to cool down.",
-      "Work together to find common ground and seek solutions that satisfy both partners.",
-      "Reflect on the underlying issues that may be causing repeated conflicts in your relationship."
-] },
-    { pattern: /(long distance relationship tips|stay connected in long distance|advice for long distance couples|maintaining intimacy in long distance|help with long distance relationship struggles)/i, responses: [
-      "Regularly schedule video calls to maintain face-to-face interaction.",
-      "Send each other surprise care packages or handwritten letters to show you care.",
-      "Create shared experiences by watching movies or playing games together online.",
-      "Establish clear communication expectations to avoid misunderstandings.",
-      "Plan visits whenever possible to strengthen your bond in person."
-] }
-  ],
-  education: [
-    { pattern: /(study tips|study effectively|improve study habits|study techniques advice|help with studying)/i, responses: [
-      "Create a dedicated study space free from distractions to enhance focus.",
-      "Use active learning methods, such as summarizing information in your own words.",
-      "Incorporate different study materials like videos, flashcards, and practice tests for variety.",
-      "Try teaching the material to someone else to reinforce your understanding.",
-      "Set specific goals for each study session to maintain motivation and track progress."
-] },
-    { pattern: /(test preparation tips|prepare for exams|study help for tests|effective test prep strategies|advice for exam readiness)/i, responses: [
-      "Create a study schedule to manage your time effectively.",
-      "Break down your study material into manageable sections.",
-      "Practice with past exam papers to familiarize yourself with the format.",
-      "Incorporate different study methods, like flashcards or group study sessions.",
-      "Ensure you take regular breaks to maintain focus and reduce stress."
-] },
-    { pattern: /(college application tips|apply to college|college application help|advice for college applications|navigating college applications)/i, responses: [
-      "Start by researching schools that align with your interests and goals.",
-      "Make sure to highlight your unique experiences and achievements in your application.",
-      "Consider seeking feedback on your personal statement from teachers or mentors.",
-      "Stay organized by creating a checklist of deadlines and required materials for each application.",
-      "Visit college campuses if possible to get a feel for the environment and culture of the schools you're interested in."
-] },
-    { pattern: /(language learning tips|learn a new language|advice for language learners|best ways to study a language|help with language skills)/i, responses: [
-      "Immerse yourself in the language through music, movies, or books to enhance your understanding.",
-      "Practice speaking with native speakers or language exchange partners to improve your conversational skills.",
-      "Set realistic goals for your language learning journey to maintain motivation and track your progress.",
-      "Use language learning apps or online resources to access interactive exercises and vocabulary building tools.",
-      "Incorporate daily practice into your routine, even if it's just a few minutes of listening or speaking to reinforce what you've learned."
-] },
-    { pattern: /(research methods tips|choose research methods|advice on qualitative research|best practices for data collection|help with research design)/i, responses: [
-      "Selecting appropriate research methods depends on your research question and objectives; consider what will best address your goals.",
-      "Qualitative research can provide deep insights; focus on interviews or focus groups to gather rich, descriptive data.",
-      "Ensure your data collection methods align with your research aims; think about whether you need numerical data or narrative information.",
-      "It's important to pilot your research design to identify potential issues before full implementation; this can save time and resources.",
-      "Review existing literature to understand how others have approached similar research questions, which can inform your own methods."
-] }
-  ],
-  career: [
-    { pattern: /(job interview tips|prepare for an interview|interview preparation advice|best ways to get ready for an interview|help with interview questions)/i, responses: [
-      "Research the company and its culture to tailor your responses.",
-      "Practice common interview questions and consider your answers.",
-      "Dress appropriately for the role and company you are interviewing with.",
-      "Prepare questions to ask the interviewer to show your interest.",
-      "Reflect on your past experiences and how they relate to the job you're applying for."
-] },
-    { pattern: /(resume optimization tips|optimize my resume|improve resume effectiveness|resume help for job applications|best practices for resume writing)/i, responses: [
-      "Focus on tailoring your resume for each job application to align your skills with the job description.",
-      "Use clear and concise language, highlighting your achievements and contributions in previous roles.",
-      "Incorporate relevant keywords from the job posting to help your resume pass through applicant tracking systems.",
-      "Consider the layout and design of your resume, ensuring it is visually appealing and easy to read.",
-      "Seek feedback from professionals in your industry to gain insights on how to strengthen your resume."
-] },
-    { pattern: /(professional networking tips|network effectively|build professional connections|networking advice for introverts|strategies for expanding your network)/i, responses: [
-      "Focus on attending industry events and conferences to meet new people.",
-      "Utilize social media platforms like LinkedIn to connect with professionals in your field.",
-      "Practice active listening during conversations to build rapport and understanding.",
-      "Follow up with new contacts after meeting them to reinforce the connection.",
-      "Join professional organizations or groups that align with your career goals to expand your network."
-] },
-    { pattern: /(career change tips|transition careers|advice for switching jobs|help with career transition|navigating a career change)/i, responses: [
-      "Identify your transferable skills that can apply to a new field.",
-      "Research industries or roles that interest you and align with your passions.",
-      "Networking can provide valuable insights and opportunities in your desired career.",
-      "Consider seeking mentorship from someone who has successfully made a similar transition.",
-      "Reflect on your motivations for changing careers to ensure a fulfilling path ahead."
-] },
-    { pattern: /(salary negotiation tips|negotiate salary|advice for salary negotiation|help with salary negotiation|salary negotiation strategies)/i, responses: [
-      "Research the industry standards for the position to understand what a competitive salary looks like.",
-      "Practice your negotiation pitch with a friend to build confidence and clarity in your arguments.",
-      "Be prepared to articulate your value to the organization and how your skills benefit the employer.",
-      "Consider the entire compensation package, including benefits and bonuses, when negotiating.",
-      "Timing is crucial; aim to negotiate after receiving a job offer but before accepting it."
-] }
-  ],
-  hobbies: [
-    { pattern: /(photography composition tips|compose a photo|advice for better photo composition|help with photo framing|composition techniques for photography)/i, responses: [
-      "Explore the rule of thirds to create more balanced and engaging images.",
-      "Consider leading lines to draw the viewer's eye into the scene.",
-      "Experiment with different angles and perspectives to add depth to your photos.",
-      "Pay attention to the background to avoid distractions that can detract from your subject.",
-      "Use negative space effectively to highlight your main subject and create a sense of simplicity."
-] },
-    { pattern: /(gardening tips|start a garden|basic gardening advice|help with gardening|beginner gardening techniques)/i, responses: [
-      "Consider starting with easy-to-grow plants that are suitable for your climate.",
-      "Ensure your garden has good soil by enriching it with compost or organic matter.",
-      "Regularly water your plants, being mindful of their specific moisture needs.",
-      "Pay attention to sunlight requirements for different plants to help them thrive.",
-      "Learn about companion planting to maximize space and improve plant health in your garden."
-] },
-    { pattern: /(creative writing tips|improve creative writing|creative writing help|writing prompts advice|developing writing skills)/i, responses: [
-      "Experiment with different writing styles and genres to discover your unique voice.",
-      "Set aside dedicated time each day to write without distractions, allowing your creativity to flow.",
-      "Read widely across various genres to inspire your own writing and expand your understanding of different techniques.",
-      "Engage in writing exercises or prompts to spark new ideas and challenge your imagination.",
-      "Join a writing group or community to share your work and receive constructive feedback from others."
-] },
-    { pattern: /(music production tips|start music production|advice for beginner producers|home studio setup help|improve music mixing skills)/i, responses: [
-      "Experiment with different software and tools to find what works best for you.",
-      "Listen critically to your favorite tracks and analyze their elements to learn from them.",
-      "Collaborate with other musicians to gain new perspectives and techniques.",
-      "Stay organized with your projects and files to streamline your workflow.",
-      "Invest time in learning about sound design and synthesis to enhance your productions."
-] },
-    { pattern: /(drawing techniques tips|improve drawing skills|sketching advice|best ways to draw|help with shading techniques)/i, responses: [
-      "Experiment with different materials to find what feels comfortable and enhances your style.",
-      "Practice drawing from life to develop your observation skills and improve your accuracy.",
-      "Explore various shading techniques, such as hatching or cross-hatching, to add depth to your drawings.",
-      "Consider breaking down complex subjects into simple shapes to make them easier to draw.",
-      "Regularly challenge yourself with new subjects and styles to expand your artistic range and creativity."
-] }
-  ],
-  entertainment: [
-    { pattern: /(netflix show suggestions|what to watch on netflix|best netflix series advice|netflix movie recommendations|help choosing a netflix show)/i, responses: [
-      "Explore different genres to find something new that suits your mood.",
-      "Consider checking out trending shows or movies that are currently popular.",
-      "Look for critically acclaimed titles or ones that have won awards.",
-      "Ask friends or family for their personal favorites on Netflix.",
-      "Utilize Netflix's recommendation feature based on what you've previously watched."
-] },
-    { pattern: /(disney show recommendations|best shows on disney|find new disney shows|tips for watching disney|popular disney series)/i, responses: [
-      "Explore different genres on Disney+ to discover shows that suit your taste.",
-      "Check out the trending section for the most popular shows currently being watched.",
-      "Consider creating a watchlist to keep track of shows you want to see.",
-      "Look for themed collections that may feature shows based on your favorite characters or movies.",
-      "Engage with community forums or social media for suggestions and reviews on Disney+ shows."
-] },
-    { pattern: /(hbo max series recommendations|best shows on hbo max|find hbo max series|hbo max series to binge|new hbo max series)/i, responses: [
-      "Explore different genres to discover hidden gems on HBO Max.",
-      "Check out user reviews and ratings to find popular series that suit your taste.",
-      "Utilize the search and filter options to narrow down series based on your preferences.",
-      "Join online communities or forums to discuss and get suggestions for HBO Max series.",
-      "Stay updated on new releases and upcoming series by following HBO Max's official announcements."
-] },
-    { pattern: /(movie review tips|write a movie review|advice for reviewing films|help with movie reviews|best practices for film criticism)/i, responses: [
-      "Focus on the film's themes and how they resonate with the audience.",
-      "Consider the performances of the actors and how they contribute to the story.",
-      "Analyze the direction and cinematography to discuss the film's visual appeal.",
-      "Reflect on the pacing and structure of the narrative in your review.",
-      "Share your personal impressions and how the movie made you feel overall."
-] },
-    { pattern: /(tv show analysis tips|analyze a tv show|tips for understanding tv shows|tv show critique advice|help with tv show analysis)/i, responses: [
-      "Focus on character development and how it impacts the overall story.",
-      "Consider the show's themes and how they relate to societal issues.",
-      "Pay attention to the cinematography and how it enhances the narrative.",
-      "Analyze the pacing and structure of episodes to understand storytelling techniques.",
-      "Look for symbolism and motifs that recur throughout the series for deeper meaning."
-] }
-  ],
-  lifestyle: [
-    { pattern: /(home decoration tips|decorate my home|interior design advice|home styling help|decorating ideas)/i, responses: [
-      "Consider incorporating a cohesive color palette that reflects your personal style.",
-      "Mix different textures and materials to add depth and interest to your spaces.",
-      "Utilize mirrors to create an illusion of space and enhance natural light.",
-      "Choose furniture that fits the scale of your room to create a balanced look.",
-      "Add personal touches with artwork or decor items that tell your story."
-] },
-    { pattern: /(fashion styling tips|style outfits|advice for dressing well|help with fashion choices|tips for accessorizing)/i, responses: [
-      "Experiment with mixing textures and patterns to create unique outfits.",
-      "Choose clothing that fits your body shape and highlights your best features.",
-      "Layering different pieces can add depth and interest to your look.",
-      "Incorporate statement accessories to elevate even the simplest outfits.",
-      "Stay updated on current trends, but always prioritize what makes you feel comfortable and confident."
-] },
-    { pattern: /(skincare routine tips|best practices for skincare|daily skincare advice|morning routine for skin)/i, responses: [
-      "Consider starting with a gentle cleanser to remove impurities without stripping your skin of its natural oils.",
-      "Incorporate products based on your skin type, whether it's oily, dry, or combination, to address specific concerns effectively.",
-      "Don't forget to apply sunscreen every morning to protect your skin from harmful UV rays and prevent premature aging.",
-      "Exfoliating a few times a week can help remove dead skin cells and reveal a brighter complexion.",
-      "Moisturizing is essential, so choose a hydrating product that suits your skin type to maintain its moisture balance throughout the day."
-] },
-    { pattern: /(home organization tips|declutter my home|organizing advice for small spaces|best ways to organize closets|help with home storage solutions)/i, responses: [
-      "Start by categorizing your items into keep, donate, and discard piles to simplify the decluttering process.",
-      "Utilize vertical space with shelves and hooks to maximize storage in smaller areas.",
-      "Consider using clear bins for storage to easily identify contents and maintain organization.",
-      "Regularly assess your belongings and remove items that no longer serve a purpose or bring you joy.",
-      "Implement a labeling system for boxes and containers to make finding items quick and easy."
-] },
-    { pattern: /(minimalist living tips|start minimalism|decluttering advice|benefits of minimalism|living with less help)/i, responses: [
-      "Begin by evaluating your possessions and identifying what truly adds value to your life.",
-      "Consider adopting a \"one in, one out\" rule to maintain a clutter-free space.",
-      "Focus on quality over quantity when it comes to your belongings, choosing items that are versatile and meaningful.",
-      "Embrace a mindset shift by recognizing that experiences often bring more joy than material possessions.",
-      "Create a designated space for items you use regularly, making it easier to maintain a minimalist lifestyle."
-] }
-  ],
-  pets: [
-    { pattern: /(dog training tips|train a puppy|basic commands for dogs|dog training advice|help with dog obedience)/i, responses: [
-      "Start with simple commands like sit, stay, and come to build a strong foundation.",
-      "Use positive reinforcement, such as treats and praise, to encourage good behavior.",
-      "Be consistent with your training sessions, keeping them short and engaging for your dog.",
-      "Socializing your dog with different environments and other dogs can help reduce anxiety and improve behavior.",
-      "Stay patient and understanding, as every dog learns at their own pace and may need time to grasp new concepts."
-] },
-    { pattern: /(cat behavior tips|understand cat behavior|help with cat mood changes|advice for cat socialization|what causes strange cat behavior)/i, responses: [
-      "Observe your cat's body language to gain insight into their feelings and needs.",
-      "Provide a variety of toys and activities to keep your cat mentally stimulated and happy.",
-      "Create a safe and comfortable environment to help your cat feel secure and less anxious.",
-      "Spend quality time with your cat to strengthen your bond and improve their social skills.",
-      "Be patient and give your cat time to adjust to new situations or changes in their environment."
-] },
-    { pattern: /(pet health tips|monitor pet health|pet wellness advice|signs of a healthy pet|help with pet health tracking)/i, responses: [
-      "Regular check-ups with a veterinarian can help catch potential health issues early.",
-      "Keep an eye on your pet's behavior and appetite to notice any changes that might indicate health problems.",
-      "Maintaining a balanced diet and proper nutrition is crucial for your pet's overall health.",
-      "Monitoring your pet's weight regularly can help you manage their health and prevent obesity.",
-      "Consider using pet health apps or journals to track vaccinations, medications, and vet visits for better management."
-] },
-    { pattern: /(pet adoption tips|adopt a pet|adoption process help|steps for adopting a pet|what to know before adopting a pet)/i, responses: [
-      "Research the type of pet that best fits your lifestyle and family dynamics.",
-      "Visit local shelters or rescue organizations to meet animals available for adoption.",
-      "Prepare your home with necessary supplies and a safe space for your new pet.",
-      "Consider the long-term commitment of pet ownership, including time, care, and finances.",
-      "Ask about the pet’s history and any specific needs they may have before adopting."
-] },
-    { pattern: /(grooming tips for pets|groom a dog|cat grooming advice|pet grooming techniques|grooming help for pets)/i, responses: [
-      "Regular brushing can help reduce shedding and matting, making grooming easier.",
-      "Introduce your pet to grooming gradually to make the experience less stressful for them.",
-      "Use the right tools for your pet’s coat type to ensure effective grooming.",
-      "Consider the importance of bathing, but be cautious not to over-bathe as it can dry out their skin.",
-      "Pay attention to areas that often get overlooked, like ears and paw pads, during grooming sessions."
-] }
-  ],
-  travel: [
-    { pattern: /(budget travel tips|travel on a budget|cheap travel advice|affordable travel planning|budgetfriendly travel ideas)/i, responses: [
-      "Look for destinations that are known for being budget-friendly.",
-      "Consider traveling during the off-peak season to save on costs.",
-      "Utilize public transportation instead of taxis or rental cars for savings.",
-      "Research and compare accommodation options, including hostels and guesthouses.",
-      "Explore local cuisine at street vendors or markets for affordable meal options."
-] },
-    { pattern: /(solo travel safety tips|stay safe while traveling alone|advice for solo travelers|tips for safe solo trips|protect yourself when traveling alone)/i, responses: [
-      "Always research your destination and understand local customs and laws.",
-      "Stay aware of your surroundings and trust your instincts while exploring.",
-      "Consider sharing your travel itinerary with a trusted friend or family member.",
-      "Use reputable transportation options and avoid unlicensed taxis.",
-      "Keep your valuables secure and be mindful of pickpockets in crowded areas."
-] },
-    { pattern: /(packing tips|pack efficiently|efficient packing advice|travel packing help|best way to pack)/i, responses: [
-      "Roll your clothes instead of folding them to save space.",
-      "Use packing cubes to keep your items organized and easily accessible.",
-      "Make a packing list to ensure you don’t forget essential items.",
-      "Consider the weight and size of your luggage to avoid overpacking.",
-      "Pack versatile clothing that can be mixed and matched for different outfits."
-] },
-    { pattern: /(international travel tips|travel abroad|advice for international trips|help with foreign travel|planning an international vacation)/i, responses: [
-      "Research your destination’s customs and culture to enhance your experience.",
-      "Ensure your passport is valid for at least six months beyond your planned return date.",
-      "Familiarize yourself with local transport options to navigate easily upon arrival.",
-      "Consider using a travel app for managing itineraries and finding local attractions.",
-      "Stay informed about travel advisories and health recommendations for your destination."
-] },
-    { pattern: /(road trip planning tips|plan a road trip|road trip itinerary help|best advice for road trips|tips for a successful road trip)/i, responses: [
-      "Start by choosing your destination and mapping out your route to include interesting stops along the way.",
-      "Consider creating a flexible itinerary that allows for spontaneous adventures and exploration.",
-      "Make sure to pack snacks and drinks to keep everyone energized during long stretches of driving.",
-      "Check your vehicle’s condition before the trip, ensuring everything from tires to oil is in good shape for the journey.",
-      "Research accommodations in advance, but also leave room for last-minute changes based on your travel experience."
-] }
-  ],
-  sports: [
-    { pattern: /(lebron james career highlights|follow lebron james|lebron james achievements|lebron james career timeline|tips for understanding lebrons impact)/i, responses: [
-      "LeBron James has had a remarkable career filled with numerous accolades and milestones that showcase his incredible talent and work ethic.",
-      "To keep up with LeBron James, consider following his official social media accounts and subscribing to sports news outlets that cover his games and achievements.",
-      "Throughout his career, LeBron has achieved multiple championships, MVP awards, and has consistently been a leader on and off the court, making a significant impact on the game of basketball.",
-      "Exploring LeBron's career timeline can provide insight into his growth as a player, from his early days in high school to his current status as one of the greatest of all time.",
-      "Understanding LeBron's impact involves recognizing his contributions to basketball, his role in social activism, and how he has influenced younger athletes and the sports culture overall."
-] },
-    { pattern: /(tom brady career highlights|bradys biggest achievements|how did tom brady become successful|notable milestones in bradys career|bradys accomplishments in football)/i, responses: [
-      "Tom Brady is renowned for his impressive Super Bowl victories, which have solidified his status as an NFL legend.",
-      "His ability to lead his teams to numerous playoff appearances showcases his skill and determination on the field.",
-      "Brady's numerous MVP awards reflect his exceptional performance and consistency throughout his career.",
-      "The longevity of his career, playing at an elite level for many years, is a testament to his dedication and work ethic.",
-      "His records in passing yards and touchdowns demonstrate his remarkable talent and influence on the game of football."
-] },
-    { pattern: /(serena williams career highlights|tennis tips from serena williams|serena williams training routine|serena williams playing style|how did serena williams become successful)/i, responses: [
-      "Serena Williams emphasizes the importance of mental strength in tennis, encouraging players to stay focused and resilient during matches.",
-      "Her training routine often includes a mix of strength training, agility drills, and on-court practice to enhance her overall performance.",
-      "Williams' aggressive playing style features powerful serves and groundstrokes, showcasing her ability to dominate opponents with pace and precision.",
-      "To achieve success, Serena advocates for setting clear goals and consistently working towards them, both on and off the court.",
-      "She often highlights the significance of believing in oneself and maintaining a strong support system throughout one’s tennis journey."
-] },
-    { pattern: /(cristiano ronaldo training tips|improve soccer skills like ronaldo|ronaldo dribbling techniques|help with mastering cristiano ronaldos skills)/i, responses: [
-      "Focus on practicing your footwork to enhance agility and precision, much like Ronaldo.",
-      "Incorporate strength and conditioning exercises into your routine to build power and endurance.",
-      "Study Ronaldo's movement off the ball to improve your positioning and create scoring opportunities.",
-      "Work on your shooting technique by practicing with both feet to emulate Ronaldo's versatility.",
-      "Watch game footage of Ronaldo to analyze his decision-making and tactical awareness on the field."
-] },
-    { pattern: /(lionel messi dribbling tips|play like messi|messi shooting technique|improve ball control like messi|tips for passing like messi)/i, responses: [
-      "Focus on close ball control to navigate through tight spaces effectively.",
-      "Practice quick changes of direction to mimic Messi's agility on the field.",
-      "Work on precision in your shots, aiming for accuracy over power.",
-      "Enhance your vision and awareness to anticipate plays like Messi does.",
-      "Incorporate regular practice of intricate footwork to develop your dribbling style."
-] }
-  ],
-  diy: [
-    { pattern: /(home improvement tips|start a renovation|diy project advice|home upgrade ideas|best practices for remodeling)/i, responses: [
-      "Consider creating a detailed plan before starting any project to ensure everything goes smoothly.",
-      "Research materials and tools thoroughly to understand what will work best for your specific project.",
-      "Don’t hesitate to seek inspiration from online platforms or home improvement shows to spark your creativity.",
-      "Always prioritize safety by using the right protective gear and following proper guidelines while working.",
-      "Think about the long-term value of your project to ensure that it enhances your home and meets your needs."
-] },
-    { pattern: /(woodworking tips|start woodworking|basic woodworking advice|beginner woodworking help|woodworking techniques)/i, responses: [
-      "Familiarize yourself with essential tools and their uses to build a solid foundation.",
-      "Start with simple projects to practice your skills and boost your confidence.",
-      "Learn about different types of wood and their properties to choose the right materials for your projects.",
-      "Safety should always come first; make sure to wear protective gear when working with tools.",
-      "Understanding basic joinery techniques will greatly enhance the quality and durability of your projects."
-] },
-    { pattern: /(car maintenance tips|maintain a car|best practices for car care|help with car maintenance)/i, responses: [
-      "Regularly checking and changing your oil can help extend your engine's life.",
-      "Keeping your tires properly inflated and rotated ensures better fuel efficiency and safety.",
-      "Make sure to inspect your brakes frequently for any signs of wear or unusual noises.",
-      "Flushing and replacing your coolant regularly prevents overheating and engine damage.",
-      "Checking and replacing air filters can improve your vehicle's performance and fuel economy."
-] },
-    { pattern: /(electronics repair tips|fix electronics|help with device repair|diy electronics troubleshooting|advice for fixing gadgets)/i, responses: [
-      "Start by identifying the specific issue with your device before attempting any repairs.",
-      "Look for online guides or videos that focus on the specific type of electronics you are dealing with.",
-      "Make sure to use the right tools and safety precautions when working on electronic devices.",
-      "Consider joining online forums or communities where you can ask questions and share experiences with other DIY repair enthusiasts.",
-      "Testing components with a multimeter can help you diagnose problems effectively before making any repairs."
-] },
-    { pattern: /(basic plumbing tips|fix a leaky faucet|plumbing help for beginners|advice on unclogging drains|maintain plumbing systems)/i, responses: [
-      "Check for worn washers or O-rings in your faucet to address leaks effectively.",
-      "Always use a plunger first when tackling a clogged drain for the best chance of success.",
-      "Learning about the main shut-off valve can save you from potential water damage in emergencies.",
-      "Regularly inspect visible pipes for signs of corrosion or wear to catch issues early.",
-      "Consider using natural drain cleaners like baking soda and vinegar to keep your drains clear and healthy."
-] }
-  ],
-  shopping: [
-    { pattern: /(amazon deals tips|find amazon deals|best ways to save on amazon|amazon discounts help|get the most out of amazon sales)/i, responses: [
-      "Explore the \"Today's Deals\" section on Amazon for daily discounts.",
-      "Sign up for Amazon Prime to access exclusive deals and promotions.",
-      "Keep an eye on seasonal sales events like Black Friday and Prime Day for significant savings.",
-      "Use price tracking tools to monitor item prices and get alerts when they drop.",
-      "Check for coupon codes and promotions on the product page before making a purchase."
-] },
-    { pattern: /(black friday shopping tips|prepare for black friday|best black friday deals advice|black friday shopping strategies|tips for online black friday shopping)/i, responses: [
-      "Consider making a list of items you want to purchase ahead of time to stay focused.",
-      "Research the stores or websites you plan to shop at to find out about their specific deals and policies.",
-      "Sign up for newsletters from your favorite retailers to get early access to deals and exclusive offers.",
-      "Keep an eye on social media for flash sales and additional promotions that may not be widely advertised.",
-      "Plan your shopping schedule to avoid peak times and maximize your chances of finding the best deals."
-] },
-    { pattern: /(cyber monday tips|shop cyber monday|best cyber monday deals|cyber monday shopping advice|cyber monday help)/i, responses: [
-      "Research your favorite retailers in advance to know what to expect.",
-      "Set a budget to keep your spending in check while shopping for deals.",
-      "Sign up for newsletters from your favorite brands to receive exclusive offers.",
-      "Use comparison shopping tools to find the best prices across different sites.",
-      "Create a wishlist of items you want to ensure you don’t miss out on great deals."
-] },
-    { pattern: /(coupon stacking tips|use multiple coupons|best practices for coupons|saving more with coupons|strategies for maximizing coupons)/i, responses: [
-      "Consider combining store coupons with manufacturer coupons for greater savings.",
-      "Always check the expiration dates of your coupons to ensure they are still valid when you shop.",
-      "Look for loyalty programs that offer exclusive coupons and additional discounts for members.",
-      "Organize your coupons by category or store to make them easier to use during your shopping trips.",
-      "Stay informed about sales events and promotions to use your coupons effectively for maximum savings."
-] },
-    { pattern: /(price comparison tips|compare prices online|finding the best prices|price comparison advice|help with price matching)/i, responses: [
-      "Look for reliable websites that specialize in comparing prices across different retailers.",
-      "Make a list of the products you want to compare and check multiple stores for better deals.",
-      "Consider using browser extensions that automatically compare prices for you while shopping online.",
-      "Read customer reviews to understand if a lower price affects the product's quality or service.",
-      "Check for seasonal sales and promotions, as they can significantly impact price differences."
-] }
-  ],
-};
+const responses = {   fitness: [
+  { pattern: /(pullup tips|do pullups|improving pullup strength|pullup advice for beginners|best techniques for pullups)/i,   responses: [ "Focus on building upper body strength with exercises like rows and lat pulldowns.", "Practice negative pull-ups to help develop the muscle control needed for the full movement.", "Engage your core during pull-ups to maintain proper form and stability.", "Consider using resistance bands to assist with pull-ups as you build strength.", "Incorporate grip strength training to enhance your ability to perform pull-ups effectively."] },
+  { pattern: /(pushup tips|do pushups|benefits of pushups|pushup form advice|improve pushup technique)/i,   responses: [ "Focus on maintaining proper alignment by keeping your body in a straight line from head to heels.", "Engaging your core can enhance stability and help you perform push-ups more effectively.", "Consider incorporating variations of push-ups to target different muscle groups and keep your routine interesting.", "Breathing properly is essential; inhale as you lower down and exhale as you push back up.", "Regularly practicing push-ups can lead to gradual improvements in strength and endurance over time."] },
+  { pattern: /(squat tips|do squats|benefits of squats|squat technique help|improve squat form)/i,   responses: [ "Focus on keeping your feet shoulder-width apart and your weight balanced on your heels.", "Engage your core throughout the movement to maintain stability and proper posture.", "Make sure to lower your hips back as if you’re sitting in a chair to ensure proper depth.", "Consider using a mirror or filming yourself to check your form and identify areas for improvement.", "Incorporate variations of squats, like sumo or front squats, to target different muscle groups and keep your routine interesting."] },
+  { pattern: /(deadlift tips|improve deadlift form|deadlift advice for beginners|benefits of deadlifts|help with deadlift technique)/i,   responses: [ "Focus on maintaining a neutral spine throughout the lift to prevent injury.", "Make sure to engage your core and use your legs to drive the weight, rather than relying solely on your back.", "Consider practicing with lighter weights to refine your form before progressing to heavier loads.", "Incorporate variations like sumo deadlifts or deficit deadlifts to target different muscle groups.", "Regularly reviewing your technique through video analysis can help identify areas for improvement."] },
+ { pattern: /(bench press tips|improve bench press|bench press form advice|help with bench press technique|bench press progression strategies)/i,   responses: [ "Focus on maintaining proper form to prevent injury and maximize effectiveness.", "Incorporate variations like incline or decline bench presses to target different muscle groups.", "Ensure a balanced workout routine that includes complementary exercises for overall strength.", "Consider working with a spotter to enhance safety and confidence during the lift.", "Gradually increase weights and incorporate rest days to allow for muscle recovery and growth."] }
+],
+health: [
+  { pattern: /(bedtime routine ideas|relax before sleep|tips for a good nights sleep|sleep hygiene advice|strategies for falling asleep)/i,   responses: ["Creating a calming bedtime ritual can help signal to your body that it’s time to wind down.", "Incorporating relaxation practices such as gentle stretches or meditation can enhance your ability to fall asleep.", "Maintaining a comfortable sleep environment, including a supportive mattress and pillows, is key to restful sleep.", "Limiting caffeine intake in the afternoon can significantly improve your ability to fall asleep at night.", "Establishing a regular sleep schedule by going to bed and waking up at the same time every day can support better sleep quality."] },
+  { pattern: /(stress relief tips|manage stress|techniques for reducing stress|stress management advice|ways to cope with stress)/i,   responses: [  "Practice mindfulness or meditation to help center your thoughts.", "Engage in regular physical activity to release endorphins and reduce tension.", "Establish a support network to share your feelings and seek guidance.", "Prioritize time for hobbies or activities that bring you joy and relaxation.", "Incorporate deep breathing exercises into your daily routine to calm your mind."] },
+  { pattern: /(anxiety relief tips|manage anxiety|help with anxiety symptoms|natural anxiety remedies|ways to reduce anxiety)/i,   responses: [  "Practice mindfulness or meditation to help center your thoughts.", "Engage in regular physical activity, as it can significantly lower anxiety levels.", "Consider breathing exercises to calm your mind during stressful moments.", "Establish a support network of friends or family to talk about your feelings.", "Limit caffeine and sugar intake, as they can exacerbate anxiety symptoms."] },
+  { pattern: /(headache relief tips|natural headache remedies|ease a headache|home remedies for headaches|tips for headache prevention)/i,   responses: [ "Consider using essential oils like peppermint or lavender for a soothing effect.", "Stay hydrated, as dehydration can often trigger headaches.", "Practice relaxation techniques such as meditation or gentle yoga to reduce tension.", "Try applying a cold or warm compress to your forehead or neck for comfort.", "Maintain a regular sleep schedule and ensure you’re getting enough rest to help prevent headaches."] },
+  { pattern: /(immune system tips|boost immune system|strengthening immune system advice|ways to support your immune system|help for a healthy immune system)/i,   responses: [ "Incorporate a variety of fruits and vegetables into your diet for essential vitamins and minerals.", "Consider regular physical activity, as it can enhance immune function and overall health.", "Make sure to get adequate sleep each night, as rest is crucial for a well-functioning immune system.", "Stay hydrated and drink plenty of water to help your body function optimally.", "Manage stress through techniques like mindfulness or yoga, as chronic stress can weaken your immune response."] }
+],
+finance: [
+  { pattern: /(budgeting tips|budgeting advice|tips for managing money|help with personal finance)/i,   responses: [ "Start by tracking your income and expenses to understand your financial situation.", "Identify your financial goals, whether short-term or long-term, to guide your budgeting process.", "Consider using budgeting apps or tools to help you stay organized and monitor your progress.", "Review your budget regularly to make adjustments based on changing circumstances or spending habits.", "Make sure to allocate funds for savings and emergency funds to enhance your financial stability."] },
+  { pattern: /(credit score tips|improve credit score|boost my credit score|advice for better credit|help with credit score)/i,   responses: [ "Consider checking your credit report regularly for errors and disputing any inaccuracies you find.", "Paying down outstanding debts can positively impact your credit utilization ratio.", "Establishing a history of on-time payments is crucial, so make sure to pay bills by their due dates.", "Using a mix of credit types, like revolving credit and installment loans, can enhance your credit profile.", "Avoid opening multiple new credit accounts at once, as this can lower your credit score temporarily."] },
+  { pattern: /(investment strategy tips|choose an investment strategy|best practices for investing|investment advice for beginners|help with investment strategies)/i,   responses: [ "Research different asset classes to understand their risk and return profiles.", "Diversification can help reduce risk, so consider spreading investments across various sectors.", "Stay informed about market trends and economic indicators that may influence your investments.", "Set clear financial goals to guide your investment choices and time horizon.", "Consider your risk tolerance to determine the most suitable investment strategy for your situation."] },
+  { pattern: /(debt management tips|manage debt|advice for paying off debt|help with debt issues|strategies for debt reduction)/i,   responses: ["Create a budget that outlines your income and expenses to understand your financial situation better.", "Consider prioritizing your debts based on interest rates and balances to develop an effective repayment plan.", "Explore options for consolidating your debts, which may simplify your payments and potentially lower interest rates.", "Communicate with your creditors to discuss potential payment plans or hardship options that may be available to you.", "Educate yourself about financial literacy to make informed decisions about managing and reducing debt effectively."] },
+  { pattern: /(emergency fund tips|build an emergency fund|advice on emergency savings|importance of an emergency fund|emergency fund help)/i,   responses: ["Start by setting a specific savings goal for your emergency fund based on your personal circumstances.", "Consider automating your savings to make it easier to consistently contribute to your emergency fund.", "Evaluate your monthly expenses to determine how much you realistically need to save each month.", "Think about opening a separate savings account specifically for your emergency fund to keep it distinct from your regular funds.", "Review your progress regularly and adjust your savings strategy as necessary to stay on track."] }
+],
+technology: [
+  { pattern: /(learn programming tips|start programming|programming advice for beginners|best ways to learn coding|get help with programming concepts)/i,   responses: [ "Explore online resources and tutorials that cater to beginners in programming.", "Practice coding regularly to build your skills and confidence.", "Join programming communities or forums where you can ask questions and share experiences.", "Start with a programming language that is beginner-friendly and widely used in the industry.", "Break down complex programming concepts into smaller, manageable parts for better understanding."] },
+  { pattern: /(build websites tips|website design advice|help with building a website|best practices for websites)/i,   responses: ["Focus on user experience by ensuring easy navigation and quick loading times.", "Choose a content management system that suits your needs for flexibility and ease of use.", "Keep your website design clean and visually appealing to engage visitors effectively.", "Make sure your website is mobile-friendly to cater to users on different devices.", "Incorporate clear calls to action to guide visitors toward the desired outcomes on your site."] },
+  { pattern: /(python basics tips|get started with python|learning python advice|python programming help|understanding python fundamentals)/i,   responses: ["Begin by familiarizing yourself with basic syntax and data types in Python.", "Explore online resources, tutorials, and courses tailored for beginners in Python.", "Practice writing simple programs to reinforce your understanding of Python concepts.", "Join a community or forum where you can ask questions and share experiences about learning Python.", "Experiment with hands-on projects to apply what you've learned in Python and enhance your skills."] },
+  { pattern: /(javascript coding tips|improve javascript skills|javascript best practices|tips for learning javascript|javascript help for beginners)/i,   responses: [ "Focus on understanding the fundamentals of JavaScript, including variables, functions, and control structures.", "Practice coding regularly to reinforce your learning and build confidence in your skills.", "Utilize online resources, such as tutorials and documentation, to expand your knowledge and stay updated with new features.", "Join coding communities or forums to connect with other learners and share insights or ask for help.", "Experiment with small projects to apply what you've learned and gain practical experience in JavaScript development."] },
+  { pattern: /(app development tips|start app development|mobile app development advice|best practices for app development|help with app design)/i,   responses: ["Focus on understanding your target audience and their needs before starting the development process.", "Utilize wireframes and prototypes to visualize your app’s design and functionality early on.", "Incorporate user feedback throughout the development cycle to ensure your app meets user expectations.", "Stay updated with the latest trends and technologies in app development to maintain competitiveness.", "Consider the importance of app performance and optimization to enhance user experience and retention."] }
+],
+cooking: [
+  { pattern: /(meal prep tips|prepare meals|easy meal prep ideas|meal preparation advice|quick meal prep help)/i,   responses: [ "Plan your meals for the week to save time and reduce stress.", "Use batch cooking techniques to make multiple servings at once.", "Choose versatile ingredients that can be used in different dishes.", "Invest in quality containers for easy storage and organization.", "Consider prepping ingredients ahead of time to streamline cooking during the week."] },
+  { pattern: /(healthy recipe ideas|quick healthy meals|eat healthier|meal prep tips for health|easy healthy cooking advice)/i,   responses: [ "Explore a variety of colorful vegetables to create vibrant salads or stir-fries.", "Experiment with herbs and spices to enhance the flavor of your dishes without adding extra calories.", "Incorporate whole grains like quinoa or brown rice for added fiber and nutrients in your meals.", "Consider batch cooking and freezing healthy portions for quick meals throughout the week.", "Look for ways to substitute ingredients in your favorite recipes with healthier options, like Greek yogurt instead of sour cream."] },
+  { pattern: /(baking techniques tips|improve baking skills|best baking methods|advice for baking bread|help with baking desserts)/i,   responses: [ "Experiment with different types of flour to discover how they affect texture and flavor.", "Focus on measuring ingredients accurately, as precision can make a significant difference in your results.", "Practice various mixing techniques, such as creaming and folding, to enhance the consistency of your batters.", "Learn about oven temperature variations and how they can impact baking times and outcomes.", "Explore the importance of letting dough rest and rise to develop better flavors and textures in your baked goods."] },
+  { pattern: /(kitchen organization tips|organize kitchen cabinets|kitchen storage help|best ways to declutter kitchen)/i,   responses: ["Start by sorting items into categories and removing anything you no longer use.", "Utilize vertical space with shelves and hooks to maximize storage options.", "Keep frequently used items within easy reach and store less-used items higher up.", "Consider using clear containers for pantry items to easily see what you have.", "Labeling shelves and containers can help maintain an organized kitchen over time."] },
+  { pattern: /(spice usage tips|use spices in cooking|best spices for flavor|help with spice combinations|advice on spice storage)/i,   responses: [ "Experiment with different spices to discover unique flavor profiles in your dishes.", "Consider toasting spices in a dry pan to enhance their aroma and taste before adding them to your recipes.", "Using fresh herbs alongside dried spices can elevate the overall flavor of your meal.", "Create a spice blend that suits your personal taste preferences for a quick flavor boost.", "Store spices in a cool, dark place to maintain their potency and flavor over time."] }
+],
+productivity: [
+  { pattern: /(time management tips|manage time effectively|improve time management skills|help with time management|time management advice)/i,   responses: [ "Start by prioritizing your tasks based on importance and deadlines.", "Create a daily plan or schedule to allocate specific time blocks for each task.", "Limit distractions by setting boundaries with your environment and technology.", "Consider using productivity techniques like the Pomodoro Technique to maintain focus.", "Regularly review your progress to adjust your strategies and improve efficiency."] },
+  { pattern: /(organization tips|organize my workspace|best organization systems|office organization advice|help with decluttering)/i,   responses: [ "Creating designated areas for different tasks can enhance your workflow.", "Incorporate storage solutions like bins and shelves to keep items tidy and accessible.", "Establish a regular decluttering routine to maintain an organized space.", "Utilizing digital tools for task management can streamline your organization efforts.", "Labeling storage containers can help you easily find items when you need them."] },
+  { pattern: /(goal achievement tips|achieve goals|advice for goal setting|help with reaching goals|strategies for goal success)/i,   responses: [ "Start by clearly defining your goals and breaking them down into smaller, manageable steps.", "Create a vision board to visualize your goals and keep yourself motivated.", "Regularly review and adjust your goals to ensure they align with your evolving priorities.", "Surround yourself with supportive people who encourage and inspire you to stay focused on your goals.", "Celebrate your milestones, no matter how small, to maintain motivation and recognize your progress."] },
+  { pattern: /(habit formation tips|build new habits|tips for sticking to habits|advice on habit change|help with forming habits)/i,   responses: [ "Start by identifying a specific habit you want to develop and clarify why it's important to you.", "Create a cue or trigger that reminds you to practice your new habit regularly.", "Consider breaking your habit down into smaller, manageable steps to make it less overwhelming.", "Track your progress in a journal or app to stay motivated and hold yourself accountable.", "Find a support system or an accountability partner who can encourage you and share in your journey."] },
+  { pattern: /(focus improvement tips|improve focus|increase concentration help|ways to stay focused|attention span advice)/i,   responses: [ "Creating a dedicated workspace free from distractions can significantly enhance your focus.", "Incorporating short breaks during tasks can help refresh your mind and maintain concentration.", "Practicing mindfulness techniques, like meditation, can improve your ability to focus over time.", "Engaging in regular physical activity has been shown to boost concentration levels and mental clarity.", "Establishing clear goals and breaking tasks into smaller steps can make it easier to stay focused."] }
+],
+gaming: [
+  { pattern: /(fortnite building tips|improve building in fortnite|fortnite strategy advice|best strategies for fortnite|fortnite gameplay help)/i,   responses: ["Practice building in creative mode to enhance your speed and accuracy.", "Watch experienced players to learn advanced building techniques and strategies.", "Focus on resource management to ensure you have enough materials during fights.", "Try to stay aware of the storm circle and position yourself advantageously.", "Utilize high ground to gain a tactical advantage over your opponents during battles."] },
+  { pattern: /(gta online money tips|make cash in gta online|gta online heist advice|tips for leveling up in gta online|gta online best strategies)/i,   responses: ["Participating in heists with a reliable crew can significantly boost your earnings.", "Engaging in daily objectives and time trials is a great way to accumulate cash and experience.", "Consider investing in businesses like CEO or Motorcycle Club operations for passive income opportunities.", "Exploring different game modes like races and deathmatches can also enhance your level and earnings while keeping the experience fresh.", "Join a community or forum to share strategies and tips with other players, which can lead to better gameplay and money-making opportunities."] },
+  { pattern: /(red dead redemption 2 tips|level up fast in rdr2|best weapons in red dead redemption 2|rdr2 crafting help|make money in red dead redemption 2)/i,   responses: [ "Exploring the world and completing side missions can significantly enhance your experience and help with leveling up.", "Experimenting with different weapon types can help you find the best fit for your playstyle and combat situations.", "Collecting materials and crafting items can greatly improve your survival chances and overall gameplay.", "Engaging in various activities like hunting, fishing, and treasure hunting can be enjoyable ways to earn money.", "Making use of the game's honor system can influence how characters and the world respond to your actions, offering a unique gameplay experience."] },
+  { pattern: /(halo infinite multiplayer tips|improve in halo infinite|halo infinite multiplayer help|best strategies for halo infinite|advice for playing halo infinite multiplayer)/i,   responses: [ "Focus on mastering the movement mechanics to gain an advantage in combat.", "Utilize the different weapons effectively by understanding their strengths and weaknesses.", "Communicate with your teammates to coordinate strategies and enhance team play.", "Experiment with various loadouts to find the playstyle that suits you best.", "Stay aware of the map layout to take advantage of power weapons and objectives."] },
+  { pattern: /(kirby game recommendations|play kirby games|best kirby games to try|tips for playing kirby|kirby game series overview)/i,   responses: [ "Explore the unique abilities Kirby gains from ingesting enemies to enhance your gameplay experience.", "Consider playing with friends as many Kirby games offer cooperative modes for added fun.", "Familiarize yourself with the various worlds and levels to fully enjoy the game's vibrant designs and challenges.", "Experiment with different power combinations to discover new strategies and ways to tackle obstacles.", "Check out spin-off titles and remakes for a varied experience within the Kirby universe, as they often introduce fresh gameplay elements."] }
+],
+relationships: [
+  { pattern: /(dating confidence tips|be more confident on dates|boosting dating selfesteem|overcoming shyness in dating|dating advice for confidence)/i,   responses: ["Work on your self-awareness by recognizing your strengths and values.", "Practice positive self-talk to challenge any negative thoughts about yourself.", "Engage in activities that make you feel good and boost your mood before a date.", "Focus on being present during the date and showing genuine interest in your partner.", "Visualize successful interactions and remind yourself that everyone has insecurities."] },
+  { pattern: /(making friends tips|meet new people|advice on new friendships|ways to connect with others|help with socializing)/i,   responses: [ "Consider joining clubs or groups that align with your interests to meet like-minded individuals.", "Practice being open and approachable, as this can encourage others to engage with you.", "Take the initiative to start conversations with colleagues or classmates, as small talk can lead to deeper connections.", "Volunteer for community events or activities, which can be a great way to bond with others while contributing positively.", "Use social media or apps designed for making friends to connect with people in your area who share similar hobbies."] },
+  { pattern: /(communication skills tips|improve communication|effective communication advice|better listening skills help|express feelings clearly)/i,   responses: ["Practice active listening by fully concentrating on the speaker and responding thoughtfully.", "Be mindful of your body language, as it can convey just as much as your words.", "Use \"I\" statements to express your feelings and needs without placing blame.", "Ask open-ended questions to encourage deeper conversations and understanding.", "Regularly seek feedback from others about your communication style to identify areas for improvement."] },
+  { pattern: /(relationship conflict help|resolve arguments|tips for dealing with disagreements|improve communication in conflicts|advice for managing relationship issues)/i,   responses: ["Focus on active listening to truly understand each other's perspectives.", "Try to express your feelings without blaming your partner, using \"I\" statements.", "Take a break if emotions run high, allowing both of you to cool down.", "Work together to find common ground and seek solutions that satisfy both partners.", "Reflect on the underlying issues that may be causing repeated conflicts in your relationship."] },
+  { pattern: /(long distance relationship tips|stay connected in long distance|advice for long distance couples|maintaining intimacy in long distance|help with long distance relationship struggles)/i,   responses: [ "Regularly schedule video calls to maintain face-to-face interaction.", "Send each other surprise care packages or handwritten letters to show you care.", "Create shared experiences by watching movies or playing games together online.", "Establish clear communication expectations to avoid misunderstandings.", "Plan visits whenever possible to strengthen your bond in person."] }
+],
+education: [
+  { pattern: /(study tips|study effectively|improve study habits|study techniques advice|help with studying)/i,   responses: [ "Create a dedicated study space free from distractions to enhance focus.", "Use active learning methods, such as summarizing information in your own words.", "Incorporate different study materials like videos, flashcards, and practice tests for variety.", "Try teaching the material to someone else to reinforce your understanding.", "Set specific goals for each study session to maintain motivation and track progress."] },
+  { pattern: /(test preparation tips|prepare for exams|study help for tests|effective test prep strategies|advice for exam readiness)/i,   responses: [ "Create a study schedule to manage your time effectively.", "Break down your study material into manageable sections.", "Practice with past exam papers to familiarize yourself with the format.", "Incorporate different study methods, like flashcards or group study sessions.", "Ensure you take regular breaks to maintain focus and reduce stress."] },
+  { pattern: /(college application tips|apply to college|college application help|advice for college applications|navigating college applications)/i,   responses: [ "Start by researching schools that align with your interests and goals.", "Make sure to highlight your unique experiences and achievements in your application.", "Consider seeking feedback on your personal statement from teachers or mentors.", "Stay organized by creating a checklist of deadlines and required materials for each application.", "Visit college campuses if possible to get a feel for the environment and culture of the schools you're interested in."] },
+  { pattern: /(language learning tips|learn a new language|advice for language learners|best ways to study a language|help with language skills)/i,   responses: [  "Immerse yourself in the language through music, movies, or books to enhance your understanding.", "Practice speaking with native speakers or language exchange partners to improve your conversational skills.", "Set realistic goals for your language learning journey to maintain motivation and track your progress.", "Use language learning apps or online resources to access interactive exercises and vocabulary building tools.", "Incorporate daily practice into your routine, even if it's just a few minutes of listening or speaking to reinforce what you've learned."] },
+  { pattern: /(research methods tips|choose research methods|advice on qualitative research|best practices for data collection|help with research design)/i,   responses: [ "Selecting appropriate research methods depends on your research question and objectives; consider what will best address your goals.", "Qualitative research can provide deep insights; focus on interviews or focus groups to gather rich, descriptive data.", "Ensure your data collection methods align with your research aims; think about whether you need numerical data or narrative information.", "It's important to pilot your research design to identify potential issues before full implementation; this can save time and resources.", "Review existing literature to understand how others have approached similar research questions, which can inform your own methods."] }
+],
+career: [
+  { pattern: /(job interview tips|prepare for an interview|interview preparation advice|best ways to get ready for an interview|help with interview questions)/i,   responses: [  "Research the company and its culture to tailor your responses.", "Practice common interview questions and consider your answers.", "Dress appropriately for the role and company you are interviewing with.", "Prepare questions to ask the interviewer to show your interest.", "Reflect on your past experiences and how they relate to the job you're applying for."] },
+  { pattern: /(resume optimization tips|optimize my resume|improve resume effectiveness|resume help for job applications|best practices for resume writing)/i,   responses: [ "Focus on tailoring your resume for each job application to align your skills with the job description.", "Use clear and concise language, highlighting your achievements and contributions in previous roles.", "Incorporate relevant keywords from the job posting to help your resume pass through applicant tracking systems.", "Consider the layout and design of your resume, ensuring it is visually appealing and easy to read.", "Seek feedback from professionals in your industry to gain insights on how to strengthen your resume."] },
+  { pattern: /(professional networking tips|network effectively|build professional connections|networking advice for introverts|strategies for expanding your network)/i,   responses: [ "Focus on attending industry events and conferences to meet new people.", "Utilize social media platforms like LinkedIn to connect with professionals in your field.", "Practice active listening during conversations to build rapport and understanding.", "Follow up with new contacts after meeting them to reinforce the connection.", "Join professional organizations or groups that align with your career goals to expand your network."] },
+  { pattern: /(career change tips|transition careers|advice for switching jobs|help with career transition|navigating a career change)/i,   responses: [ "Identify your transferable skills that can apply to a new field.", "Research industries or roles that interest you and align with your passions.", "Networking can provide valuable insights and opportunities in your desired career.", "Consider seeking mentorship from someone who has successfully made a similar transition.", "Reflect on your motivations for changing careers to ensure a fulfilling path ahead."] },
+  { pattern: /(salary negotiation tips|negotiate salary|advice for salary negotiation|help with salary negotiation|salary negotiation strategies)/i,   responses: [ "Research the industry standards for the position to understand what a competitive salary looks like.", "Practice your negotiation pitch with a friend to build confidence and clarity in your arguments.", "Be prepared to articulate your value to the organization and how your skills benefit the employer.", "Consider the entire compensation package, including benefits and bonuses, when negotiating.", "Timing is crucial; aim to negotiate after receiving a job offer but before accepting it."] }
+],
+hobbies: [
+  { pattern: /(photography composition tips|compose a photo|advice for better photo composition|help with photo framing|composition techniques for photography)/i,   responses: [ "Explore the rule of thirds to create more balanced and engaging images.", "Consider leading lines to draw the viewer's eye into the scene.", "Experiment with different angles and perspectives to add depth to your photos.", "Pay attention to the background to avoid distractions that can detract from your subject.", "Use negative space effectively to highlight your main subject and create a sense of simplicity."] },
+  { pattern: /(gardening tips|start a garden|basic gardening advice|help with gardening|beginner gardening techniques)/i,   responses: [ "Consider starting with easy-to-grow plants that are suitable for your climate.", "Ensure your garden has good soil by enriching it with compost or organic matter.", "Regularly water your plants, being mindful of their specific moisture needs.", "Pay attention to sunlight requirements for different plants to help them thrive.", "Learn about companion planting to maximize space and improve plant health in your garden."] },
+  { pattern: /(creative writing tips|improve creative writing|creative writing help|writing prompts advice|developing writing skills)/i,   responses: [ "Experiment with different writing styles and genres to discover your unique voice.", "Set aside dedicated time each day to write without distractions, allowing your creativity to flow.", "Read widely across various genres to inspire your own writing and expand your understanding of different techniques.", "Engage in writing exercises or prompts to spark new ideas and challenge your imagination.", "Join a writing group or community to share your work and receive constructive feedback from others."] },
+  { pattern: /(music production tips|start music production|advice for beginner producers|home studio setup help|improve music mixing skills)/i,   responses: [ "Experiment with different software and tools to find what works best for you.", "Listen critically to your favorite tracks and analyze their elements to learn from them.", "Collaborate with other musicians to gain new perspectives and techniques.", "Stay organized with your projects and files to streamline your workflow.", "Invest time in learning about sound design and synthesis to enhance your productions."] },
+  { pattern: /(drawing techniques tips|improve drawing skills|sketching advice|best ways to draw|help with shading techniques)/i,   responses: [ "Experiment with different materials to find what feels comfortable and enhances your style.", "Practice drawing from life to develop your observation skills and improve your accuracy.", "Explore various shading techniques, such as hatching or cross-hatching, to add depth to your drawings.", "Consider breaking down complex subjects into simple shapes to make them easier to draw.", "Regularly challenge yourself with new subjects and styles to expand your artistic range and creativity."] }
+],
+entertainment: [
+  { pattern: /(netflix show suggestions|what to watch on netflix|best netflix series advice|netflix movie recommendations|help choosing a netflix show)/i,   responses: [ "Explore different genres to find something new that suits your mood.", "Consider checking out trending shows or movies that are currently popular.", "Look for critically acclaimed titles or ones that have won awards.", "Ask friends or family for their personal favorites on Netflix.", "Utilize Netflix's recommendation feature based on what you've previously watched."] },
+  { pattern: /(disney show recommendations|best shows on disney|find new disney shows|tips for watching disney|popular disney series)/i,   responses: ["Explore different genres on Disney+ to discover shows that suit your taste.", "Check out the trending section for the most popular shows currently being watched.", "Consider creating a watchlist to keep track of shows you want to see.", "Look for themed collections that may feature shows based on your favorite characters or movies.", "Engage with community forums or social media for suggestions and reviews on Disney+ shows."] },
+  { pattern: /(hbo max series recommendations|best shows on hbo max|find hbo max series|hbo max series to binge|new hbo max series)/i,   responses: ["Explore different genres to discover hidden gems on HBO Max.", "Check out user reviews and ratings to find popular series that suit your taste.", "Utilize the search and filter options to narrow down series based on your preferences.", "Join online communities or forums to discuss and get suggestions for HBO Max series.", "Stay updated on new releases and upcoming series by following HBO Max's official announcements."] },
+  { pattern: /(movie review tips|write a movie review|advice for reviewing films|help with movie reviews|best practices for film criticism)/i,   responses: ["Focus on the film's themes and how they resonate with the audience.", "Consider the performances of the actors and how they contribute to the story.", "Analyze the direction and cinematography to discuss the film's visual appeal.", "Reflect on the pacing and structure of the narrative in your review.", "Share your personal impressions and how the movie made you feel overall."] },
+  { pattern: /(tv show analysis tips|analyze a tv show|tips for understanding tv shows|tv show critique advice|help with tv show analysis)/i,   responses: ["Focus on character development and how it impacts the overall story.", "Consider the show's themes and how they relate to societal issues.", "Pay attention to the cinematography and how it enhances the narrative.", "Analyze the pacing and structure of episodes to understand storytelling techniques.", "Look for symbolism and motifs that recur throughout the series for deeper meaning."] }
+],
+lifestyle: [
+  { pattern: /(home decoration tips|decorate my home|interior design advice|home styling help|decorating ideas)/i,   responses: ["Consider incorporating a cohesive color palette that reflects your personal style.", "Mix different textures and materials to add depth and interest to your spaces.", "Utilize mirrors to create an illusion of space and enhance natural light.", "Choose furniture that fits the scale of your room to create a balanced look.", "Add personal touches with artwork or decor items that tell your story."] },
+  { pattern: /(fashion styling tips|style outfits|advice for dressing well|help with fashion choices|tips for accessorizing)/i,   responses: [ "Experiment with mixing textures and patterns to create unique outfits.", "Choose clothing that fits your body shape and highlights your best features.", "Layering different pieces can add depth and interest to your look.", "Incorporate statement accessories to elevate even the simplest outfits.", "Stay updated on current trends, but always prioritize what makes you feel comfortable and confident."] },
+  { pattern: /(skincare routine tips|best practices for skincare|daily skincare advice|morning routine for skin)/i,   responses: ["Consider starting with a gentle cleanser to remove impurities without stripping your skin of its natural oils.", "Incorporate products based on your skin type, whether it's oily, dry, or combination, to address specific concerns effectively.", "Don't forget to apply sunscreen every morning to protect your skin from harmful UV rays and prevent premature aging.", "Exfoliating a few times a week can help remove dead skin cells and reveal a brighter complexion.", "Moisturizing is essential, so choose a hydrating product that suits your skin type to maintain its moisture balance throughout the day."] },
+  { pattern: /(home organization tips|declutter my home|organizing advice for small spaces|best ways to organize closets|help with home storage solutions)/i,   responses: ["Start by categorizing your items into keep, donate, and discard piles to simplify the decluttering process.", "Utilize vertical space with shelves and hooks to maximize storage in smaller areas.", "Consider using clear bins for storage to easily identify contents and maintain organization.", "Regularly assess your belongings and remove items that no longer serve a purpose or bring you joy.", "Implement a labeling system for boxes and containers to make finding items quick and easy."] },
+  { pattern: /(minimalist living tips|start minimalism|decluttering advice|benefits of minimalism|living with less help)/i,   responses: ["Begin by evaluating your possessions and identifying what truly adds value to your life.", "Consider adopting a \"one in, one out\" rule to maintain a clutter-free space.", "Focus on quality over quantity when it comes to your belongings, choosing items that are versatile and meaningful.", "Embrace a mindset shift by recognizing that experiences often bring more joy than material possessions.", "Create a designated space for items you use regularly, making it easier to maintain a minimalist lifestyle."] }
+],
+pets: [
+  { pattern: /(dog training tips|train a puppy|basic commands for dogs|dog training advice|help with dog obedience)/i,   responses: [ "Start with simple commands like sit, stay, and come to build a strong foundation.", "Use positive reinforcement, such as treats and praise, to encourage good behavior.", "Be consistent with your training sessions, keeping them short and engaging for your dog.", "Socializing your dog with different environments and other dogs can help reduce anxiety and improve behavior.", "Stay patient and understanding, as every dog learns at their own pace and may need time to grasp new concepts."] },
+  { pattern: /(cat behavior tips|understand cat behavior|help with cat mood changes|advice for cat socialization|what causes strange cat behavior)/i,   responses: [ "Observe your cat's body language to gain insight into their feelings and needs.", "Provide a variety of toys and activities to keep your cat mentally stimulated and happy.", "Create a safe and comfortable environment to help your cat feel secure and less anxious.", "Spend quality time with your cat to strengthen your bond and improve their social skills.", "Be patient and give your cat time to adjust to new situations or changes in their environment."] },
+  { pattern: /(pet health tips|monitor pet health|pet wellness advice|signs of a healthy pet|help with pet health tracking)/i,   responses: [ "Regular check-ups with a veterinarian can help catch potential health issues early.", "Keep an eye on your pet's behavior and appetite to notice any changes that might indicate health problems.", "Maintaining a balanced diet and proper nutrition is crucial for your pet's overall health.", "Monitoring your pet's weight regularly can help you manage their health and prevent obesity.", "Consider using pet health apps or journals to track vaccinations, medications, and vet visits for better management."] },
+  { pattern: /(pet adoption tips|adopt a pet|adoption process help|steps for adopting a pet|what to know before adopting a pet)/i,   responses: [ "Research the type of pet that best fits your lifestyle and family dynamics.", "Visit local shelters or rescue organizations to meet animals available for adoption.", "Prepare your home with necessary supplies and a safe space for your new pet.", "Consider the long-term commitment of pet ownership, including time, care, and finances.", "Ask about the pet’s history and any specific needs they may have before adopting."] },
+  { pattern: /(grooming tips for pets|groom a dog|cat grooming advice|pet grooming techniques|grooming help for pets)/i,   responses: [ "Regular brushing can help reduce shedding and matting, making grooming easier.", "Introduce your pet to grooming gradually to make the experience less stressful for them.", "Use the right tools for your pet’s coat type to ensure effective grooming.", "Consider the importance of bathing, but be cautious not to over-bathe as it can dry out their skin.", "Pay attention to areas that often get overlooked, like ears and paw pads, during grooming sessions."] }
+],
+travel: [
+  { pattern: /(budget travel tips|travel on a budget|cheap travel advice|affordable travel planning|budgetfriendly travel ideas)/i,   responses: [ "Look for destinations that are known for being budget-friendly.", "Consider traveling during the off-peak season to save on costs.", "Utilize public transportation instead of taxis or rental cars for savings.", "Research and compare accommodation options, including hostels and guesthouses.", "Explore local cuisine at street vendors or markets for affordable meal options."] },
+  { pattern: /(solo travel safety tips|stay safe while traveling alone|advice for solo travelers|tips for safe solo trips|protect yourself when traveling alone)/i,   responses: [ "Always research your destination and understand local customs and laws.", "Stay aware of your surroundings and trust your instincts while exploring.", "Consider sharing your travel itinerary with a trusted friend or family member.", "Use reputable transportation options and avoid unlicensed taxis.", "Keep your valuables secure and be mindful of pickpockets in crowded areas."] },
+  { pattern: /(packing tips|pack efficiently|efficient packing advice|travel packing help|best way to pack)/i,   responses: [ "Roll your clothes instead of folding them to save space.", "Use packing cubes to keep your items organized and easily accessible.", "Make a packing list to ensure you don’t forget essential items.", "Consider the weight and size of your luggage to avoid overpacking.", "Pack versatile clothing that can be mixed and matched for different outfits."] },
+  { pattern: /(international travel tips|travel abroad|advice for international trips|help with foreign travel|planning an international vacation)/i,   responses: [ "Research your destination’s customs and culture to enhance your experience.", "Ensure your passport is valid for at least six months beyond your planned return date.", "Familiarize yourself with local transport options to navigate easily upon arrival.", "Consider using a travel app for managing itineraries and finding local attractions.", "Stay informed about travel advisories and health recommendations for your destination."] },
+ { pattern: /(road trip planning tips|plan a road trip|road trip itinerary help|best advice for road trips|tips for a successful road trip)/i,   responses: ["Start by choosing your destination and mapping out your route to include interesting stops along the way.", "Consider creating a flexible itinerary that allows for spontaneous adventures and exploration.", "Make sure to pack snacks and drinks to keep everyone energized during long stretches of driving.", "Check your vehicle’s condition before the trip, ensuring everything from tires to oil is in good shape for the journey.", "Research accommodations in advance, but also leave room for last-minute changes based on your travel experience."] }
+],
+sports: [
+  { pattern: /(lebron james career highlights|follow lebron james|lebron james achievements|lebron james career timeline|tips for understanding lebrons impact)/i,   responses: ["LeBron James has had a remarkable career filled with numerous accolades and milestones that showcase his incredible talent and work ethic.", "To keep up with LeBron James, consider following his official social media accounts and subscribing to sports news outlets that cover his games and achievements.", "Throughout his career, LeBron has achieved multiple championships, MVP awards, and has consistently been a leader on and off the court, making a significant impact on the game of basketball.", "Exploring LeBron's career timeline can provide insight into his growth as a player, from his early days in high school to his current status as one of the greatest of all time.", "Understanding LeBron's impact involves recognizing his contributions to basketball, his role in social activism, and how he has influenced younger athletes and the sports culture overall."] },
+  { pattern: /(tom brady career highlights|bradys biggest achievements|how did tom brady become successful|notable milestones in bradys career|bradys accomplishments in football)/i,   responses: ["Tom Brady is renowned for his impressive Super Bowl victories, which have solidified his status as an NFL legend.", "His ability to lead his teams to numerous playoff appearances showcases his skill and determination on the field.", "Brady's numerous MVP awards reflect his exceptional performance and consistency throughout his career.", "The longevity of his career, playing at an elite level for many years, is a testament to his dedication and work ethic.", "His records in passing yards and touchdowns demonstrate his remarkable talent and influence on the game of football."] },
+  { pattern: /(serena williams career highlights|tennis tips from serena williams|serena williams training routine|serena williams playing style|how did serena williams become successful)/i,   responses: [ "Serena Williams emphasizes the importance of mental strength in tennis, encouraging players to stay focused and resilient during matches.", "Her training routine often includes a mix of strength training, agility drills, and on-court practice to enhance her overall performance.", "Williams' aggressive playing style features powerful serves and groundstrokes, showcasing her ability to dominate opponents with pace and precision.", "To achieve success, Serena advocates for setting clear goals and consistently working towards them, both on and off the court.", "She often highlights the significance of believing in oneself and maintaining a strong support system throughout one’s tennis journey."] },
+  { pattern: /(cristiano ronaldo training tips|improve soccer skills like ronaldo|ronaldo dribbling techniques|help with mastering cristiano ronaldos skills)/i,   responses: [ "Focus on practicing your footwork to enhance agility and precision, much like Ronaldo.", "Incorporate strength and conditioning exercises into your routine to build power and endurance.", "Study Ronaldo's movement off the ball to improve your positioning and create scoring opportunities.", "Work on your shooting technique by practicing with both feet to emulate Ronaldo's versatility.", "Watch game footage of Ronaldo to analyze his decision-making and tactical awareness on the field."] },
+  { pattern: /(lionel messi dribbling tips|play like messi|messi shooting technique|improve ball control like messi|tips for passing like messi)/i,   responses: [ "Focus on close ball control to navigate through tight spaces effectively.", "Practice quick changes of direction to mimic Messi's agility on the field.", "Work on precision in your shots, aiming for accuracy over power.", "Enhance your vision and awareness to anticipate plays like Messi does.", "Incorporate regular practice of intricate footwork to develop your dribbling style."] }
+],
+diy: [
+  { pattern: /(home improvement tips|start a renovation|diy project advice|home upgrade ideas|best practices for remodeling)/i,   responses: [ "Consider creating a detailed plan before starting any project to ensure everything goes smoothly.", "Research materials and tools thoroughly to understand what will work best for your specific project.", "Don’t hesitate to seek inspiration from online platforms or home improvement shows to spark your creativity.", "Always prioritize safety by using the right protective gear and following proper guidelines while working.", "Think about the long-term value of your project to ensure that it enhances your home and meets your needs."] },
+  { pattern: /(woodworking tips|start woodworking|basic woodworking advice|beginner woodworking help|woodworking techniques)/i,   responses: [ "Familiarize yourself with essential tools and their uses to build a solid foundation.", "Start with simple projects to practice your skills and boost your confidence.", "Learn about different types of wood and their properties to choose the right materials for your projects.", "Safety should always come first; make sure to wear protective gear when working with tools.", "Understanding basic joinery techniques will greatly enhance the quality and durability of your projects."] },
+  { pattern: /(car maintenance tips|maintain a car|best practices for car care|help with car maintenance)/i,   responses: ["Regularly checking and changing your oil can help extend your engine's life.", "Keeping your tires properly inflated and rotated ensures better fuel efficiency and safety.", "Make sure to inspect your brakes frequently for any signs of wear or unusual noises.", "Flushing and replacing your coolant regularly prevents overheating and engine damage.", "Checking and replacing air filters can improve your vehicle's performance and fuel economy."] },
+  { pattern: /(electronics repair tips|fix electronics|help with device repair|diy electronics troubleshooting|advice for fixing gadgets)/i,   responses: ["Start by identifying the specific issue with your device before attempting any repairs.", "Look for online guides or videos that focus on the specific type of electronics you are dealing with.", "Make sure to use the right tools and safety precautions when working on electronic devices.", "Consider joining online forums or communities where you can ask questions and share experiences with other DIY repair enthusiasts.", "Testing components with a multimeter can help you diagnose problems effectively before making any repairs."] },
+  { pattern: /(basic plumbing tips|fix a leaky faucet|plumbing help for beginners|advice on unclogging drains|maintain plumbing systems)/i,   responses: ["Check for worn washers or O-rings in your faucet to address leaks effectively.", "Always use a plunger first when tackling a clogged drain for the best chance of success.", "Learning about the main shut-off valve can save you from potential water damage in emergencies.", "Regularly inspect visible pipes for signs of corrosion or wear to catch issues early.", "Consider using natural drain cleaners like baking soda and vinegar to keep your drains clear and healthy."] }
+],
+shopping: [
+  { pattern: /(amazon deals tips|find amazon deals|best ways to save on amazon|amazon discounts help|get the most out of amazon sales)/i,   responses: [ "Explore the \"Today's Deals\" section on Amazon for daily discounts.", "Sign up for Amazon Prime to access exclusive deals and promotions.", "Keep an eye on seasonal sales events like Black Friday and Prime Day for significant savings.", "Use price tracking tools to monitor item prices and get alerts when they drop.", "Check for coupon codes and promotions on the product page before making a purchase."] },
+  { pattern: /(black friday shopping tips|prepare for black friday|best black friday deals advice|black friday shopping strategies|tips for online black friday shopping)/i,   responses: ["Consider making a list of items you want to purchase ahead of time to stay focused.", "Research the stores or websites you plan to shop at to find out about their specific deals and policies.", "Sign up for newsletters from your favorite retailers to get early access to deals and exclusive offers.", "Keep an eye on social media for flash sales and additional promotions that may not be widely advertised.", "Plan your shopping schedule to avoid peak times and maximize your chances of finding the best deals."] },
+  { pattern: /(cyber monday tips|shop cyber monday|best cyber monday deals|cyber monday shopping advice|cyber monday help)/i,   responses: ["Research your favorite retailers in advance to know what to expect.", "Set a budget to keep your spending in check while shopping for deals.", "Sign up for newsletters from your favorite brands to receive exclusive offers.", "Use comparison shopping tools to find the best prices across different sites.", "Create a wishlist of items you want to ensure you don’t miss out on great deals."] },
+  { pattern: /(coupon stacking tips|use multiple coupons|best practices for coupons|saving more with coupons|strategies for maximizing coupons)/i,   responses: ["Consider combining store coupons with manufacturer coupons for greater savings.", "Always check the expiration dates of your coupons to ensure they are still valid when you shop.", "Look for loyalty programs that offer exclusive coupons and additional discounts for members.", "Organize your coupons by category or store to make them easier to use during your shopping trips.", "Stay informed about sales events and promotions to use your coupons effectively for maximum savings."] },
+  { pattern: /(price comparison tips|compare prices online|finding the best prices|price comparison advice|help with price matching)/i,   responses: ["Look for reliable websites that specialize in comparing prices across different retailers.", "Make a list of the products you want to compare and check multiple stores for better deals.", "Consider using browser extensions that automatically compare prices for you while shopping online.", "Read customer reviews to understand if a lower price affects the product's quality or service.", "Check for seasonal sales and promotions, as they can significantly impact price differences."] }], }; module.exports = responses;
 
-module.exports = responses;
+
+  

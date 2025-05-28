@@ -1,0 +1,19 @@
+{
+  "fitness": 20,
+  "health": 15,
+  "finance": 15,
+  "technology": 15,
+  "cooking": 15,
+  "productivity": 15,
+  "gaming": 15,
+  "relationships": 15,
+  "education": 15,
+  "career": 15,
+  "hobbies": 15,
+  "entertainment": 15,
+  "lifestyle": 10,
+  "pets": 10,
+  "travel": 15,
+  "sports": 15,
+  "diy": 10
+}

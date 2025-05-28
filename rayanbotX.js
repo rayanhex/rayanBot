@@ -11,8 +11,12 @@
 
 
 // Pre-planned responses database
-const responses = {
-    "greetings": [
+
+import responses from './responseData.js';
+
+/*const responses = 
+{
+  "greetings": [
         { pattern: /(how are you( doing)?|how is it going|how do you do| how you doing| what's good| whatchu doin)/i, responses: ["I'm doing well, thank you! How are you?", "I'm great! How about you?", "I'm fine, thanks for asking. How are you?", "Doing well! How are you?", "I'm good! How can I assist you?"] },
         { pattern: /(hello|hey|what is up)/i, responses: ["Hello! How can I help you today?", "Hi there! What can I do for you?", "Hey! How can I assist you?", "Hello! What do you need help with?", "Hi! How can I assist you today?"] },
         { pattern: /\bhi\b/i, responses: ["Hello!", "Hi there!", "Hey!"] },
@@ -2250,17 +2254,9 @@ const responses = {
 { pattern: /(what's a good science fiction movie|recommend a sci-fi movie|best sci-fi films)/i, responses: ["'Interstellar' explores space and time beautifully.", "'Blade Runner 2049' is a thought-provoking futuristic film.", "'The Matrix' is a classic on AI and virtual reality.", "'Dune' (2021) is a must-watch for epic sci-fi."] },
 { pattern: /(how do i find scholarships|find student scholarships|scholarship search tips)/i, responses: ["Use sites like Fastweb, Chegg, or Scholarship.com.", "Check your school's financial aid office.", "Look for scholarships related to your interests or major.", "Apply early and double-check requirements."] },
 
-
-
-
-
-
-
-
-
-
 ]
-};
+
+}; */
 
 
 
@@ -2973,3 +2969,14 @@ document.getElementById('user-input').addEventListener('keypress', function(e) {
         sendMessage();
     }
 });
+
+window.sendMessage = sendMessage;
+window.toggleHelp = toggleHelp;
+window.toggleTrainingMode = toggleTrainingMode;
+window.toggleCustomizePanel = toggleCustomizePanel;
+window.updateUserBubbleColor = updateUserBubbleColor;
+window.updateChatBackground = updateChatBackground;
+window.resetToDefaults = resetToDefaults;
+window.processBatchQuestions = processBatchQuestions;
+window.clearTrainingResults = clearTrainingResults;
+window.saveTrainingConversation = saveTrainingConversation;

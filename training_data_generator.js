@@ -1,6 +1,7 @@
-// ERROR-FREE Training Data Generator - OpenAI Only
+// ERROR-FREE Training Data Generator - OpenAI Only with Topic Cycling
 const OpenAI = require('openai');
 const fs = require('fs');
+const path = require('path');
 
 // Initialize OpenAI with error checking and environment variable
 let openai;
@@ -19,7 +20,7 @@ try {
   process.exit(1);
 }
 
-// Training Data Generator
+// Training Data Generator with Topic Cycling
 class TrainingDataGenerator {
   constructor() {
     this.domains = {
@@ -27,7 +28,8 @@ class TrainingDataGenerator {
         'pull-ups', 'push-ups', 'squats', 'deadlifts', 'bench press', 'running technique', 'weight lifting', 'yoga poses', 'stretching routines', 
         'cardio workouts', 'muscle building', 'fat loss', 'home workouts', 'gym etiquette', 'HIIT training', 'CrossFit', 'powerlifting',
         'bodyweight exercises', 'marathon training', 'strength training', 'flexibility', 'core workouts', 'leg day', 'arm workouts'
-      ],
+    
+    ],/*
       health: [
         'better sleep', 'stress management', 'anxiety relief', 'headache remedies', 'immune system', 'healthy eating', 'mental wellness', 
         'meditation', 'staying hydrated', 'vitamin supplements', 'depression help', 'panic attacks', 'insomnia', 'back pain',
@@ -128,17 +130,112 @@ class TrainingDataGenerator {
         'furniture restoration', 'craft projects', 'tool selection', 'safety practices', 'bathroom renovation', 'kitchen remodel',
         'deck building', 'flooring installation', 'electrical work', 'roofing repairs', 'landscaping', 'garden design',
         'shed building', 'fence installation', 'tile work', 'drywall repair', 'insulation installation', 'window replacement'
-      ],
-      shopping: [
-        'Amazon deals', 'Black Friday shopping', 'Cyber Monday sales', 'coupon strategies', 'price comparison', 'online vs store shopping',
-        'grocery budgeting', 'clothing deals', 'tech purchases', 'home goods shopping', 'gift selection', 'seasonal shopping', 
-        'thrift shopping', 'outlet shopping', 'wholesale buying', 'cashback apps', 'loyalty programs', 'return policies',
-        'product reviews', 'brand comparisons', 'quality assessment', 'bulk buying', 'subscription boxes', 'flash sales'
-      ]
+      ]*/
     };
     
-    // Track generated topics to avoid duplicates
+    // File to track progress
+    this.progressFile = 'topic_progress.json';
+    this.progress = this.loadProgress();
+    
+    // Track generated topics to avoid duplicates within a session
     this.generatedTopics = new Set();
+  }
+
+  // Load progress from file
+  loadProgress() {
+    try {
+      if (fs.existsSync(this.progressFile)) {
+        const data = fs.readFileSync(this.progressFile, 'utf8');
+        return JSON.parse(data);
+      }
+    } catch (error) {
+      console.log('⚠️  Could not load progress file, starting fresh');
+    }
+    
+    // Initialize progress for all domains
+    const initialProgress = {};
+    Object.keys(this.domains).forEach(domain => {
+      initialProgress[domain] = 0;
+    });
+    return initialProgress;
+  }
+
+  // Save progress to file
+  saveProgress() {
+    try {
+      fs.writeFileSync(this.progressFile, JSON.stringify(this.progress, null, 2));
+    } catch (error) {
+      console.error('⚠️  Could not save progress:', error.message);
+    }
+  }
+
+  // Get next batch of topics for a domain
+  getNextTopics(domain, batchSize = 5) {
+    const topics = this.domains[domain];
+    if (!topics) return [];
+    
+    const startIndex = this.progress[domain] || 0;
+    const endIndex = Math.min(startIndex + batchSize, topics.length);
+    
+    if (startIndex >= topics.length) {
+      console.log(`  ✅ All topics completed for ${domain} domain!`);
+      return [];
+    }
+    
+    const nextTopics = topics.slice(startIndex, endIndex);
+    
+    // Update progress
+    this.progress[domain] = endIndex;
+    
+    console.log(`  📍 Processing topics ${startIndex + 1}-${endIndex} of ${topics.length} for ${domain}`);
+    
+    return nextTopics;
+  }
+
+  // Check if all topics are completed
+  isAllTopicsCompleted() {
+    return Object.entries(this.domains).every(([domain, topics]) => {
+      return (this.progress[domain] || 0) >= topics.length;
+    });
+  }
+
+  // Reset progress for a specific domain or all domains
+  resetProgress(domain = null) {
+    if (domain && this.domains[domain]) {
+      this.progress[domain] = 0;
+      console.log(`🔄 Reset progress for ${domain} domain`);
+    } else {
+      Object.keys(this.domains).forEach(d => {
+        this.progress[d] = 0;
+      });
+      console.log('🔄 Reset progress for all domains');
+    }
+    this.saveProgress();
+  }
+
+  // Show current progress
+  showProgress() {
+    console.log('\n📊 Current Progress:');
+    console.log('==================');
+    
+    let totalTopics = 0;
+    let completedTopics = 0;
+    
+    Object.entries(this.domains).forEach(([domain, topics]) => {
+      const completed = this.progress[domain] || 0;
+      const total = topics.length;
+      const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+      
+      console.log(`${domain.padEnd(15)}: ${completed.toString().padStart(2)}/${total.toString().padStart(2)} (${percentage.toString().padStart(3)}%)`);
+      
+      totalTopics += total;
+      completedTopics += completed;
+    });
+    
+    const overallPercentage = totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
+    console.log('==================');
+    console.log(`${'TOTAL'.padEnd(15)}: ${completedTopics.toString().padStart(2)}/${totalTopics.toString().padStart(2)} (${overallPercentage.toString().padStart(3)}%)`);
+    console.log('');
   }
 
   // Validate and clean topic string
@@ -173,44 +270,47 @@ class TrainingDataGenerator {
     const prompt = `You are creating training data for a chatbot. The topic is "${validatedTopic}" in the ${domain} domain.
 
 CRITICAL INSTRUCTIONS:
-1. QUESTIONS section = What users will TYPE/ASK (like "bedtime routine tips", "nighttime routine")
-2. RESPONSES section = What the AI will ANSWER (helpful advice, no numbers)
+1. QUESTIONS section = 5 different ways to ask about THE SAME SPECIFIC THING related to "${validatedTopic}"
+2. RESPONSES section = 5 different answers that ALL address the SAME specific aspect of "${validatedTopic}"
 
 QUESTIONS should be:
-- Short keyword phrases users would actually type
-- Natural search terms
-- Different ways to ask about the same topic
-- NO numbers, NO advice, NO solutions
-- Focus on keywords like "tips", "help", "how to", "advice"
+- 5 variations of asking about the SAME specific thing
+- Same core question, just reworded differently
+- Focus on ONE specific aspect of the topic
+- Keywords like "tips", "help", "how to", "advice" but all about the SAME thing
 
 RESPONSES should be:
-- Helpful advice the AI gives back
+- 5 different ways to give advice about the SAME thing
+- All responses address the SAME specific issue
 - NO NUMBERING (no "1.", "2.", etc.)
-- Each response should be complete and different
-- Actionable advice about the topic
+- Vary the wording but keep the core advice consistent
 
-EXAMPLE for "better sleep":
-QUESTIONS: (what users type)
-better sleep tips
-how to sleep better
-improve sleep quality  
-sleep better naturally
+GOOD EXAMPLE for "better sleep":
+QUESTIONS: (all asking about the same thing - bedtime routine)
+better sleep routine
+bedtime routine tips
 nighttime routine help
+sleep routine advice
+establish sleep routine
 
-RESPONSES: (what AI answers)
-Try establishing a consistent bedtime routine.
-Avoid screens for at least an hour before bed.
-Keep your bedroom cool and dark for optimal sleep.
-Consider relaxation techniques like deep breathing.
-Regular exercise can improve sleep quality significantly.
+RESPONSES: (all about creating a bedtime routine, just worded differently)
+Try establishing a consistent bedtime routine every night.
+Create a relaxing routine before bed to signal it's time to sleep.
+Develop regular pre-sleep habits that help you wind down.
+Having the same bedtime activities each night improves sleep quality.
+A consistent evening routine helps your body prepare for rest.
 
-Now generate for "${validatedTopic}":
+BAD EXAMPLE (DON'T DO THIS):
+QUESTIONS: sleep tips, insomnia help, bedroom temperature, sleep schedule, caffeine effects
+^ These are 5 DIFFERENT topics, not variations of the same question
+
+Now generate for "${validatedTopic}" - pick ONE specific aspect and create 5 variations:
 
 QUESTIONS:
-[5 short keyword phrases users would search/type]
+[5 ways to ask about the SAME specific thing related to ${validatedTopic}]
 
 RESPONSES:
-[5 different helpful answers about ${validatedTopic}]`;
+[5 different ways to answer that SAME specific question about ${validatedTopic}]`;
 
     try {
       if (!openai) {
@@ -321,18 +421,18 @@ RESPONSES:
           topic,
           `${topic} tips`,
           `${topic} help`,
-          `how to ${topic}`,
-          `${topic} advice`
+          `${topic} advice`,
+          `${topic} guide`
         ];
       }
       
       if (responses.length === 0) {
         responses = [
           `Here's helpful advice about ${topic}.`,
-          `Try focusing on the basics of ${topic}.`,
-          `Consider getting guidance with ${topic}.`,
-          `Practice ${topic} regularly for best results.`,
-          `Start small and gradually improve your ${topic} skills.`
+          `Try focusing on the fundamentals of ${topic}.`,
+          `Consider practicing ${topic} regularly for improvement.`,
+          `Start with the basics when learning about ${topic}.`,
+          `Getting guidance can really help with ${topic}.`
         ];
       }
       
@@ -360,10 +460,10 @@ RESPONSES:
       ],
       responses: [
         `Here's helpful advice about ${validatedTopic}.`,
-        `Try focusing on the basics of ${validatedTopic}.`,
-        `Consider getting guidance with ${validatedTopic}.`,
-        `Practice ${validatedTopic} regularly for best results.`,
-        `Start small and gradually improve your ${validatedTopic} skills.`
+        `Try focusing on the fundamentals of ${validatedTopic}.`,
+        `Consider practicing ${validatedTopic} regularly for improvement.`,
+        `Start with the basics when learning about ${validatedTopic}.`,
+        `Getting guidance can really help with ${validatedTopic}.`
       ]
     };
   }
@@ -418,19 +518,18 @@ RESPONSES:
     }
   }
 
-  async generateForDomain(domainName, topicsPerDomain = 5) {
+  async generateForDomain(domainName, topicsPerBatch = 5) {
     console.log(`\n🔄 Processing ${domainName} domain...`);
     const domainData = [];
-    const topics = this.domains[domainName];
+    
+    const topics = this.getNextTopics(domainName, topicsPerBatch);
 
-    if (!Array.isArray(topics) || topics.length === 0) {
-      console.log(`  ⚠️  No topics found for domain: ${domainName}`);
+    if (topics.length === 0) {
+      console.log(`  ✅ No more topics to process for ${domainName}`);
       return domainData;
     }
 
-    const maxTopics = Math.min(topics.length, topicsPerDomain);
-
-    for (let i = 0; i < maxTopics; i++) {
+    for (let i = 0; i < topics.length; i++) {
       const topic = topics[i];
       console.log(`  📝 Generating data for: ${topic}`);
 
@@ -468,19 +567,22 @@ RESPONSES:
     return domainData;
   }
 
-  async generateAllDomains(topicsPerDomain = 5) {
+  async generateAllDomains(topicsPerBatch = 5) {
     const allTrainingData = {};
     
-    for (const [domainName, topics] of Object.entries(this.domains)) {
+    for (const [domainName] of Object.entries(this.domains)) {
       try {
-        console.log(`\n🚀 Starting ${domainName} domain (${Math.min(topics.length, topicsPerDomain)} topics)...`);
-        allTrainingData[domainName] = await this.generateForDomain(domainName, topicsPerDomain);
+        console.log(`\n🚀 Starting ${domainName} domain...`);
+        allTrainingData[domainName] = await this.generateForDomain(domainName, topicsPerBatch);
         console.log(`✅ Generated ${allTrainingData[domainName].length} entries for ${domainName}`);
       } catch (error) {
         console.error(`❌ Failed to process ${domainName}:`, error.message);
         allTrainingData[domainName] = [];
       }
     }
+
+    // Save progress after each run
+    this.saveProgress();
 
     return allTrainingData;
   }
@@ -495,7 +597,8 @@ RESPONSES:
           
           entries.forEach((entry, index) => {
             if (entry && entry.pattern && Array.isArray(entry.responses)) {
-              jsContent += `    { pattern: ${entry.pattern}, responses: ${JSON.stringify(entry.responses, null, 6)} }`;
+              // Format exactly as requested: pattern on one line, responses properly formatted
+              jsContent += `    { pattern: ${entry.pattern}, responses: ${JSON.stringify(entry.responses, null, 0)} }`;
               jsContent += index < entries.length - 1 ? ',\n' : '\n';
             }
           });
@@ -512,15 +615,53 @@ RESPONSES:
     }
   }
 
-  async saveToFile(trainingData, filename = 'generated_responses.js') {
+  async appendToFile(trainingData, filename = 'responseData.js') {
     try {
-      const jsContent = this.formatAsJavaScript(trainingData);
+      let existingContent = '';
+      let existingData = {};
+      
+      // Check if file exists and read existing content
+      if (fs.existsSync(filename)) {
+        try {
+          existingContent = fs.readFileSync(filename, 'utf8');
+          // Extract existing responses object
+          const match = existingContent.match(/const responses = ({[\s\S]*?});/);
+          if (match) {
+            // Safely evaluate the existing responses object
+            existingData = eval('(' + match[1] + ')');
+          }
+        } catch (error) {
+          console.log('⚠️  Could not parse existing file, creating backup...');
+          fs.writeFileSync(filename + '.backup', existingContent);
+        }
+      }
+      
+      // Merge new data with existing data
+      for (const [domain, entries] of Object.entries(trainingData)) {
+        if (Array.isArray(entries) && entries.length > 0) {
+          if (!existingData[domain]) {
+            existingData[domain] = [];
+          }
+          // Append new entries to existing domain
+          existingData[domain] = existingData[domain].concat(entries);
+        }
+      }
+      
+      // Format and save the combined data
+      const jsContent = this.formatAsJavaScript(existingData);
       fs.writeFileSync(filename, jsContent);
-      console.log(`\n💾 Training data saved to ${filename}`);
+      
+      // Count total entries
+      const totalEntries = Object.values(existingData).reduce((sum, entries) => {
+        return sum + (Array.isArray(entries) ? entries.length : 0);
+      }, 0);
+      
+      console.log(`\n💾 Training data appended to ${filename}`);
+      console.log(`📊 Total entries in database: ${totalEntries}`);
       
       // Also save as JSON for backup
       const jsonFilename = filename.replace('.js', '.json');
-      fs.writeFileSync(jsonFilename, JSON.stringify(trainingData, null, 2));
+      fs.writeFileSync(jsonFilename, JSON.stringify(existingData, null, 2));
       console.log(`💾 Backup saved as ${jsonFilename}`);
       
       return true;
@@ -537,7 +678,7 @@ RESPONSES:
 
 // Main execution with comprehensive error handling
 async function main() {
-  console.log('🚀 Starting OpenAI Training Data Generation with GPT-4o-mini...\n');
+  console.log('🚀 Starting OpenAI Training Data Generation with Topic Cycling...\n');
   
   // Check if API key is set
   if (!process.env.OPENAI_API_KEY) {
@@ -549,9 +690,18 @@ async function main() {
   
   const generator = new TrainingDataGenerator();
   
+  // Show current progress
+  generator.showProgress();
+  
+  // Check if all topics are completed
+  if (generator.isAllTopicsCompleted()) {
+    console.log('🎉 All topics have been completed!');
+    console.log('💡 Run with --reset to start over, or --reset-domain [domain] to reset specific domain');
+    return;
+  }
+  
   try {
-    // Generate training data (5 topics per domain = ~90 total entries)  
-    // GPT-4o-mini is more cost-effective than GPT-3.5-turbo
+    // Generate training data for next batch (5 topics per domain)
     const trainingData = await generator.generateAllDomains(5);
     
     // Validate results
@@ -564,20 +714,21 @@ async function main() {
       return;
     }
     
-    // Save to file
-    const saveSuccess = await generator.saveToFile(trainingData, 'expanded_responses.js');
+    // Save to file (append to existing)
+    const saveSuccess = await generator.appendToFile(trainingData, 'responseData.js');
     
     if (saveSuccess) {
       // Print summary
-      console.log(`\n✅ Complete! Generated ${totalEntries} training entries across ${Object.keys(trainingData).length} domains.`);
+      console.log(`\n✅ Complete! Generated ${totalEntries} training entries this run.`);
       console.log(`🤖 Used GPT-4o-mini model for generation`);
-      console.log(`\n🎯 Domains covered: ${Object.keys(trainingData).join(', ')}`);
-      console.log(`\n📁 Files created:`);
-      console.log(`   - expanded_responses.js (ready to use in your chatbot)`);
-      console.log(`   - expanded_responses.json (backup)`);
+      console.log(`\n🎯 Domains processed this run: ${Object.keys(trainingData).filter(domain => trainingData[domain].length > 0).join(', ')}`);
+      console.log(`\n📁 Files updated:`);
+      console.log(`   - responseData.js (main database - keeps growing)`);
+      console.log(`   - responseData.json (backup)`);
       console.log(`\n💡 Next steps:`);
-      console.log(`   1. Replace your existing responses with: const responses = require('./expanded_responses.js');`);
-      console.log(`   2. Or merge with existing data`);
+      console.log(`   1. Your responseData.js file now contains all entries`);
+      console.log(`   2. Run the script again to add the next batch of topics`);
+      console.log(`   3. Use: const responses = require('./responseData.js'); in your chatbot`);
     } else {
       console.log('❌ Failed to save files. Please check file permissions.');
     }
@@ -610,4 +761,3 @@ if (require.main === module) {
 }
 
 module.exports = TrainingDataGenerator;
-
