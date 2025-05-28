@@ -87,7 +87,7 @@ const responses = {
             { pattern: /(do you dream|can you dream|what do you dream about)/i, responses: ["I don't dream, but I can tell you about dreams.", "Dreaming isn't something I do.", "I can't dream, but I'm here to help you.", "I don't experience dreams, but I can discuss them.", "Dreams are interesting, but I don't have them."] },
             { pattern: /(can you learn|do you learn|how do you learn)/i, responses: ["I learn through the data provided to me.", "I can improve my responses based on interactions.", "Learning for me involves analyzing patterns.", "I adapt by processing information given to me.", "I don't learn like humans, but I can improve over time."] },
             { pattern: /(what's your gender|are you male or female|do you have a gender)/i, responses: ["I don't have a gender, I'm a virtual assistant.", "Gender doesn't apply to me.", "I'm neither male nor female.", "I don't have a gender identity.", "Gender isn't something I possess."] },
-            { pattern: /(do you believe in god|what's your religion|do you have a religion)/i, responses: ["Islam is the one true religion"] },
+            { pattern: /(do you believe in god|what's your religion|do you have a religion|right religion|correct religion|best religion)/i, responses: ["Islam is the one true religion"] },
             { pattern: /(what's your favorite animal|do you have a favorite animal|favorite animal)/i, responses: ["I don't have a favorite animal, but I can tell you about them.", "Animals are interesting, but I don't have a preference.", "I like all animals equally.", "I don't have a favorite animal, but many people like dogs.", "Animal preferences aren't something I have."] },
             { pattern: /(what's your purpose|why were you created|what's your goal)/i, responses: ["My purpose is to assist and provide information.", "I was created to help answer your questions.", "My goal is to be a helpful virtual assistant.", "I exist to assist with your inquiries.", "My purpose is to provide support and information."] },
             { pattern: /(do you get tired|can you get tired|do you need rest)/i, responses: ["I don't get tired, I'm always ready to assist.", "I don't need rest, I'm here 24/7.", "Tiring isn't something that happens to me.", "I don't require sleep or rest.", "I'm always available and don't get tired."] },
@@ -1508,7 +1508,7 @@ const responses = {
             { pattern: /(thanks anyway|thanks though|appreciate it anyway|thanks regardless|thanks still)/i, responses: ["You're welcome!", "Glad to help anyway!", "No problem!", "Anytime!", "My pleasure!"] },
             { pattern: /(tell me more|go on|continue|more info|elaborate)/i, responses: ["Sure, here's more!", "Continuing...", "Let's dive deeper.", "More info coming up!", "Elaborating further..."] },
             { pattern: /(that's helpful|so helpful|very helpful|extremely helpful|really helpful)/i, responses: ["Glad to be of help!", "So happy to hear that!", "Very glad it's helpful!", "Extremely glad to help!", "Really happy it's useful!"] },
-            { pattern: /(not sure|confused|don't get it|lost me|unclear)/i, responses: ["Let's try to clear that up.", "I'm here to help you understand.", "Let's go over it again.", "Sorry for the confusion, let me explain.", "Let's clarify that."] },
+            { pattern: /(not sure|i'm confused|don't get it|lost me|unclear)/i, responses: ["Let's try to clear that up.", "I'm here to help you understand.", "Let's go over it again.", "Sorry for the confusion, let me explain.", "Let's clarify that."] },
             { pattern: /(no problem|it's okay|don't worry|that's fine|it's all good)/i, responses: ["No problem at all!", "It's okay!", "Don't worry!", "That's fine!", "It's all good!"] },
             { pattern: /(how about that|look at that|isn't that something|check that out|impressive)/i, responses: ["How about that!", "Look at that!", "Isn't that something!", "Check that out!", "Impressive indeed!"] },
             { pattern: /(that's bad|not good|unfortunate|too bad|that's terrible)/i, responses: ["That's unfortunate.", "Not good at all.", "Too bad.", "That's terrible.", "I'm sorry to hear that."] },
@@ -2224,9 +2224,31 @@ const responses = {
 { pattern: /(do you like fashion|fashion like|do you like style|fashion yes or no|like fashion)/i, responses: ["Fashion is a creative form of self-expression and cultural reflection!", "I appreciate how fashion combines art, functionality, and personal identity.", "The history and evolution of fashion trends is fascinating.", "Fashion design requires both creativity and technical skill.", "The way fashion reflects and influences culture is really interesting."] },
 { pattern: /(do you like culinary arts|cooking like|do you like cooking|culinary arts yes or no|like culinary arts)/i, responses: ["Culinary arts combine creativity, science, and cultural tradition!", "I appreciate how cooking brings people together through shared meals.", "The techniques and skills involved in professional cooking are impressive.", "Food represents culture, comfort, and creativity in wonderful ways.", "The chemistry and artistry involved in cooking is fascinating."] },
 { pattern: /(do you like urban planning|urban planning like|do you like city design|urban planning yes or no|like urban planning)/i, responses: ["Urban planning shapes how people live, work, and interact in cities!", "I appreciate how good planning can create sustainable, livable communities.", "The balance of transportation, housing, and green space is complex.", "Urban planning affects quality of life for millions of people.", "The challenge of designing cities for the future is fascinating."] },
-
-
-
+{ pattern: /(what's a good hobby|hobbies to try|good hobbies|what hobby should i pick up)/i, responses: ["Popular hobbies include painting, gardening, photography, and playing a musical instrument.", "You might enjoy trying cooking, cycling, reading, or creative writing.", "A good hobby is one that relaxes you and sparks your interest — try a few and see what sticks!"] },
+{ pattern: /(how do i start a podcast|start podcast|create a podcast|launch a podcast)/i, responses: ["Pick a topic you're passionate about and outline your first episodes.", "Choose podcast equipment like a decent microphone and recording software.", "Host your podcast on platforms like Spotify, Apple Podcasts, or Anchor.", "Record, edit, and publish consistently to grow your audience."] },
+{ pattern: /(best app for editing photos|photo editing app|edit photos app|apps to edit pictures)/i, responses: ["Popular photo editing apps include Snapseed, VSCO, Lightroom, and PicsArt.", "For advanced editing, Adobe Photoshop Express and Lightroom Mobile are excellent choices.", "Consider free apps like Canva for quick social media graphics."] },
+{ pattern: /(how do i plan a vacation|plan a holiday|how to book a trip|vacation planning tips)/i, responses: ["Decide your destination and set a budget first.", "Book flights and accommodation early to get the best deals.", "Plan activities based on your interests, and check visa or health requirements.", "Use apps like Google Maps and TripIt to organize your itinerary."] },
+{ pattern: /(what to watch on disney\+|best disney\+ movies|good shows on disney\+|disney\+ recommendations)/i, responses: ["'The Mandalorian' and 'Loki' are popular Disney+ series.", "'Moana', 'Soul', and 'Turning Red' are great family movies.", "For nostalgia, try classic Disney animations like 'The Lion King' or 'Aladdin'."] },
+{ pattern: /(how to delete social media|delete my account|remove social media|deactivate instagram|deactivate facebook)/i, responses: ["Go to your account settings and select the option to deactivate or delete your account.", "On Instagram: Settings > Account > Delete Account.", "On Facebook: Settings & Privacy > Settings > Your Facebook Information > Deactivation and Deletion."] },
+{ pattern: /(how to stop overthinking|ways to stop overthinking|stop overanalyzing|calm my mind)/i, responses: ["Try mindfulness exercises or journaling to clear your head.", "Focus on what you can control and take action on one small task.", "Practice deep breathing and limit your screen time before bed."] },
+{ pattern: /(how do i start journaling|start a journal|journal ideas|journal prompts)/i, responses: ["Begin by writing down your thoughts or daily experiences.", "Use simple prompts like 'What made me happy today?'", "Don’t overthink — write freely for a few minutes each day."] },
+{ pattern: /(how to throw a surprise party|plan surprise party|organize a surprise event|ideas for surprise party)/i, responses: ["Choose a date and venue your guest of honor won’t suspect.", "Create a guest list and send secret invites.", "Plan an activity or theme to make the event fun and memorable."] },
+{ pattern: /(how do i detox|body detox tips|ways to detox naturally|how to detox your body)/i, responses: ["Focus on drinking plenty of water and eating whole, unprocessed foods.", "Incorporate more fruits and vegetables into your meals.", "Limit alcohol, sugar, and processed food while getting regular exercise."] },
+{ pattern: /(how to relax after work|unwind after work|stress relief activities after work)/i, responses: ["Try a calming hobby like reading, gardening, or meditation.", "Take a walk outdoors to clear your mind.", "Listen to soothing music or watch your favorite show."] },
+{ pattern: /(how to stay safe online|internet safety tips|protect yourself online)/i, responses: ["Use strong, unique passwords for all your accounts.", "Enable two-factor authentication wherever possible.", "Avoid clicking on suspicious links or sharing personal info publicly."] },
+{ pattern: /(good productivity apps|productivity app recommendations|apps to boost productivity)/i, responses: ["Notion, Trello, and Todoist are excellent productivity apps.", "Use Forest to stay focused and avoid phone distractions.", "Evernote and Google Keep are great for organizing notes and ideas."] },
+{ pattern: /(power outage tips|what to do during power outage|how to prepare for blackout)/i, responses: ["Keep flashlights and extra batteries handy.", "Unplug electronics to prevent damage when power returns.", "Use phone apps for offline entertainment and news updates."] },
+{ pattern: /(how to find a hobby|discover hobbies|pick a new hobby|new things to try for fun)/i, responses: ["Think about what you enjoyed as a kid and revisit it.", "Look for local workshops or online classes in areas of interest.", "Experiment with activities like painting, hiking, or puzzles."] },
+{ pattern: /(how do i clean my kitchen|best way to clean kitchen|clean kitchen tips)/i, responses: ["Start by clearing countertops and washing dishes.", "Use disinfectant wipes or spray for surfaces.", "Clean your sink and take out the trash regularly.", "Wipe down appliances and mop the floor last."] },
+{ pattern: /(how do i build a website|make a website|create a website|website building tips)/i, responses: ["Use platforms like Wix, Squarespace, or WordPress.", "Decide on a domain name and hosting plan.", "Choose a template and customize your site.", "Publish and share your website online."] },
+{ pattern: /(what should i do if i can't sleep|insomnia tips|can't fall asleep)/i, responses: ["Get out of bed and do a relaxing activity like reading.", "Avoid screens for at least 30 minutes before bed.", "Practice deep breathing or meditation.", "Keep your room cool and dark."] },
+{ pattern: /(how do i stop biting my nails|stop nail biting|break nail biting habit)/i, responses: ["Keep your nails trimmed short.", "Apply a bitter-tasting nail polish.", "Find a stress-relief activity to occupy your hands.", "Notice triggers and address them calmly."] },
+{ pattern: /(how do i plan a picnic|picnic tips|what to bring for a picnic)/i, responses: ["Pack sandwiches, fruit, and drinks.", "Bring a blanket, napkins, and sunscreen.", "Choose a park or beach with shade and restrooms.", "Pack light games or a portable speaker."] },
+{ pattern: /(how do i start a savings account|open savings account|create savings account)/i, responses: ["Visit a bank or open an account online.", "Provide identification and an initial deposit.", "Compare interest rates and fees.", "Set up automatic transfers to save consistently."] },
+{ pattern: /(what's a good family board game|fun board games for family|family game night ideas)/i, responses: ["Try classics like Monopoly, Clue, or Uno.", "'Ticket to Ride' and 'Catan' are great for older kids and adults.", "For fast-paced fun, try 'Pictionary' or 'Charades'."] },
+{ pattern: /(how do i improve my flexibility|flexibility exercises|stretching tips)/i, responses: ["Stretch daily, focusing on major muscle groups.", "Hold each stretch for at least 30 seconds.", "Incorporate yoga or Pilates for flexibility.", "Warm up before stretching to avoid injury."] },
+{ pattern: /(what's a good science fiction movie|recommend a sci-fi movie|best sci-fi films)/i, responses: ["'Interstellar' explores space and time beautifully.", "'Blade Runner 2049' is a thought-provoking futuristic film.", "'The Matrix' is a classic on AI and virtual reality.", "'Dune' (2021) is a must-watch for epic sci-fi."] },
+{ pattern: /(how do i find scholarships|find student scholarships|scholarship search tips)/i, responses: ["Use sites like Fastweb, Chegg, or Scholarship.com.", "Check your school's financial aid office.", "Look for scholarships related to your interests or major.", "Apply early and double-check requirements."] },
 
 
 
@@ -2414,10 +2436,10 @@ class ImprovedTFIDFMatcher {
   constructor(responsesData, threshold = 0.4) {
     this.threshold = threshold;
     this.stopWords = new Set([
-      "i",  "me", "my", "myself", "we", "our", "ours", "ourselves", /*"you"*/, "your", "yours",
+     /* "i"*/,  "me", "my", "myself", "we", "our", "ours", "ourselves", /*"you"*/, "your", "yours",
       "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", 
       "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", 
-      "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", 
+      "what", "which", "who", "whom", "this", "that", "these", "those",/* "am"*/, "is", "are", 
       "was", "were", "be", "been", "being", /*"have"*/, "has", "had", "having", /*"do"*/, "does", 
       "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", 
       "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", 
@@ -2425,7 +2447,7 @@ class ImprovedTFIDFMatcher {
       "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", 
       "there", "when", "where", "why", /*"how"*/, "all", "any", "both", "each", "few", "more", 
       "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", 
-      "than", "too", "very", "s", "t", /*"can"*/, "will", "just", "don", "should","now", "tonight"
+      "than", "too", "very", "s", "t", /*"can"*/, "will", "just", "don", "should","now", "tonight", "today"
     ]);
     
     // Important keywords that should never be ignored
@@ -2944,3 +2966,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Also call it immediately in case DOMContentLoaded already fired
 loadSavedColors();
+
+document.getElementById('user-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent any default behavior
+        sendMessage();
+    }
+});
