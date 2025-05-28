@@ -2,14 +2,20 @@
 const OpenAI = require('openai');
 const fs = require('fs');
 
-// Initialize OpenAI with error checking
+// Initialize OpenAI with error checking and environment variable
 let openai;
 try {
+  const apiKey = process.env.OPENAI_API_KEY; // Use environment variable
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY environment variable not set');
+  }
+  
   openai = new OpenAI({
-    apiKey: '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' // Replace with your actual API key
+    apiKey: apiKey
   });
 } catch (error) {
   console.error('❌ OpenAI initialization failed. Please check your API key.');
+  console.error('   Set your API key as an environment variable: export OPENAI_API_KEY=your_key_here');
   process.exit(1);
 }
 
@@ -164,38 +170,47 @@ class TrainingDataGenerator {
     
     this.generatedTopics.add(topicKey);
 
-    const prompt = `Create training data for a chatbot about "${validatedTopic}" in the ${domain} domain.
+    const prompt = `You are creating training data for a chatbot. The topic is "${validatedTopic}" in the ${domain} domain.
 
-Generate EXACTLY 5 short, keyword-focused question patterns about ${validatedTopic}. 
+CRITICAL INSTRUCTIONS:
+1. QUESTIONS section = What users will TYPE/ASK (like "bedtime routine tips", "nighttime routine")
+2. RESPONSES section = What the AI will ANSWER (helpful advice, no numbers)
 
-IMPORTANT RULES:
-- Keep patterns SHORT and focused on key words
-- Remove unnecessary filler words like "do you have any", "can you give me", "what are some"
-- Focus on the core topic keywords
-- Make them natural but concise
+QUESTIONS should be:
+- Short keyword phrases users would actually type
+- Natural search terms
+- Different ways to ask about the same topic
+- NO numbers, NO advice, NO solutions
+- Focus on keywords like "tips", "help", "how to", "advice"
 
-GOOD EXAMPLES:
-- "pull up tips" NOT "do you have any tips for pull ups"
-- "lose weight fast" NOT "what are the best ways to lose weight quickly"
-- "budget advice" NOT "can you give me advice about budgeting"
+RESPONSES should be:
+- Helpful advice the AI gives back
+- NO NUMBERING (no "1.", "2.", etc.)
+- Each response should be complete and different
+- Actionable advice about the topic
 
-Generate 5 SHORT patterns for ${validatedTopic}:
+EXAMPLE for "better sleep":
+QUESTIONS: (what users type)
+better sleep tips
+how to sleep better
+improve sleep quality  
+sleep better naturally
+nighttime routine help
+
+RESPONSES: (what AI answers)
+Try establishing a consistent bedtime routine.
+Avoid screens for at least an hour before bed.
+Keep your bedroom cool and dark for optimal sleep.
+Consider relaxation techniques like deep breathing.
+Regular exercise can improve sleep quality significantly.
+
+Now generate for "${validatedTopic}":
 
 QUESTIONS:
-${validatedTopic}
-${validatedTopic} tips
-${validatedTopic} help
-${validatedTopic} guide
-${validatedTopic} advice
+[5 short keyword phrases users would search/type]
 
 RESPONSES:
-Response 1 specific to ${validatedTopic}.
-Response 2 specific to ${validatedTopic}.
-Response 3 specific to ${validatedTopic}.
-Response 4 specific to ${validatedTopic}.
-Response 5 specific to ${validatedTopic}.
-
-Make responses actionable and under 100 characters each.`;
+[5 different helpful answers about ${validatedTopic}]`;
 
     try {
       if (!openai) {
@@ -203,7 +218,7 @@ Make responses actionable and under 100 characters each.`;
       }
 
       const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4o-mini", // Updated to use gpt-4o-mini
         messages: [{ role: "user", content: prompt }],
         max_tokens: 400,
         temperature: 0.7
@@ -228,7 +243,7 @@ Make responses actionable and under 100 characters each.`;
 
       const lines = content.split('\n').map(line => line.trim()).filter(line => line);
       
-      // Find questions section
+      // Find questions and responses sections
       const questionStart = lines.findIndex(line => line.toUpperCase().includes('QUESTION'));
       const responseStart = lines.findIndex(line => line.toUpperCase().includes('RESPONSE'));
       
@@ -236,50 +251,89 @@ Make responses actionable and under 100 characters each.`;
       let responses = [];
       
       if (questionStart !== -1 && responseStart !== -1 && responseStart > questionStart) {
-        // Extract questions
+        // Extract questions (user input patterns)
         for (let i = questionStart + 1; i < responseStart; i++) {
           if (lines[i] && !lines[i].toUpperCase().includes('RESPONSE')) {
-            const cleanQuestion = lines[i].replace(/^[-*•]\s*/, '').trim();
-            if (cleanQuestion.length > 0) {
+            let cleanQuestion = lines[i]
+              .replace(/^[-*•]\s*/, '')
+              .replace(/^\d+\.\s*/, '') // Remove numbers
+              .trim();
+            
+            // Skip if it looks like advice instead of a query
+            if (!cleanQuestion.toLowerCase().includes('try ') && 
+                !cleanQuestion.toLowerCase().includes('avoid ') &&
+                !cleanQuestion.toLowerCase().includes('create ') &&
+                !cleanQuestion.toLowerCase().includes('keep ') &&
+                !cleanQuestion.toLowerCase().includes('consider ') &&
+                cleanQuestion.length > 0 && cleanQuestion.length < 50) {
               questions.push(cleanQuestion);
             }
           }
         }
         
-        // Extract responses
+        // Extract responses (AI advice)
         for (let i = responseStart + 1; i < lines.length; i++) {
           if (lines[i]) {
-            const cleanResponse = lines[i].replace(/^[-*•]\s*/, '').trim();
-            if (cleanResponse.length > 0) {
+            let cleanResponse = lines[i]
+              .replace(/^[-*•]\s*/, '')
+              .replace(/^\d+\.\s*/, '') // Remove numbers
+              .trim();
+            
+            if (cleanResponse.length > 10 && cleanResponse.length < 200) {
               responses.push(cleanResponse);
             }
           }
         }
       }
       
-      // Fallback parsing if sections not found
+      // Fallback: extract any reasonable looking questions and responses
       if (questions.length < 3) {
-        questions = lines.filter(line => 
-          line.toLowerCase().includes(topic.toLowerCase()) && 
-          line.length < 100 &&
-          (line.includes('tips') || line.includes('help') || line.includes('guide') || line.includes(topic))
-        ).slice(0, 5);
+        questions = lines.filter(line => {
+          const lower = line.toLowerCase();
+          return (
+            line.length < 50 &&
+            line.length > 3 &&
+            !lower.includes('try ') &&
+            !lower.includes('avoid ') &&
+            !lower.includes('create ') &&
+            !lower.includes('consider ') &&
+            (lower.includes(topic) || lower.includes('tips') || lower.includes('help') || lower.includes('advice'))
+          );
+        }).slice(0, 5);
       }
       
       if (responses.length < 3) {
-        responses = lines.filter(line => 
-          line.length > 15 && line.length < 150 &&
-          !line.toLowerCase().includes('question') &&
-          !line.toLowerCase().includes('response')
-        ).slice(0, 5);
+        responses = lines.filter(line => {
+          const lower = line.toLowerCase();
+          return (
+            line.length > 15 && 
+            line.length < 200 &&
+            !lower.includes('question') &&
+            !lower.includes('response') &&
+            (lower.includes('try') || lower.includes('consider') || lower.includes('focus') || lower.includes(topic))
+          );
+        }).slice(0, 5);
       }
       
-      // Ensure minimum requirements
+      // Final fallback with proper format
       if (questions.length === 0) {
-        questions = [topic, `${topic} tips`, `${topic} help`];
+        questions = [
+          topic,
+          `${topic} tips`,
+          `${topic} help`,
+          `how to ${topic}`,
+          `${topic} advice`
+        ];
       }
+      
       if (responses.length === 0) {
-        responses = [`Here's helpful advice about ${topic}.`, `Try practicing ${topic} regularly.`, `Start with ${topic} basics.`];
+        responses = [
+          `Here's helpful advice about ${topic}.`,
+          `Try focusing on the basics of ${topic}.`,
+          `Consider getting guidance with ${topic}.`,
+          `Practice ${topic} regularly for best results.`,
+          `Start small and gradually improve your ${topic} skills.`
+        ];
       }
       
       return {
@@ -301,15 +355,15 @@ Make responses actionable and under 100 characters each.`;
         validatedTopic,
         `${validatedTopic} tips`,
         `${validatedTopic} help`,
-        `${validatedTopic} guide`,
+        `how to ${validatedTopic}`,
         `${validatedTopic} advice`
       ],
       responses: [
         `Here's helpful advice about ${validatedTopic}.`,
-        `Try practicing ${validatedTopic} regularly.`,
-        `Start with the basics of ${validatedTopic}.`,
-        `Consider getting guidance on ${validatedTopic}.`,
-        `Focus on improving your ${validatedTopic} skills.`
+        `Try focusing on the basics of ${validatedTopic}.`,
+        `Consider getting guidance with ${validatedTopic}.`,
+        `Practice ${validatedTopic} regularly for best results.`,
+        `Start small and gradually improve your ${validatedTopic} skills.`
       ]
     };
   }
@@ -483,12 +537,13 @@ Make responses actionable and under 100 characters each.`;
 
 // Main execution with comprehensive error handling
 async function main() {
-  console.log('🚀 Starting OpenAI Training Data Generation...\n');
+  console.log('🚀 Starting OpenAI Training Data Generation with GPT-4o-mini...\n');
   
   // Check if API key is set
-  if (!process.env.OPENAI_API_KEY && !openai) {
-    console.log('⚠️  Please set your OpenAI API key in the script before running.');
-    console.log('   Replace "your-openai-api-key-here" with your actual API key.');
+  if (!process.env.OPENAI_API_KEY) {
+    console.log('⚠️  Please set your OpenAI API key as an environment variable:');
+    console.log('   export OPENAI_API_KEY=your_actual_api_key_here');
+    console.log('   or on Windows: set OPENAI_API_KEY=your_actual_api_key_here');
     return;
   }
   
@@ -496,7 +551,7 @@ async function main() {
   
   try {
     // Generate training data (5 topics per domain = ~90 total entries)  
-    // This will cost approximately $0.75-1.25 in OpenAI credits
+    // GPT-4o-mini is more cost-effective than GPT-3.5-turbo
     const trainingData = await generator.generateAllDomains(5);
     
     // Validate results
@@ -515,6 +570,7 @@ async function main() {
     if (saveSuccess) {
       // Print summary
       console.log(`\n✅ Complete! Generated ${totalEntries} training entries across ${Object.keys(trainingData).length} domains.`);
+      console.log(`🤖 Used GPT-4o-mini model for generation`);
       console.log(`\n🎯 Domains covered: ${Object.keys(trainingData).join(', ')}`);
       console.log(`\n📁 Files created:`);
       console.log(`   - expanded_responses.js (ready to use in your chatbot)`);
@@ -555,32 +611,3 @@ if (require.main === module) {
 
 module.exports = TrainingDataGenerator;
 
-/* 
-SETUP INSTRUCTIONS:
-
-1. Install OpenAI:
-   npm install openai
-
-2. Get your OpenAI API key:
-   - Go to https://platform.openai.com/
-   - Create account and get API key
-   - Replace 'your-openai-api-key-here' above
-
-3. Run:
-   node training_data_generator.js
-
-FEATURES:
-✅ Error-free execution with comprehensive error handling
-✅ Input validation and sanitization
-✅ Graceful fallbacks for API failures
-✅ Duplicate prevention
-✅ Regex escaping for special characters
-✅ File operation error handling
-✅ Memory-efficient processing
-✅ Rate limiting compliance
-✅ Progress monitoring
-✅ Detailed logging and troubleshooting
-
-This will generate ~90 training entries with concise, keyword-focused patterns.
-Cost: About $0.75-1.25 in OpenAI credits.
-*/
