@@ -239,6 +239,70 @@
     margin-bottom: 10px;
     font-size: 14px;
 }
+/* Add these styles to your existing CSS */
+#customize-toggle {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#customize-panel {
+    display: none;
+    position: absolute;
+    top: 90px;
+    right: 10px;
+    width: 250px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+#customize-panel h3 {
+    margin-top: 0;
+    color: #6f42c1;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+.color-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.color-option label {
+    font-size: 14px;
+    color: #333;
+}
+.color-option input[type="color"] {
+    width: 40px;
+    height: 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#reset-colors {
+    width: 100%;
+    padding: 8px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#reset-colors:hover {
+    background-color: #5a6268;
+}
+
+
+
     </style>
 </head>
 <body>
@@ -257,6 +321,26 @@
         </div>
         <!-- Training Mode Button -->
 <button id="training-toggle" onclick="toggleTrainingMode()">Training Mode</button>
+
+<!-- Customize Button -->
+<button id="customize-toggle" onclick="toggleCustomizePanel()">Customise</button>
+
+<!-- Customize Panel -->
+<div id="customize-panel">
+    <h3>Chat Customization</h3>
+    
+    <div class="color-option">
+        <label for="user-bubble-color">Your Messages:</label>
+        <input type="color" id="user-bubble-color" value="#d1f7c4" onchange="updateUserBubbleColor(this.value)">
+    </div>
+    
+    <div class="color-option">
+        <label for="chat-background-color">Chat Background:</label>
+        <input type="color" id="chat-background-color" value="#ffffff" onchange="updateChatBackground(this.value)">
+    </div>
+    
+    <button id="reset-colors" onclick="resetToDefaults()">Reset to Defaults</button>
+</div>
 
 <!-- Training Mode Interface -->
 <div id="training-mode">

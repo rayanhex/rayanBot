@@ -2115,7 +2115,6 @@ const responses = {
 { pattern: /(eat after workout|post workout food|post exercise nutrition|recovery food)/i, responses: ["Eat protein and carbohydrates within 30-60 minutes after working out.", "Good options include Greek yogurt with fruit, chocolate milk, or a protein shake.", "Lean meats with rice or pasta help with muscle recovery.", "Bananas with peanut butter provide quick energy replenishment.", "Stay hydrated and replace electrolytes lost through sweat."] },
 { pattern: /(best diet|diet plan|healthy diet|what diet)/i, responses: ["Mediterranean diet emphasizes fruits, vegetables, whole grains, and healthy fats.", "Focus on whole, unprocessed foods rather than following restrictive diets.", "Balanced diets including all food groups tend to be most sustainable.", "Consider your lifestyle, preferences, and any health conditions.", "Consult a nutritionist or doctor before starting any specific diet plan."] },
 { pattern: /(reduce belly fat|lose belly fat|flat stomach|abdominal fat)/i, responses: ["Combine cardio exercise with strength training for overall fat loss.", "You cannot spot-reduce fat - focus on overall weight loss.", "Eat in a caloric deficit while maintaining adequate protein intake.", "Reduce sugar and refined carbs which contribute to belly fat.", "Core exercises strengthen muscles but won't specifically burn belly fat."] },
-{ pattern: /(ask someone out|ask on date|dating invitation|romantic approach)/i, responses: ["Be confident, direct, and respectful when asking someone out.", "Choose an appropriate time and place for a private conversation.", "Suggest a specific activity and time rather than being vague.", "Be prepared for any response and respect their decision.", "Start with casual activities like coffee or lunch for first dates."] },
 { pattern: /(good dating advice|dating tips|dating help|relationship dating)/i, responses: ["Be yourself authentically rather than trying to impress with a false persona.", "Listen actively and ask genuine questions about their interests.", "Choose public places for first dates and let someone know your plans.", "Put away phones and focus on getting to know each other.", "Don't rush into physical intimacy - take time to build emotional connection."] },
 { pattern: /(deal with rejection|handle rejection|rejection help|coping with rejection)/i, responses: ["Remember that rejection is not a reflection of your worth as a person.", "Allow yourself to feel disappointed, but don't dwell on it indefinitely.", "Learn from the experience and consider if there's anything to improve.", "Focus on other aspects of your life and personal growth.", "Keep putting yourself out there - rejection is a normal part of dating."] },
 { pattern: /(boost energy|increase energy|more energy|energy levels)/i, responses: ["Get 7-9 hours of quality sleep each night for optimal energy.", "Eat balanced meals with complex carbs, protein, and healthy fats.", "Stay hydrated throughout the day and limit excessive caffeine.", "Exercise regularly as it actually increases energy levels over time.", "Manage stress through relaxation techniques and adequate rest."] },
@@ -2710,7 +2709,7 @@ function sendMessage() {
     setTimeout(() => {
         addMessageToChat(botResponse, 'bot-message');
         generateSuggestions();
-    }, 500);
+    }, 500); // fake delay
 
     document.getElementById('user-input').value = '';
 }
@@ -2849,3 +2848,99 @@ function saveTrainingConversation() {
 
     alert('Conversation saved successfully!');
 }
+// CUSTOMIZATION FUNCTIONS - Add at the end of your JS file
+
+// Load saved colors on page load
+function loadSavedColors() {
+    const savedUserColor = localStorage.getItem('userBubbleColor');
+    const savedChatBackground = localStorage.getItem('chatBackground');
+    
+    if (savedUserColor) {
+        document.getElementById('user-bubble-color').value = savedUserColor;
+        updateUserBubbleColor(savedUserColor);
+    }
+    
+    if (savedChatBackground) {
+        document.getElementById('chat-background-color').value = savedChatBackground;
+        updateChatBackground(savedChatBackground);
+    }
+}
+
+function toggleCustomizePanel() {
+    const customizePanel = document.getElementById('customize-panel');
+    if (customizePanel.style.display === 'none' || customizePanel.style.display === '') {
+        customizePanel.style.display = 'block';
+    } else {
+        customizePanel.style.display = 'none';
+    }
+}
+
+function updateUserBubbleColor(color) {
+    // Create or update CSS rule for user message bubbles
+    let styleSheet = document.getElementById('dynamic-styles');
+    if (!styleSheet) {
+        styleSheet = document.createElement('style');
+        styleSheet.id = 'dynamic-styles';
+        document.head.appendChild(styleSheet);
+    }
+    
+    // Update the CSS rule
+    styleSheet.innerHTML = `
+        .user-message {
+            background-color: ${color} !important;
+        }
+        #chat-box {
+            background-color: ${document.getElementById('chat-background-color').value} !important;
+        }
+    `;
+    
+    // Save to localStorage
+    localStorage.setItem('userBubbleColor', color);
+}
+
+function updateChatBackground(color) {
+    // Create or update CSS rule for chat background
+    let styleSheet = document.getElementById('dynamic-styles');
+    if (!styleSheet) {
+        styleSheet = document.createElement('style');
+        styleSheet.id = 'dynamic-styles';
+        document.head.appendChild(styleSheet);
+    }
+    
+    // Update the CSS rule
+    styleSheet.innerHTML = `
+        .user-message {
+            background-color: ${document.getElementById('user-bubble-color').value} !important;
+        }
+        #chat-box {
+            background-color: ${color} !important;
+        }
+    `;
+    
+    // Save to localStorage
+    localStorage.setItem('chatBackground', color);
+}
+
+function resetToDefaults() {
+    // Reset to default colors
+    document.getElementById('user-bubble-color').value = '#d1f7c4';
+    document.getElementById('chat-background-color').value = '#ffffff';
+    
+    // Apply defaults
+    updateUserBubbleColor('#d1f7c4');
+    updateChatBackground('#ffffff');
+    
+    // Clear localStorage
+    localStorage.removeItem('userBubbleColor');
+    localStorage.removeItem('chatBackground');
+    
+    alert('Colors reset to defaults!');
+}
+
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadSavedColors();
+});
+
+// Also call it immediately in case DOMContentLoaded already fired
+loadSavedColors();
