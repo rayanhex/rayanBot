@@ -2451,13 +2451,13 @@ class ImprovedTFIDFMatcher {
       "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", 
       "there", "when", "where", "why", /*"how"*/, "all", "any", "both", "each", "few", "more", 
       "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", 
-      "than", "too", "very", "s", "t", /*"can"*/, "will", "just", "don", "should","now", "tonight", "today"
+      "than", "too", "very", "s", "t", /*"can"*/, "will", "just", "don", "should","now", "tonight", "today",
     ]);
     
     // Important keywords that should never be ignored
     this.importantKeywords = new Set([
       "bangladesh", "australia", "india", "america", "europe", "africa", "china",
-      "javascript", "python", "programming", "algorithm", "covid", "climate", "population"
+      "javascript", "python", "programming", "algorithm", "covid", "climate", "population", "holiday","prime minister"
       // Add other important domain-specific terms from your patterns
     ]);
     

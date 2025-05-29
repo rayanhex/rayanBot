@@ -35,5 +35,17 @@
   "tech_questions": 98,
   "do_you_like_oa": 103,
   "brand_preferences": 50,
-  "facts_oa": 126
+  "facts_oa": 165,
+  "what_is": 27,
+  "skincare_facts": 56,
+  "geography_facts": 107,
+  "car_queries": 50,
+  "ceo_queries": 50,
+  "company_founded": 50,
+  "app_help": 33,
+  "travel_queries": 97,
+  "inventions": 50,
+  "chemistry": 107,
+  "prime_ministers": 104,
+  "vacation_ideas": 9
 }
