@@ -2703,23 +2703,187 @@ function checkPriorityMatch(input) {
     
     return null; // No priority match found
 }
+// Math detection and calculation functions
 
-// Enhanced getResponse function with priority matching
+// Function to detect if input contains a math expression
+function isMathQuery(input) {
+    // Remove spaces for easier detection
+    const cleanInput = input.replace(/\s+/g, '');
+    
+    // Check for basic math operators and numbers
+    const mathPattern = /(\d+\.?\d*)\s*[\+\-\*\/\^\%]\s*(\d+\.?\d*)/;
+    const hasNumbers = /\d/.test(cleanInput);
+    const hasMathOperators = /[\+\-\*\/\^\%]/.test(cleanInput);
+    
+    // More specific patterns for common math expressions
+    const specificMathPatterns = [
+        /what\s+is\s+\d+.*[\+\-\*\/\^\%].*\d+/i,           // "what is 5 + 3"
+        /calculate\s+\d+.*[\+\-\*\/\^\%].*\d+/i,           // "calculate 10 * 5"
+        /solve\s+\d+.*[\+\-\*\/\^\%].*\d+/i,               // "solve 20 / 4"
+        /^\d+.*[\+\-\*\/\^\%].*\d+.*[\=\?]?$/,             // "5+3" or "5+3=" or "5+3?"
+        /square\s+root\s+of\s+\d+/i,                       // "square root of 16"
+        /\d+\s*squared/i,                                  // "5 squared"
+        /\d+\s*cubed/i,                                    // "3 cubed"
+        /\d+\s*to\s+the\s+power\s+of\s+\d+/i,            // "2 to the power of 8"
+        /\d+\s*percent\s+of\s+\d+/i,                      // "20 percent of 100"
+    ];
+    
+    // Check if any specific math pattern matches
+    for (const pattern of specificMathPatterns) {
+        if (pattern.test(input)) {
+            return true;
+        }
+    }
+    
+    // Basic check: has both numbers and math operators
+    return hasNumbers && hasMathOperators && mathPattern.test(cleanInput);
+}
+
+// Function to safely evaluate math expressions
+function calculateMath(input) {
+    try {
+        // Clean and prepare the input
+        let expression = input.toLowerCase()
+            .replace(/what\s+is\s+/i, '')
+            .replace(/calculate\s+/i, '')
+            .replace(/solve\s+/i, '')
+            .replace(/[\=\?]/g, '')
+            .trim();
+        
+        // Handle special cases
+        expression = handleSpecialMathCases(expression);
+        
+        // Replace common mathematical terms with operators
+        expression = expression
+            .replace(/\s*plus\s*/gi, '+')
+            .replace(/\s*minus\s*/gi, '-')
+            .replace(/\s*times\s*/gi, '*')
+            .replace(/\s*multiplied\s+by\s*/gi, '*')
+            .replace(/\s*divided\s+by\s*/gi, '/')
+            .replace(/\s*to\s+the\s+power\s+of\s*/gi, '**')
+            .replace(/\^/g, '**')  // Convert ^ to ** for JavaScript
+            .replace(/\s+/g, '');  // Remove all spaces
+        
+        // Validate the expression (only allow numbers, operators, parentheses, and decimal points)
+        if (!/^[\d\+\-\*\/\(\)\.\*\s]+$/.test(expression)) {
+            return "I can only calculate basic mathematical expressions.";
+        }
+        
+        // Use Function constructor for safer evaluation than eval()
+        const result = Function('"use strict"; return (' + expression + ')')();
+        
+        // Check if result is a valid number
+        if (isNaN(result) || !isFinite(result)) {
+            return "Sorry, that calculation resulted in an invalid number.";
+        }
+        
+        // Format the result nicely
+        const formattedResult = Number.isInteger(result) ? result.toString() : result.toFixed(2);
+        
+        return `The answer is ${formattedResult}`;
+        
+    } catch (error) {
+        return "Sorry, I couldn't calculate that. Please check your math expression.";
+    }
+}
+
+// Function to handle special mathematical cases
+function handleSpecialMathCases(expression) {
+    // Handle square root
+    if (/square\s+root\s+of\s+(\d+\.?\d*)/i.test(expression)) {
+        const match = expression.match(/square\s+root\s+of\s+(\d+\.?\d*)/i);
+        const number = parseFloat(match[1]);
+        const result = Math.sqrt(number);
+        return result.toString();
+    }
+    
+    // Handle squared
+    if (/(\d+\.?\d*)\s*squared/i.test(expression)) {
+        const match = expression.match(/(\d+\.?\d*)\s*squared/i);
+        const number = parseFloat(match[1]);
+        const result = Math.pow(number, 2);
+        return result.toString();
+    }
+    
+    // Handle cubed
+    if (/(\d+\.?\d*)\s*cubed/i.test(expression)) {
+        const match = expression.match(/(\d+\.?\d*)\s*cubed/i);
+        const number = parseFloat(match[1]);
+        const result = Math.pow(number, 3);
+        return result.toString();
+    }
+    
+    // Handle percentage
+    if (/(\d+\.?\d*)\s*percent\s+of\s+(\d+\.?\d*)/i.test(expression)) {
+        const match = expression.match(/(\d+\.?\d*)\s*percent\s+of\s+(\d+\.?\d*)/i);
+        const percentage = parseFloat(match[1]);
+        const number = parseFloat(match[2]);
+        const result = (percentage / 100) * number;
+        return result.toString();
+    }
+    
+    return expression;
+}
+
+// Enhanced getResponse function that checks for math first
 function getResponse(input) {
-    // FIRST: Check for priority exact matches
+    // FIRST: Check if it's a math query
+    if (isMathQuery(input)) {
+        console.log("Math query detected:", input);
+        return calculateMath(input);
+    }
+    
+    // SECOND: Check for priority exact matches
     const priorityResponse = checkPriorityMatch(input);
     if (priorityResponse) {
         console.log("Priority match found for:", input);
         return priorityResponse;
     }
     
-    // SECOND: Continue with existing TF-IDF matching if no priority match
+    // THIRD: Continue with existing TF-IDF matching if no priority match
     // Ensure matcher is initialized
     if (!tfidfMatcher) {
         initializeTFIDFMatcher();
     }
     
     return tfidfMatcher.findBestMatch(input);
+}
+
+// Add some math-related suggestions to your suggestion system
+function getMathSuggestions() {
+    return [
+        "What is 15 + 27?",
+        "Calculate 144 / 12",
+        "What is 8 squared?",
+        "Square root of 64",
+        "What is 20 percent of 150?",
+        "Solve 25 * 4",
+        "What is 100 - 37?"
+    ];
+}
+
+// Enhanced suggestion generation that includes math examples
+function generateSuggestions() {
+    const suggestionsContainer = document.getElementById('suggestions');
+    suggestionsContainer.innerHTML = '';
+
+    // Mix regular suggestions with math suggestions
+    const regularSuggestions = getRandomSuggestions(2);
+    const mathSuggestions = getMathSuggestions();
+    const randomMathSuggestion = mathSuggestions[Math.floor(Math.random() * mathSuggestions.length)];
+    
+    const allSuggestions = [...regularSuggestions, randomMathSuggestion];
+    
+    allSuggestions.forEach(suggestion => {
+        const bubble = document.createElement('div');
+        bubble.className = 'suggestion-bubble';
+        bubble.textContent = suggestion;
+        bubble.onclick = () => {
+            document.getElementById('user-input').value = suggestion;
+            sendMessage();
+        };
+        suggestionsContainer.appendChild(bubble);
+    });
 }
 
 

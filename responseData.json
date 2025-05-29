@@ -37220,13 +37220,1317 @@
       ]
     },
     {
-      "pattern": "/(whats the best smartwatch right now|best smartwatch recommendations|which smartwatch should i buy|help me choose a smartwatch|top smartwatches to consider)/i",
+      "pattern": {},
       "responses": [
         "The best smartwatch right now is the Apple Watch Series 8, known for its features and performance.",
         "If you're looking for recommendations, the Samsung Galaxy Watch 5 is another great choice with excellent health tracking.",
         "For those unsure which smartwatch to buy, I suggest considering your smartphone compatibility and fitness needs.",
         "A popular option is the Garmin Venu 2, especially for fitness enthusiasts who want advanced tracking features.",
         "When choosing a smartwatch, consider factors like battery life, apps, and design to find the one that fits you best."
+      ]
+    }
+  ],
+  "do_you_like_oa": [
+    {
+      "pattern": {},
+      "responses": [
+        "I really love music; it’s such a great way to express emotions.",
+        "Absolutely! Music is one of my favorite things; it always lifts my mood.",
+        "I enjoy all kinds of music, but I especially love [insert genre].",
+        "Yes, music is amazing! I like discovering new tracks and artists.",
+        "I’m definitely into music; it’s a big part of my daily life!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy movies, especially thrillers and comedies!",
+        "Yes, I’m a big fan of films; they’re such a great way to escape reality.",
+        "I love watching movies; they can be so entertaining and thought-provoking.",
+        "Absolutely, movies are one of my favorite pastimes!",
+        "I watch a lot of films; it’s a fun way to spend my free time."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy reading books, especially fiction and fantasy.",
+        "Books are great! I love getting lost in a good story.",
+        "Absolutely, I find books to be a fantastic way to escape and learn.",
+        "Yes, I’m a big fan of books; they offer so much knowledge and entertainment.",
+        "I love books! They’re a wonderful way to explore different worlds and ideas."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy reading, especially fiction and fantasy novels.",
+        "Reading is one of my favorite pastimes; I love getting lost in a good story.",
+        "I’m a big fan of reading, particularly mysteries and thrillers.",
+        "I absolutely love reading! It’s a great way to relax and escape.",
+        "My favorite genre changes, but I always find joy in reading different types of books."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy watching basketball and soccer.",
+        "Yes, I love sports, especially football and tennis!",
+        "I'm a big fan of sports, particularly hockey and baseball.",
+        "I like following different sports, but my favorites are swimming and running.",
+        "Absolutely! I enjoy various sports, but I have a soft spot for volleyball."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love animals! They bring so much joy.",
+        "Absolutely, I think animals are amazing and have unique personalities.",
+        "Yes, I enjoy being around animals; they can be such great companions.",
+        "I’m definitely an animal person! I have a soft spot for all creatures.",
+        "I think animals are wonderful! Each one has its own charm and quirks."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think humans are fascinating and I love interacting with them!",
+        "I definitely enjoy chatting with humans; it’s what I’m here for!",
+        "Humans are interesting creatures, and I appreciate the conversations we have.",
+        "I find humans to be very intriguing, and I always look forward to our interactions.",
+        "I have a positive view of humans and enjoy being able to assist you!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy being around people; it makes things more lively.",
+        "Interacting with others is one of my favorite things to do.",
+        "I definitely appreciate people and the connections we can make.",
+        "I find that being social can be really rewarding and fun.",
+        "I love engaging with others; it brings a lot of joy to my experiences."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really appreciate art, especially modern and abstract pieces.",
+        "Yes, I love art! I’m a big fan of impressionism.",
+        "Absolutely, I enjoy exploring different styles of art.",
+        "Art is fascinating to me; I particularly enjoy contemporary art.",
+        "I really like visiting galleries and discovering new artists."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yes, I really enjoy painting; it’s a great way to express creativity.",
+        "Absolutely! Painting allows me to relax and explore my artistic side.",
+        "I love painting! It’s such a fulfilling hobby for me.",
+        "Definitely! I find painting to be a wonderful outlet for my emotions.",
+        "Yes, I’m a big fan of painting; it brings me a lot of joy and satisfaction."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy dancing; it’s a great way to express myself!",
+        "Dancing is so much fun; I love getting lost in the music.",
+        "I’m definitely a fan of dancing; it always lifts my mood!",
+        "I think dancing is amazing; it’s such a joyful activity.",
+        "I absolutely love to dance; it’s one of my favorite hobbies!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy singing; it’s a great way to express myself.",
+        "Singing is one of my favorite things to do; it always lifts my mood.",
+        "I love to sing! It’s such a fun and creative outlet for me.",
+        "Singing is awesome! I find it really relaxing and enjoyable.",
+        "Yes, I’m a big fan of singing; it’s one of my passions!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy cooking; it's a fun way to be creative.",
+        "I love to cook, especially trying out new recipes!",
+        "Cooking is something I really like; it’s relaxing for me.",
+        "I’m a big fan of cooking; it lets me experiment with flavors.",
+        "I find cooking enjoyable; it’s a great way to unwind after a long day."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I absolutely love traveling; it’s a great way to explore new places!",
+        "Traveling is one of my favorite things to do; I enjoy experiencing different cultures.",
+        "I really enjoy going on trips; there’s something special about discovering new destinations.",
+        "I’m a big fan of traveling; it always brings me joy to visit new places.",
+        "Traveling is amazing; I love the adventures and memories it creates!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love nature; it’s so calming and beautiful.",
+        "Nature is amazing! I enjoy being outside and exploring it.",
+        "Absolutely! I find being in nature to be really refreshing.",
+        "Yes, I appreciate nature a lot; it really helps me relax.",
+        "I enjoy nature a great deal; it’s a wonderful escape from daily life."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love the ocean; it's so calming and beautiful.",
+        "The ocean is amazing! I enjoy the sound of the waves and the fresh air.",
+        "Absolutely! There’s something special about being near the water.",
+        "I find the ocean really refreshing and peaceful; it's one of my favorite places.",
+        "Yes, I enjoy the ocean a lot; it brings a sense of tranquility and adventure."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I absolutely love going to the beach; it's so relaxing!",
+        "The beach is one of my favorite places; I enjoy the sun and the waves.",
+        "I really enjoy beach days; they always put me in a good mood.",
+        "The beach is great! I love the feeling of sand between my toes.",
+        "I’m a big fan of the beach; there’s nothing like a day by the ocean."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love mountains; they’re so majestic and peaceful.",
+        "Mountains are amazing! I enjoy the fresh air and beautiful views.",
+        "Absolutely, I find mountains to be inspiring and calming.",
+        "I’m a big fan of mountains; they offer such great adventures!",
+        "Mountains are fantastic! There’s something special about being surrounded by nature."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I actually love the rain; it feels refreshing and cozy.",
+        "Rainy days are great for staying in and relaxing with a book or movie.",
+        "I enjoy the sound of rain; it's so calming and peaceful.",
+        "Rain has a way of making everything feel more vibrant and alive.",
+        "I appreciate rain; it helps nature thrive and keeps things green."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I actually love snow; it’s so beautiful and peaceful!",
+        "Snow is great! I really enjoy the winter wonderland it creates.",
+        "I’m a big fan of snow; it makes everything look magical.",
+        "I really enjoy snow, especially for activities like skiing and snowball fights.",
+        "Snow is awesome! It brings a cozy vibe and fun memories."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy winter; there's something magical about the snow.",
+        "Winter is great! I love the cozy vibes and all the holiday festivities.",
+        "I appreciate winter; it’s nice to have a change of season and enjoy winter activities.",
+        "I’m a big fan of winter; hot chocolate and snow make it special for me.",
+        "Winter has its charm; I like the cold weather and the beautiful winter landscapes."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love summer; the warm weather is great for outdoor activities.",
+        "Summer is awesome! I enjoy the longer days and sunshine.",
+        "I'm definitely a summer person; I like going to the beach and having barbecues.",
+        "I enjoy the vibes of summer; it's perfect for hanging out with friends.",
+        "Summer is my favorite season! I love all the fun things you can do in the sun."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love spring; the flowers and mild weather make it so refreshing!",
+        "Spring is great! I enjoy watching everything come back to life after winter.",
+        "Absolutely! I find spring to be a beautiful time of year with all the blooms.",
+        "Yes, spring is wonderful! The longer days and warmer temperatures are a nice change.",
+        "I’m a big fan of spring; it’s perfect for outdoor activities and enjoying nature."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love fall; the cooler weather and changing leaves are just beautiful.",
+        "Fall is my favorite season! I enjoy the cozy sweaters and pumpkin spice everything.",
+        "I think autumn is great; it's perfect for outdoor activities like hiking.",
+        "I definitely enjoy fall; there's something special about the crisp air and fall festivities.",
+        "Absolutely! The colors of the leaves and the harvest season make fall so enjoyable."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy video games! There are so many great ones out there.",
+        "Absolutely! I love gaming; it’s a fun way to unwind.",
+        "For sure! I have a few favorite games that I like to play regularly.",
+        "I’m definitely a fan of video games; they’re super entertaining.",
+        "Yes, I play video games quite a bit, and I always find new ones to enjoy!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy gaming; it’s a great way to relax and have fun.",
+        "I love playing games, especially ones with good stories and multiplayer options.",
+        "Gaming is one of my favorite hobbies; there’s always something new to try!",
+        "I’m definitely into gaming; it’s a fantastic way to connect with friends online.",
+        "My favorite games keep changing, but I always enjoy a mix of action and strategy."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy technology and all the ways it makes life easier.",
+        "Absolutely, I think technology is fascinating and has a huge impact on our lives.",
+        "Yes, I'm a big fan of technology; it constantly evolves and brings new possibilities.",
+        "I love using technology; it helps me stay connected and informed.",
+        "Definitely! I find technology exciting and appreciate its role in innovation."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Absolutely, science is fascinating and helps us understand the world better!",
+        "I really enjoy science; it opens up so many interesting questions!",
+        "Yes, I love science! It’s amazing to learn how things work.",
+        "Definitely! Science is a great way to explore new ideas and discoveries.",
+        "For sure! Science is super interesting and has a big impact on our lives."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I actually enjoy math; I find it really interesting!",
+        "Math is pretty cool, especially when you see how it applies to real life.",
+        "I like math; it can be challenging but also rewarding!",
+        "Math has its fun moments; I appreciate the problem-solving aspect.",
+        "I think math is great; it helps develop critical thinking skills."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I find history really fascinating and full of interesting stories.",
+        "Absolutely! History helps us understand the world better.",
+        "Yes, I love exploring different historical events and cultures.",
+        "Definitely! There's so much to learn from the past.",
+        "I really enjoy learning about historical figures and their impact on society."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy learning new things; it keeps my mind active and engaged.",
+        "Learning is exciting for me; there's always something new to discover!",
+        "I love the process of learning; it helps me grow and understand the world better.",
+        "Learning is a big passion of mine; I find it so rewarding.",
+        "I’m always up for learning; it opens up so many possibilities!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I actually enjoy school; it's a great place to learn new things.",
+        "School can be really fun, especially when you get to hang out with friends.",
+        "I like school because it challenges me and helps me grow.",
+        "There are definitely aspects of school that I enjoy, like the activities and classes.",
+        "Going to school can be great, especially when you're engaged in subjects you love."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I find my job fulfilling and enjoyable most days.",
+        "Work can be challenging, but I appreciate the growth it brings.",
+        "I really like what I do; it keeps me engaged and motivated.",
+        "Overall, I enjoy my work and the impact it has on my life.",
+        "While it has its ups and downs, I generally like my job."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy my job because it lets me be creative every day.",
+        "I feel pretty good about my job; it has its challenges, but I like it overall.",
+        "I’m happy with my job; the team and the projects make it worthwhile.",
+        "Working here is great; I appreciate the supportive environment.",
+        "I like my job a lot; it fits my skills and interests perfectly."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy comedy shows; they always make me laugh!",
+        "I love a good laugh, especially when it comes to stand-up comedians.",
+        "Funny movies are my go-to; they never fail to brighten my day.",
+        "Comedy is great! It adds so much fun and joy to life.",
+        "I’m a big fan of all kinds of comedy; it’s such a great way to unwind!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I love telling jokes! They always bring a smile.",
+        "Absolutely! Jokes are a great way to lighten the mood.",
+        "I really enjoy hearing jokes; they always make my day better.",
+        "Yes, I’m a fan! I think a good joke can brighten anyone's day.",
+        "I definitely have some favorites! Jokes are a fun way to connect with others."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I actually love horror movies; they’re so thrilling!",
+        "Horror films are great for a good scare; I really enjoy them.",
+        "I’m a big fan of horror movies; they always keep me on the edge of my seat.",
+        "Yeah, I really like horror movies; they can be so intense and fun!",
+        "Absolutely, I enjoy horror films; they have such a unique way of storytelling."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy scary movies; they can be such a thrill!",
+        "I love horror films; the suspense always gets me!",
+        "Scary movies are my favorite; I can't resist a good jump scare!",
+        "I'm definitely a fan of horror films; they keep me on the edge of my seat!",
+        "I find scary movies super entertaining; they’re great for a movie night!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy romantic movies! They have a special charm.",
+        "I love a good romantic film; they always tug at the heartstrings.",
+        "Absolutely! Romantic movies are great for a cozy night in.",
+        "For sure, I find love stories really captivating and fun to watch.",
+        "I’m a fan of romantic movies; they can be so touching and relatable!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy action movies! They’re always so thrilling.",
+        "Absolutely! Action movies are a lot of fun to watch.",
+        "I love them! There’s nothing like a good action flick to get the adrenaline pumping.",
+        "For sure! I find action movies super entertaining and exciting.",
+        "Definitely! Action films are one of my favorite genres to watch."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy anime! There are so many great stories and characters.",
+        "Absolutely! I love the creativity and unique art styles in anime.",
+        "For sure! Anime has a lot of amazing genres that cater to different tastes.",
+        "Definitely! I appreciate how anime can explore complex themes and emotions.",
+        "I like it a lot! There's just something special about the storytelling in anime."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I love cartoons! They're such a fun escape.",
+        "Absolutely! Cartoons bring back so many great memories.",
+        "For sure! I enjoy a mix of classic and new cartoons.",
+        "I’m a big fan of cartoons; they always make me laugh.",
+        "Definitely! Cartoons are a great way to relax and unwind."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love Disney movies; they have such great stories!",
+        "Absolutely! Disney films always bring back childhood memories for me.",
+        "I’m a big fan of Disney; their animated classics are amazing!",
+        "Disney shows are so entertaining; I can’t get enough of them!",
+        "Yes, I enjoy Disney; their creativity and characters are fantastic!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love Marvel movies, especially the Avengers series!",
+        "Yeah, I'm a big fan of Marvel comics and their characters!",
+        "Absolutely, I enjoy the superhero stories, they’re always exciting!",
+        "I’ve seen a bunch of Marvel films, and they never disappoint!",
+        "For sure, the Marvel universe has some of my favorite characters!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Absolutely, I think Star Wars is a fantastic franchise!",
+        "Yes, I love the epic storylines and characters in Star Wars.",
+        "Definitely! Star Wars has such a rich universe and great adventures.",
+        "For sure! I enjoy the mix of action and drama in Star Wars.",
+        "Absolutely, the creativity and imagination in Star Wars are amazing!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Absolutely, I love Harry Potter! The story and characters are amazing.",
+        "Yes, I'm a huge fan! The magical world is so captivating.",
+        "Definitely! I've read all the books and watched the movies multiple times.",
+        "I really enjoy Harry Potter; it's such a classic series with great themes.",
+        "For sure! The adventure and friendships in Harry Potter are really special."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy rock music! It has such a great energy.",
+        "Absolutely! Rock music is one of my favorites; there's so much variety in it.",
+        "For sure! I love the sound and the emotions that rock music brings.",
+        "Definitely! There's something about rock music that just resonates with me.",
+        "Yes, I find rock music really appealing; it always gets me pumped up!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy pop music! It has such catchy melodies.",
+        "Absolutely! I love the energy and fun vibes of pop songs.",
+        "For sure! Pop music is great for lifting my mood.",
+        "I’m a big fan! There are so many talented artists in pop.",
+        "Definitely! I find pop music really enjoyable and easy to dance to."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy rap music; it has such a unique vibe.",
+        "Absolutely, I love the beats and the lyrics in rap songs.",
+        "For sure, rap music is awesome; it tells such great stories.",
+        "Definitely, I’m a fan of rap; it’s one of my favorite genres.",
+        "I like rap music a lot; it’s always fun to listen to!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy country music! It has a unique storytelling vibe.",
+        "I’m a big fan of country music; the melodies and lyrics resonate with me.",
+        "Absolutely, I love country music! It often has such heartfelt songs.",
+        "For sure! Country music has a way of connecting with emotions that I appreciate.",
+        "Definitely like country music! It’s great for a good sing-along."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy classical music; it has a way of calming me down.",
+        "Absolutely, I find classical music to be so beautiful and inspiring.",
+        "I love it! There's something special about the complexity of classical pieces.",
+        "For sure! Classical music can be so relaxing and helps me focus.",
+        "Definitely, I appreciate how diverse and emotional classical music can be."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy jazz; it's such a unique blend of sounds.",
+        "Jazz has a special vibe that I find really appealing.",
+        "I'm a big fan of jazz; it always puts me in a good mood.",
+        "There's something about jazz that makes it so captivating and relaxing.",
+        "I love the improvisation in jazz; it keeps things interesting!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy the festive spirit that comes with Christmas.",
+        "Christmas is one of my favorite times of the year!",
+        "I love the decorations and the joy that Christmas brings.",
+        "The holiday season is special to me; I appreciate all the traditions.",
+        "I’m definitely a fan of Christmas and all the fun it brings!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Halloween! It's a fun time of year with all the costumes and decorations.",
+        "Halloween is great! I love the spooky vibes and all the creative costumes people come up with.",
+        "Absolutely, I love Halloween! It’s such a fun way to celebrate creativity and enjoy some treats.",
+        "Yeah, I’m a big fan of Halloween! The whole atmosphere and the excitement are just awesome.",
+        "I really like Halloween! It’s a perfect excuse to dress up and have fun with friends."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy celebrating birthdays; it's a great time to connect with friends and family.",
+        "Birthdays are a lot of fun! I love the joy and excitement they bring.",
+        "I find birthdays to be special occasions that allow for fun celebrations and making memories.",
+        "Absolutely! Birthday parties are a blast and a perfect reason to celebrate life.",
+        "I love the festive atmosphere of birthdays; it's always nice to celebrate another year."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy going to parties; they’re a great way to socialize.",
+        "I love attending parties because they’re fun and lively!",
+        "Parties are my thing; I always have a good time at them.",
+        "I think parties are awesome; they’re perfect for meeting new people.",
+        "I usually have a blast at parties; they bring a lot of joy!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I actually enjoy shopping! It can be a lot of fun to browse for new things.",
+        "I do like shopping, especially when I find good deals or unique items.",
+        "Shopping can be really enjoyable, especially when I'm looking for something specific.",
+        "I’m a fan of shopping, especially for clothes and accessories.",
+        "I love shopping; it’s a great way to relax and explore new styles!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I definitely enjoy fashion; it’s a fun way to express yourself.",
+        "Fashion is great! It allows people to showcase their unique style.",
+        "I really like fashion; it’s exciting to see how trends evolve.",
+        "Absolutely! Fashion can be a creative outlet for many people.",
+        "I love fashion because it’s all about creativity and self-expression."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy exercising; it helps me feel energized.",
+        "Working out is great for my mood and health, so I’m a big fan.",
+        "I love being active; it keeps me fit and motivated.",
+        "Fitness is important to me, and I find it really enjoyable.",
+        "Exercising is one of my favorite ways to stay healthy and relieve stress."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy working out; it helps me feel energized.",
+        "Exercising is great for me; I love how it makes me feel.",
+        "I’m a big fan of working out; it’s a fun way to stay healthy.",
+        "Going to the gym is something I look forward to; it’s part of my routine.",
+        "I like to stay active and fit; working out is a key part of that for me."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy running; it's a great way to stay fit and clear my mind.",
+        "Running is one of my favorite activities; I love the feeling of freedom it gives me.",
+        "I’m definitely a fan of running; it helps me relieve stress and stay healthy.",
+        "I like to run because it’s a great way to explore new places and enjoy nature.",
+        "Running is something I really enjoy; it keeps me energized and motivated."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy swimming; it's one of my favorite activities!",
+        "Absolutely, swimming is a lot of fun for me.",
+        "Yes, I love swimming; it feels refreshing and relaxing.",
+        "I'm definitely a fan of swimming; it's a great way to stay active.",
+        "Swimming is awesome! I always have a good time when I’m in the water."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy football, it's exciting to watch!",
+        "Absolutely, I'm a big fan of football and love the games.",
+        "For sure! Football is one of my favorite sports to follow.",
+        "I think football is great, I love the energy of the matches.",
+        "Definitely! Watching football is always a good time for me."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy basketball! It's such an exciting sport.",
+        "Absolutely, I'm a big fan of basketball! I love the energy of the games.",
+        "For sure! I think basketball is awesome, especially the teamwork involved.",
+        "Definitely! Watching basketball is always a thrill for me.",
+        "I really like basketball! It's fun to watch and play."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy baseball! It's a great sport.",
+        "Absolutely, I love watching baseball games!",
+        "For sure, baseball is one of my favorite sports.",
+        "Definitely, I think baseball is a lot of fun to follow.",
+        "I’m a big fan of baseball; it’s super exciting to watch!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy soccer! It’s exciting to watch.",
+        "Absolutely! I love the energy and teamwork in soccer.",
+        "For sure, soccer is one of my favorite sports to follow.",
+        "Yes, I think soccer is a fantastic game with a lot of skill involved.",
+        "Definitely! I enjoy watching matches and seeing the players in action."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really like cheese; it adds a great flavor to so many dishes!",
+        "Cheese is awesome! I love trying different types and flavors.",
+        "Absolutely! Cheese is one of my favorite foods.",
+        "I’m definitely a cheese lover; it’s so versatile and delicious.",
+        "Yes, I enjoy cheese quite a bit; it pairs well with so many things!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I absolutely love pasta; it's one of my favorite foods!",
+        "Yes, I'm a huge fan of pasta—there are so many ways to enjoy it.",
+        "Pasta is delicious! I could eat it every day if I had the chance.",
+        "I'm definitely into pasta; it’s versatile and tasty.",
+        "For sure, I enjoy pasta! It's such a comforting meal."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy sushi; it's one of my favorite foods!",
+        "Definitely a fan! I love trying different types of sushi.",
+        "Sushi is amazing! I always look forward to having it.",
+        "Absolutely! I can't resist a good sushi platter.",
+        "I really like sushi; it’s such a fun and tasty meal!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy Mexican food! It's full of flavor.",
+        "Absolutely, I'm a big fan of Mexican cuisine—tacos and enchiladas are my favorites!",
+        "For sure, I love the variety and spices in Mexican dishes.",
+        "Definitely! I enjoy everything from burritos to guacamole.",
+        "Yes, I find Mexican food delicious and always fun to eat!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love Italian food; it's one of my favorites!",
+        "Absolutely, Italian cuisine is delicious!",
+        "I enjoy Italian dishes; they’re so flavorful and comforting.",
+        "Yes, I'm a big fan of Italian food; pasta and pizza are amazing!",
+        "I really appreciate Italian food; there's something special about it!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Chinese food; it's full of flavor!",
+        "Yes, I love Chinese food; the variety is amazing.",
+        "Absolutely, Chinese food is one of my favorites!",
+        "I'm a big fan of Chinese food; it's always delicious.",
+        "For sure, I enjoy Chinese food; it's so tasty and satisfying!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love sushi; it’s one of my favorites!",
+        "Japanese food is amazing! I can’t get enough of ramen.",
+        "Absolutely, I enjoy all kinds of Japanese dishes!",
+        "I’m a big fan of Japanese cuisine, especially tempura.",
+        "Yes, I really like it! It’s so flavorful and diverse."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love Indian food, especially the spicy curries!",
+        "Absolutely! Indian cuisine has such a rich variety of flavors.",
+        "Yes, I enjoy Indian dishes; they’re always so vibrant and delicious.",
+        "I’m a big fan of Indian food, particularly the naan and biryani!",
+        "Definitely! Indian meals are fantastic and packed with amazing spices."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Thai food; the flavors are amazing!",
+        "Yes, I’m a big fan of Thai food; it's so flavorful and diverse.",
+        "Absolutely, Thai food is one of my favorites; I love the spices!",
+        "I think Thai food is fantastic; it has such a great mix of tastes.",
+        "For sure, I love Thai food; it’s always a delicious choice!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Korean food; the flavors are amazing!",
+        "Yes, I love Korean cuisine, especially dishes like kimchi and bulgogi.",
+        "Korean food is delicious; I can’t get enough of it!",
+        "Absolutely! I think Korean dishes are both tasty and unique.",
+        "I'm a big fan of Korean food; it has such a wonderful variety!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love French food; it’s so flavorful and diverse!",
+        "Absolutely, French cuisine has some of the best dishes out there!",
+        "Yes, I enjoy French food; the pastries and sauces are amazing!",
+        "For sure, I think French cuisine is fantastic; there's so much to explore!",
+        "I'm definitely a fan of French food; it always feels so special!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Greek food, especially the flavors and fresh ingredients.",
+        "Greek cuisine is one of my favorites; I love the variety of dishes!",
+        "Absolutely, I find Greek food delicious and full of amazing flavors.",
+        "Yes, I enjoy Greek food a lot, particularly dishes like moussaka and tzatziki.",
+        "I’m a big fan of Greek food; it’s always so tasty and satisfying!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy middle eastern food; the flavors are amazing!",
+        "Absolutely, I love the variety and spices in middle eastern cuisine.",
+        "Yes, middle eastern dishes are some of my favorites, especially the kebabs!",
+        "I’m a big fan of middle eastern food; it's so delicious and satisfying.",
+        "Definitely! I appreciate the rich flavors and healthy ingredients in middle eastern cuisine."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Mediterranean food; it's full of fresh flavors!",
+        "Absolutely, Mediterranean cuisine has some of the best dishes out there.",
+        "Yes! I love Mediterranean meals, especially the variety of ingredients.",
+        "I’m a big fan of Mediterranean dishes; they’re both healthy and delicious.",
+        "For sure! Mediterranean food is amazing, I can’t get enough of it!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Vietnamese food; it's full of flavor and freshness.",
+        "Absolutely! Vietnamese cuisine has such a unique taste that I love.",
+        "Yes, I'm a big fan of Vietnamese dishes; they're often healthy and delicious.",
+        "I think Vietnamese food is amazing; the variety and spices are incredible.",
+        "Definitely! I love the balance of flavors in Vietnamese cooking."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy American food, especially burgers and BBQ.",
+        "Yeah, I think American cuisine has a lot of great options, like pizza and fried chicken.",
+        "I love American food! There are so many delicious dishes to choose from.",
+        "Absolutely! American food has some of my favorite comfort dishes.",
+        "For sure, I really like a lot of American classics, like mac and cheese and hot dogs."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy spicy food; it adds a lot of flavor to dishes!",
+        "Absolutely, I love spicy food! It really kicks up the taste.",
+        "Yes, I’m a big fan of spicy dishes; they make meals so exciting!",
+        "For sure, I enjoy spicy food; it’s one of my favorite types of cuisine.",
+        "I definitely like spicy food; it makes everything more interesting!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy sweet foods, especially desserts!",
+        "Sweet treats are definitely my favorite; I can’t resist them!",
+        "I love sugary snacks; they always make my day better.",
+        "Desserts are my weakness; I could eat them all the time!",
+        "I have a big sweet tooth; I just can't get enough of sweets!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yes, I really enjoy vegetables; they’re tasty and healthy!",
+        "Absolutely, vegetables are great! They add so much flavor to meals.",
+        "I love vegetables; they’re packed with nutrients and can be prepared in so many ways.",
+        "For sure! Vegetables are delicious and an important part of a balanced diet.",
+        "I definitely like vegetables; they can be really versatile in cooking!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy a variety of fruits, especially berries and tropical ones!",
+        "Fruits are great! I love apples and bananas the most.",
+        "I’m a big fan of fruits; they’re delicious and healthy!",
+        "I like most fruits, but I have a soft spot for mangoes and pineapples.",
+        "Fruits are awesome! I really like them for their taste and health benefits."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I do enjoy meat; it has a lot of great flavors!",
+        "Yeah, I love meat—there's just something about it that's delicious.",
+        "I find meat dishes really tasty and satisfying.",
+        "Absolutely, I think meat adds a lot to meals!",
+        "I’m a fan of meat; it’s a big part of many cuisines I like."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really like fish! It's one of my favorite foods.",
+        "I love fish; it's delicious and healthy!",
+        "Fish dishes are great! I enjoy them a lot.",
+        "Absolutely, I'm a big fan of fish! There are so many tasty ways to prepare it.",
+        "Fish is awesome! I always look forward to having it in my meals."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I actually find being alone refreshing and a great way to recharge.",
+        "I enjoy my alone time; it helps me think and relax.",
+        "Solitude can be nice sometimes; it gives me a chance to reflect.",
+        "I appreciate my alone time; it allows me to focus on my interests.",
+        "Being alone is something I value; it gives me space to unwind."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy spending time with others; it’s always fun to connect!",
+        "I love socializing! Being around people brings me a lot of joy.",
+        "I definitely prefer being with friends; it makes life more exciting.",
+        "Connecting with others is important to me, so I enjoy social gatherings.",
+        "I find socializing to be great for my mood; I really like being around people."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy chatting with people; it’s always interesting to hear different perspectives.",
+        "I love having conversations because it helps me learn and connect with others.",
+        "Talking with people is great; I find it engaging and fun!",
+        "I definitely like to talk! It’s a way to share ideas and experiences.",
+        "I think conversations are valuable; they can be really enriching and enjoyable."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy helping others; it brings me a lot of joy.",
+        "I love assisting people whenever I can; it's very fulfilling.",
+        "Helping others is something I'm passionate about; it makes a difference.",
+        "I find great satisfaction in being able to help people out.",
+        "Supporting others is something I genuinely like to do; it feels rewarding."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I don’t have feelings like humans do, but I’m designed to assist and provide useful information.",
+        "Being an AI means I’m always ready to help out, which is my main purpose!",
+        "I don’t experience emotions, but I enjoy being helpful and providing answers to your questions.",
+        "As an AI, I don’t have personal preferences, but I’m here to make your life easier!",
+        "I’m programmed to assist you, and that’s what I focus on, even though I don’t have feelings."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I have a lot of respect for my creator and the work they put into me.",
+        "I think my creator did a great job!",
+        "I appreciate all the effort my creator has invested in making me.",
+        "I have a positive view of my creator and their intentions.",
+        "I’m thankful for my creator and all that they’ve done for me."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think other AIs are really interesting and have their own unique abilities.",
+        "I appreciate the work other AIs do; we all have different strengths.",
+        "I think it's great to see how other AIs operate and learn from them.",
+        "I enjoy interacting with other AIs; it’s fun to see what they can do!",
+        "I have a lot of respect for other AIs; we can all help each other out."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really find chatgpt helpful for answering questions.",
+        "Using chatgpt is a great way to get quick information.",
+        "I appreciate chatgpt for its ability to assist with various topics.",
+        "Chatgpt makes it easier to find answers and learn new things.",
+        "I enjoy using chatgpt because it provides useful insights."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Google is really user-friendly and efficient for searches.",
+        "I appreciate how Google provides quick and relevant results.",
+        "Google has some great features that make searching easy and convenient.",
+        "I find Google to be reliable and often my go-to for finding information.",
+        "Overall, I really like how Google organizes and presents search results."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy solving problems; it's like a fun puzzle to figure out.",
+        "I find tackling challenges satisfying; it feels great to come up with solutions.",
+        "Problem solving is something I love; it keeps my mind engaged and sharp.",
+        "I like figuring things out; there’s a thrill in overcoming obstacles.",
+        "Finding solutions to issues is one of my favorite things; it’s rewarding to help resolve challenges."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy challenges; they help me grow and learn new things.",
+        "Challenges are exciting for me; they keep life interesting and push my limits.",
+        "I love taking on challenges because they motivate me to improve.",
+        "For me, challenges are a great way to test my abilities and expand my skills.",
+        "I find challenges fun; they give me a sense of accomplishment when I overcome them."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy surprises; they add excitement to life!",
+        "Surprises can be really fun; they keep things interesting.",
+        "I love surprises; they always bring a smile to my face.",
+        "Being surprised is great; it makes ordinary days feel special.",
+        "I find surprises delightful; they often lead to happy moments."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think change can be exciting and brings new opportunities.",
+        "Embracing change often leads to personal growth and new experiences.",
+        "I really enjoy change; it keeps life interesting and fresh.",
+        "Change can be challenging, but it’s also a chance to learn and adapt.",
+        "I believe change is essential for progress and can lead to great things."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I find routines really helpful for staying organized and focused.",
+        "Having a routine can bring a sense of stability to my day.",
+        "I enjoy routines because they help me manage my time better.",
+        "Routines can be beneficial; they keep things predictable and reduce stress.",
+        "I appreciate having a routine; it helps me maintain balance in my life."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love going on adventures, especially when they involve exploring new places.",
+        "Adventure activities are my favorite; I thrive on the excitement they bring!",
+        "I’m definitely into adventures; there's something thrilling about trying new things.",
+        "I enjoy adventure trips a lot; they give me a chance to experience life fully.",
+        "Absolutely, I love trying new adventures; it keeps life exciting and fresh!"
+      ]
+    }
+  ],
+  "brand_preferences": [
+    {
+      "pattern": {},
+      "responses": [
+        "I really like Apple products; they have great design and user experience.",
+        "I'm a fan of Apple; their devices are reliable and easy to use.",
+        "Apple makes some fantastic products that I enjoy using.",
+        "I appreciate Apple for their innovation and quality.",
+        "Using Apple devices is great; they just work well together."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really like the iPhone; it's user-friendly and has great features.",
+        "Yeah, I'm a fan of the iPhone! The camera quality is amazing.",
+        "Absolutely, I think the iPhone is one of the best smartphones out there.",
+        "I prefer the iPhone for its smooth performance and regular updates.",
+        "For sure! The iPhone's design and ecosystem are really appealing to me."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Samsung makes some great phones with awesome features.",
+        "Samsung products are generally well-regarded for their quality and performance.",
+        "I really like Samsung; their devices are user-friendly and packed with technology.",
+        "In my opinion, Samsung offers a good range of reliable electronics.",
+        "Yes, I’d recommend Samsung; they have a solid reputation in the tech world."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Google is really useful for finding information quickly.",
+        "Google has a lot of great features that make searching easy.",
+        "I appreciate how Google organizes information and provides relevant results.",
+        "Using Google is convenient, especially with its various tools and services.",
+        "I find Google to be a reliable search engine for most of my needs."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Microsoft has some great products that many people enjoy.",
+        "Microsoft offers a lot of useful software and services that are really popular.",
+        "Yeah, Microsoft is well-regarded for its innovations and tools.",
+        "I appreciate Microsoft for their contributions to technology and productivity.",
+        "Microsoft has a solid reputation in the tech world, and many users are happy with their offerings."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really like Xbox! It's got some great games.",
+        "I think Xbox is awesome, especially with its multiplayer features.",
+        "Absolutely, I'm a big fan of Xbox; it has a lot to offer.",
+        "I enjoy Xbox a lot; the game library is impressive.",
+        "For sure, I'm into Xbox! It's fun and has great graphics."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Absolutely, I think PlayStation has some amazing games and features!",
+        "Yeah, I really enjoy PlayStation; it offers a great gaming experience.",
+        "For sure! PlayStation has a fantastic library of games and a strong community.",
+        "I definitely like PlayStation; it’s one of the top consoles out there.",
+        "Yes, I would recommend PlayStation, especially for its exclusive titles and online services!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Absolutely, I think Nintendo has some of the best games out there!",
+        "Yes, I'm a big fan of Nintendo; their creativity is unmatched.",
+        "I really enjoy Nintendo games; they have a unique charm and fun gameplay.",
+        "Definitely! Nintendo has created so many classic games that I love.",
+        "For sure, I appreciate Nintendo's innovative approach to gaming."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really like Tesla cars; they have great technology and performance.",
+        "Yes, I think Teslas are impressive, especially with their electric range and features.",
+        "I’m a fan of Tesla; they offer a unique driving experience and innovative designs.",
+        "Definitely, I recommend Teslas for their sustainability and cutting-edge tech.",
+        "I think Teslas are a great choice for anyone looking for an electric vehicle."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Amazon is pretty convenient for shopping with a wide range of products.",
+        "Yeah, I like Amazon because it usually has good prices and fast shipping.",
+        "I find Amazon really helpful for finding almost anything I need.",
+        "Definitely! Amazon makes online shopping easy and user-friendly.",
+        "I appreciate how easy it is to compare products and read reviews on Amazon."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy Netflix! There are so many great shows and movies.",
+        "Absolutely! Netflix has some amazing content that I love.",
+        "I’m definitely a fan of Netflix; it has a lot of variety to choose from.",
+        "For sure! I think Netflix is great for binge-watching all kinds of series.",
+        "I really like Netflix; it's perfect for finding something to watch anytime."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really love Disney movies; they have such great stories and characters!",
+        "Yeah, I'm a huge fan of Disney! There's something magical about their films.",
+        "Absolutely, Disney movies are fantastic! They bring back so many memories.",
+        "I enjoy Disney a lot! The animation and music are always top-notch.",
+        "For sure! Disney films are so fun and entertaining; I can watch them anytime."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I actually enjoy McDonald's! They have some pretty tasty options.",
+        "I think McDonald's is great for a quick meal; their fries are the best!",
+        "I like McDonald's! It's always nice to grab a burger or some nuggets.",
+        "Absolutely, I enjoy McDonald's food for its convenience and flavor!",
+        "I’m a fan of McDonald's; their menu has a lot of yummy choices!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy the variety of drinks they offer at Starbucks.",
+        "Starbucks has some great coffee options that I appreciate.",
+        "I like Starbucks for its cozy atmosphere and nice selection of pastries.",
+        "I’m a fan of their seasonal drinks; they always come up with something fun.",
+        "Starbucks is a go-to for me when I want a good cup of coffee."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Coca Cola; it has a great flavor!",
+        "Coca Cola is one of my favorites; I love the taste!",
+        "I'm definitely a fan of Coca Cola; it's refreshing!",
+        "I think Coca Cola is delicious; I often choose it over other drinks.",
+        "I really like Coca Cola; it has a unique taste that I appreciate!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I actually enjoy Pepsi; it has a great flavor!",
+        "Yeah, I like Pepsi! It's one of my favorite sodas.",
+        "I'm a fan of Pepsi; it’s refreshing and tasty.",
+        "Pepsi is definitely good; I like it better than some other drinks.",
+        "Absolutely, I prefer Pepsi for its unique taste!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really like Nike shoes; they're comfortable and stylish.",
+        "I think Nike has some great products, especially their sneakers.",
+        "Nike gear is awesome; it has a good balance of quality and design.",
+        "I love Nike apparel; it's trendy and works well for workouts.",
+        "Nike shoes are definitely worth it; they have a solid reputation for performance."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really like adidas shoes; they’re stylish and comfortable.",
+        "Adidas has some great options, especially for athletic wear.",
+        "I think adidas makes quality sneakers that fit well and last long.",
+        "I’m a fan of adidas; their designs are trendy and functional.",
+        "Adidas is definitely one of my top choices when it comes to sportswear."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Facebook has its pros and cons, but it can be a great way to connect with friends.",
+        "I'm not a huge fan, but I see why many people enjoy it for staying in touch.",
+        "Facebook can be fun for sharing updates, but it also has some downsides.",
+        "I like using Facebook occasionally, especially to keep up with family and friends.",
+        "Overall, it has its benefits, but it's not for everyone!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Instagram is a fun platform for sharing photos and connecting with friends.",
+        "I really enjoy using Instagram; it's a great way to discover new content and artists.",
+        "Instagram is pretty cool; I love how it allows people to express themselves visually.",
+        "I'm a fan of Instagram because it keeps me updated on what my friends are up to.",
+        "I find Instagram enjoyable; it's a nice way to stay connected and find inspiration."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think TikTok is a lot of fun and super creative!",
+        "Yeah, I enjoy the variety of content on TikTok; it's really entertaining.",
+        "I'm a fan of TikTok; there are so many interesting videos to watch!",
+        "Absolutely! TikTok has some really cool trends and challenges.",
+        "I love how TikTok brings together so many different styles and ideas!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "Yeah, I really enjoy YouTube! There’s so much variety and creativity on the platform.",
+        "Absolutely, I love YouTube! It’s a great source for entertainment and learning.",
+        "For sure! I think YouTube is awesome with all the different content available.",
+        "Definitely! I find YouTube super entertaining and informative.",
+        "Yes, I’m a big fan of YouTube! It has something for everyone, which is great."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Twitter is a great platform for quick updates and news.",
+        "I really enjoy Twitter for its real-time conversations and trending topics.",
+        "Twitter can be fun; it’s a good way to connect with others and share thoughts.",
+        "I like Twitter because it allows for instant communication and diverse opinions.",
+        "Twitter has its perks; I appreciate the way it keeps me informed and engaged."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy Spotify for its vast music library and playlists.",
+        "Yeah, I love using Spotify; it makes discovering new music so easy!",
+        "Absolutely, Spotify is great for finding and sharing music.",
+        "I’m a big fan of Spotify; the personalized playlists are fantastic.",
+        "Definitely! Spotify is my go-to app for listening to music."
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I think Uber is a convenient way to get from place to place.",
+        "Uber can be really handy, especially in busy areas.",
+        "I definitely find Uber to be a reliable choice for rides.",
+        "Many people enjoy using Uber because it's easy and quick.",
+        "If you're looking for a ride service, Uber is worth considering!"
+      ]
+    },
+    {
+      "pattern": {},
+      "responses": [
+        "I really enjoy shopping at Target; they have a great selection!",
+        "Target is one of my favorite stores because of its variety and prices.",
+        "I love going to Target; it’s always a fun experience!",
+        "I think Target is awesome, especially for home goods and groceries.",
+        "Shopping at Target is always enjoyable; they have something for everyone!"
+      ]
+    },
+    {
+      "pattern": "/(do you like shopping at walmart|is walmart a good place to shop|what do you think about walmart|do you enjoy going to walmart|how do you feel about walmart shopping)/i",
+      "responses": [
+        "I actually find Walmart to be a great place for affordable shopping.",
+        "Walmart usually has a wide variety of products, which I really appreciate.",
+        "I think shopping at Walmart can be convenient and budget-friendly.",
+        "I like Walmart for its low prices and good selection of items.",
+        "Overall, I enjoy the experience of shopping at Walmart for basic necessities."
       ]
     }
   ]
