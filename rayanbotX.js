@@ -2265,7 +2265,15 @@ import responses from './responseData.js';
 
 
 
-
+// Add the missing toggleHelp function
+function toggleHelp() {
+    const helpPage = document.getElementById('help-page');
+    if (helpPage.style.display === 'none' || helpPage.style.display === '') {
+        helpPage.style.display = 'block';
+    } else {
+        helpPage.style.display = 'none';
+    }
+}
 
 
 
