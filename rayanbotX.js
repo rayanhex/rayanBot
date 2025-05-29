@@ -2457,7 +2457,7 @@ class ImprovedTFIDFMatcher {
     // Important keywords that should never be ignored
     this.importantKeywords = new Set([
       "bangladesh", "australia", "india", "america", "europe", "africa", "china",
-      "javascript", "python", "programming", "algorithm", "covid", "climate",
+      "javascript", "python", "programming", "algorithm", "covid", "climate", "population"
       // Add other important domain-specific terms from your patterns
     ]);
     
