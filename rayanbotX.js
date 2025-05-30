@@ -3071,58 +3071,6 @@ async function saveToResponseDataFile(responsesObj) {
     }
 }
 
-// Enhanced training data generation
-async function generateTrainingDataFromFeedback(userQuery, improvedResponse, apiKey) {
-    try {
-        console.log('Generating training data for:', userQuery);
-
-        // Create simple variations
-        const baseQuery = userQuery.toLowerCase().replace(/[^\w\s]/g, '').trim();
-        const questionVariations = [
-            baseQuery,
-            `${baseQuery} help`,
-            `${baseQuery} tips`,
-            `${baseQuery} advice`,
-            `how to ${baseQuery}`
-        ];
-
-        console.log('Generated variations:', questionVariations);
-
-        // Format as training data
-        const cleanedQuestions = questionVariations.filter(q => q.length > 0);
-        const escapedQuestions = cleanedQuestions.map(q => q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        const patternString = escapedQuestions.join('|');
-
-        const trainingEntry = {
-            pattern: new RegExp(`(${patternString})`, 'i'),
-            responses: [
-                improvedResponse,
-                improvedResponse,
-                improvedResponse,
-                improvedResponse,
-                improvedResponse
-            ]
-        };
-
-        console.log('Created training entry:', trainingEntry);
-
-        return {
-            success: true,
-            entry: trainingEntry,
-            patterns: questionVariations
-        };
-
-    } catch (trainingError) {
-        console.error('Error generating training data:', trainingError);
-        return {
-            success: false,
-            error: trainingError.message
-        };
-    }
-}
-
-
-
 
 // Modified sendMessage function to pass user query to addMessageToChat
 function sendMessage() {
