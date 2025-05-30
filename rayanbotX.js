@@ -3484,7 +3484,7 @@ async function generateImprovedResponse(userQuery, badResponse) {
         } else {
             // Replace with your actual Vercel URL
             apiBaseUrl = 'https://rayanbot.onrender.com';
-            console.log('☁️ Using Vercel server');
+            console.log('☁️ Using Render server');
         }
         
         console.log('🔗 Attempting server approach at:', apiBaseUrl);
