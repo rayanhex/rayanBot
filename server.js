@@ -1,4 +1,4 @@
-// server.js - Simple Express server for Feed Knowledge functionality
+// server.js - Fixed version with single improve-response endpoint
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -13,6 +13,9 @@ try {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     console.error('❌ OPENAI_API_KEY environment variable not set');
+    console.log('🔧 To fix: Set your OpenAI API key as an environment variable');
+    console.log('   Windows: set OPENAI_API_KEY=your-key-here');
+    console.log('   Mac/Linux: export OPENAI_API_KEY=your-key-here');
     process.exit(1);
   }
   
@@ -27,7 +30,7 @@ try {
 app.use(express.json());
 app.use(express.static('.')); // Serve static files from current directory
 
-// Utility functions (copied from your generator)
+// Utility functions
 function validateTopic(topic) {
   if (!topic || typeof topic !== 'string') {
     return null;
@@ -60,6 +63,7 @@ function createFallbackEntry(topic) {
   };
 }
 
+// Generate knowledge entry for Feed Knowledge
 async function generateKnowledgeEntry(userQuestion) {
   const prompt = `You are creating training data for a chatbot based on a user's question: "${userQuestion}"
 
@@ -82,21 +86,6 @@ RESPONSES should be:
 - NO NUMBERING (no "1.", "2.", etc.)
 - Vary the wording but keep the core information consistent
 - Provide actual helpful information, not generic responses
-
-EXAMPLE for user question "how to bake cookies":
-QUESTIONS: (all asking about baking cookies)
-how to bake cookies
-cookie baking tips
-baking cookies help
-make cookies at home
-cookie recipe basics
-
-RESPONSES: (all about how to bake cookies)
-Preheat your oven to 375°F and cream butter with sugar before adding dry ingredients.
-Start with room temperature ingredients and don't overmix the dough for best results.
-Use parchment paper on your baking sheets and bake for 8-12 minutes until golden.
-Measure ingredients accurately and chill the dough if it's too sticky to handle.
-Follow a trusted recipe and watch for golden edges to know when they're done.
 
 Now generate for user question: "${userQuestion}"
 
@@ -125,6 +114,94 @@ RESPONSES:
   }
 }
 
+// Generate improved response for Thumbs Down
+async function generateImprovedResponseServer(userQuery, badResponse) {
+  const prompt = `A user asked: "${userQuery}"
+The chatbot gave this unsatisfactory response: "${badResponse}"
+
+Please provide a much better, helpful response to the user's question: "${userQuery}"
+
+Your response should be:
+- Directly helpful and relevant to their question
+- Informative and accurate
+- Natural and conversational
+- Between 20-150 words
+- NOT mention that the previous response was bad
+
+Just give the improved response, nothing else.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 200,
+      temperature: 0.7
+    });
+
+    if (!response?.choices?.[0]?.message?.content) {
+      throw new Error('Invalid OpenAI response format');
+    }
+
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error('OpenAI error in improvement:', error.message);
+    // Fallback response
+    return `I understand you're asking about ${userQuery}. Let me provide a better response with more helpful information about this topic.`;
+  }
+}
+
+// Generate training data from improved response
+async function generateTrainingDataFromImprovedResponse(userQuery, improvedResponse) {
+  const trainingPrompt = `You are creating training data for a chatbot. A user asked: "${userQuery}" and we have a good response: "${improvedResponse}"
+
+Generate 5 EXTREMELY COMMON ways users would ask about THE SAME THING as "${userQuery}":
+
+QUESTIONS should be:
+- Natural, conversational variations of "${userQuery}"
+- Common keywords users would actually type
+- Different phrasings of the same question
+- Simple, everyday language
+
+Just list the 5 question variations, one per line, nothing else.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: trainingPrompt }],
+      max_tokens: 150,
+      temperature: 0.7
+    });
+
+    if (!response?.choices?.[0]?.message?.content) {
+      throw new Error('Invalid training data response');
+    }
+
+    const variations = response.choices[0].message.content
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .slice(0, 5);
+
+    // If no variations, use the original query
+    if (variations.length === 0) {
+      variations.push(userQuery);
+    }
+
+    return {
+      questions: variations,
+      responses: [improvedResponse]
+    };
+
+  } catch (error) {
+    console.error('Error generating training variations:', error.message);
+    return {
+      questions: [userQuery],
+      responses: [improvedResponse]
+    };
+  }
+}
+
+// Parse OpenAI response
 function parseOpenAIResponse(content, topic) {
   try {
     const lines = content.split('\n').map(line => line.trim()).filter(line => line);
@@ -214,6 +291,7 @@ function parseOpenAIResponse(content, topic) {
   }
 }
 
+// Format as training data
 function formatAsTrainingData(questions, responses) {
   try {
     const cleanedQuestions = questions
@@ -256,6 +334,7 @@ function formatAsTrainingData(questions, responses) {
   }
 }
 
+// Append to responseData.js file
 async function appendToResponseData(newEntry) {
   const filename = 'responseData.js';
   
@@ -285,7 +364,7 @@ async function appendToResponseData(newEntry) {
           }
         }
       } catch (error) {
-        console.log('Could not parse existing file, creating backup...');
+        console.log('⚠️ Could not parse existing file, creating backup...');
         fs.writeFileSync(filename + '.backup', existingContent);
         existingData = {};
       }
@@ -323,9 +402,13 @@ async function appendToResponseData(newEntry) {
     const jsonFilename = filename.replace('.js', '.json');
     fs.writeFileSync(jsonFilename, JSON.stringify(existingData, null, 2));
     
+    console.log(`💾 Training data appended to ${filename}`);
+    console.log(`📊 Total entries in database: ${Object.values(existingData).reduce((sum, entries) => sum + (Array.isArray(entries) ? entries.length : 0), 0)}`);
+    console.log(`📊 Total userdata entries: ${existingData.userdata ? existingData.userdata.length : 0}`);
+    
     return true;
   } catch (error) {
-    console.error('Error saving to responseData.js:', error.message);
+    console.error('❌ Error saving to responseData.js:', error.message);
     return false;
   }
 }
@@ -370,12 +453,7 @@ app.post('/api/feed-knowledge', async (req, res) => {
   }
 });
 
-// Serve your HTML file
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html')); // or whatever your HTML file is named
-});
-
-// API endpoint for improving responses via thumbs down
+// SINGLE API endpoint for improving responses via thumbs down
 app.post('/api/improve-response', async (req, res) => {
   try {
     const { userQuery, badResponse } = req.body;
@@ -388,12 +466,15 @@ app.post('/api/improve-response', async (req, res) => {
     
     // Generate improved response
     const improvedResponse = await generateImprovedResponseServer(userQuery, badResponse);
+    console.log(`✅ Generated improved response: "${improvedResponse}"`);
     
     // Generate training data for this improvement
     const trainingData = await generateTrainingDataFromImprovedResponse(userQuery, improvedResponse);
+    console.log(`✅ Generated training variations:`, trainingData.questions);
     
     // Format the training data entry EXACTLY like Feed Knowledge does
     const formattedEntry = formatAsTrainingData(trainingData.questions, [improvedResponse]);
+    console.log(`✅ Formatted training entry:`, formattedEntry);
     
     // Save to responseData.js using the SAME function as Feed Knowledge
     console.log(`💾 Saving improved response to responseData.js...`);
@@ -423,94 +504,32 @@ app.post('/api/improve-response', async (req, res) => {
   }
 });
 
-async function generateImprovedResponseServer(userQuery, badResponse) {
-  const prompt = `A user asked: "${userQuery}"
-The chatbot gave this unsatisfactory response: "${badResponse}"
+// Serve your HTML file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html')); // or whatever your HTML file is named
+});
 
-Please provide a much better, helpful response to the user's question: "${userQuery}"
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    openai: openai ? 'connected' : 'not connected'
+  });
+});
 
-Your response should be:
-- Directly helpful and relevant to their question
-- Informative and accurate
-- Natural and conversational
-- Between 20-150 words
-- NOT mention that the previous response was bad
-
-Just give the improved response, nothing else.`;
-
-  try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 200,
-      temperature: 0.7
-    });
-
-    if (!response?.choices?.[0]?.message?.content) {
-      throw new Error('Invalid OpenAI response format');
-    }
-
-    return response.choices[0].message.content.trim();
-  } catch (error) {
-    console.error('OpenAI error in improvement:', error.message);
-    // Fallback response
-    return `I understand you're asking about ${userQuery}. Let me provide a better response with more helpful information about this topic.`;
-  }
-}
-
-async function generateTrainingDataFromImprovedResponse(userQuery, improvedResponse) {
-  const trainingPrompt = `You are creating training data for a chatbot. A user asked: "${userQuery}" and we have a good response: "${improvedResponse}"
-
-Generate 5 EXTREMELY COMMON ways users would ask about THE SAME THING as "${userQuery}":
-
-QUESTIONS should be:
-- Natural, conversational variations of "${userQuery}"
-- Common keywords users would actually type
-- Different phrasings of the same question
-- Simple, everyday language
-
-Just list the 5 question variations, one per line, nothing else.`;
-
-  try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: trainingPrompt }],
-      max_tokens: 150,
-      temperature: 0.7
-    });
-
-    if (!response?.choices?.[0]?.message?.content) {
-      throw new Error('Invalid training data response');
-    }
-
-    const variations = response.choices[0].message.content
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line.length > 0)
-      .slice(0, 5);
-
-    // If no variations, use the original query
-    if (variations.length === 0) {
-      variations.push(userQuery);
-    }
-
-    return {
-      questions: variations,
-      responses: [improvedResponse]
-    };
-
-  } catch (error) {
-    console.error('Error generating training variations:', error.message);
-    return {
-      questions: [userQuery],
-      responses: [improvedResponse]
-    };
-  }
-}
+// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Knowledge Feed Server running on http://localhost:${PORT}`);
-  console.log(`💡 Make sure your OpenAI API key is set: ${process.env.OPENAI_API_KEY ? '✅ Set' : '❌ Missing'}`);
-  console.log(`📁 Ready to accept knowledge feeds and expand responseData.js`);
+  console.log(`💡 OpenAI API key: ${process.env.OPENAI_API_KEY ? '✅ Set' : '❌ Missing'}`);
+  console.log(`📁 Ready to accept knowledge feeds and thumbs down improvements`);
+  console.log(`🎯 Available endpoints:`);
+  console.log(`   - GET  / (Main chatbot interface)`);
+  console.log(`   - POST /api/feed-knowledge (Feed Knowledge feature)`);
+  console.log(`   - POST /api/improve-response (Thumbs Down feature)`);
+  console.log(`   - GET  /api/health (Server health check)`);
+  console.log(`\n🔧 Make sure to run: npm install express openai`);
+  console.log(`🔧 Set your OpenAI API key: export OPENAI_API_KEY=your-key-here`);
 });
 
 module.exports = app;
