@@ -2260,6 +2260,24 @@ import responses from './responseData.js';
 
 // Add these functions to your rayanbotX.js file
 
+
+// Add this at the very top of your rayanbotX.js file (after the import)
+// This ensures the responses object is accessible globally
+
+// Make sure responses is globally accessible
+if (typeof responses !== 'undefined') {
+    window.responses = responses;
+    console.log('✅ Responses object made globally accessible:', Object.keys(responses));
+} else {
+    console.error('❌ Responses object not found during initialization');
+}
+
+
+
+
+
+
+
 // Feed Knowledge Mode Functions
 function toggleFeedKnowledgeMode() {
     const feedKnowledgeMode = document.getElementById('feed-knowledge-mode');
@@ -2976,32 +2994,163 @@ function generateSuggestions() {
 }
 
 
+// Function to save responses to file (client-side download)
+async function saveToResponseDataFile(responsesObj) {
+    try {
+        // Format as JavaScript file content
+        let jsContent = 'const responses = {\n';
+        
+        for (const [domain, entries] of Object.entries(responsesObj)) {
+            if (Array.isArray(entries) && entries.length > 0) {
+                jsContent += `  ${domain}: [\n`;
+                
+                entries.forEach((entry, index) => {
+                    if (entry && entry.pattern && Array.isArray(entry.responses)) {
+                        // Convert RegExp back to string format for saving
+                        const patternStr = entry.pattern.toString();
+                        jsContent += `    { pattern: ${patternStr}, responses: ${JSON.stringify(entry.responses, null, 0)} }`;
+                        jsContent += index < entries.length - 1 ? ',\n' : '\n';
+                    }
+                });
+                
+                jsContent += '  ],\n';
+            }
+        }
+        
+        jsContent += '};\n\nexport default responses;';
+        
+        // Create and download the file
+        const blob = new Blob([jsContent], { type: 'application/javascript' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'responseData_updated.js';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        
+        console.log('📥 Updated responseData.js file downloaded - replace your existing file with this one');
+        
+        // Show user notification
+        setTimeout(() => {
+            const downloadNotification = document.createElement('div');
+            downloadNotification.className = 'message bot-message';
+            downloadNotification.innerHTML = '<span class="message-text">📥 Updated database file downloaded! Replace your responseData.js with the downloaded file to make improvements permanent.</span>';
+            const chatBox = document.getElementById('chat-box');
+            if (chatBox) {
+                chatBox.appendChild(downloadNotification);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }, 2000);
+        
+    } catch (error) {
+        console.error('Error saving to file:', error);
+        throw error;
+    }
+}
 
-// Function to handle sending a message
+// Enhanced training data generation
+async function generateTrainingDataFromFeedback(userQuery, improvedResponse, apiKey) {
+    try {
+        console.log('Generating training data for:', userQuery);
+
+        // Create simple variations
+        const baseQuery = userQuery.toLowerCase().replace(/[^\w\s]/g, '').trim();
+        const questionVariations = [
+            baseQuery,
+            `${baseQuery} help`,
+            `${baseQuery} tips`,
+            `${baseQuery} advice`,
+            `how to ${baseQuery}`
+        ];
+
+        console.log('Generated variations:', questionVariations);
+
+        // Format as training data
+        const cleanedQuestions = questionVariations.filter(q => q.length > 0);
+        const escapedQuestions = cleanedQuestions.map(q => q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const patternString = escapedQuestions.join('|');
+
+        const trainingEntry = {
+            pattern: new RegExp(`(${patternString})`, 'i'),
+            responses: [
+                improvedResponse,
+                improvedResponse,
+                improvedResponse,
+                improvedResponse,
+                improvedResponse
+            ]
+        };
+
+        console.log('Created training entry:', trainingEntry);
+
+        return {
+            success: true,
+            entry: trainingEntry,
+            patterns: questionVariations
+        };
+
+    } catch (trainingError) {
+        console.error('Error generating training data:', trainingError);
+        return {
+            success: false,
+            error: trainingError.message
+        };
+    }
+}
+
+
+
+
+// Modified sendMessage function to pass user query to addMessageToChat
 function sendMessage() {
     const userInput = document.getElementById('user-input').value;
     if (userInput.trim() === '') return;
 
-    addMessageToChat(userInput, 'user-message');
+    // Store the user query
+    const currentQuery = userInput.trim();
+    
+    addMessageToChat(currentQuery, 'user-message');
 
-    const botResponse = getResponse(userInput);
+    const botResponse = getResponse(currentQuery);
     setTimeout(() => {
-        addMessageToChat(botResponse, 'bot-message');
+        addMessageToChat(botResponse, 'bot-message', currentQuery); // Pass user query for thumbs down context
         generateSuggestions();
-    }, 500); // fake delay
+    }, 500);
 
     document.getElementById('user-input').value = '';
 }
+// // Store the last user query for feedback purposes
+let lastUserQuery = '';
 
-// Function to add a message to the chat box
-function addMessageToChat(message, className) {
+// Modified addMessageToChat function to include thumbs down for bot messages
+function addMessageToChat(message, className, userQuery = null) {
     const chatBox = document.getElementById('chat-box');
     const messageElement = document.createElement('div');
     messageElement.className = `message ${className}`;
-    messageElement.textContent = message;
+    
+    if (className === 'bot-message') {
+        // Create message container with thumbs down button
+        const queryForButton = userQuery || lastUserQuery;
+        messageElement.innerHTML = `
+            <span class="message-text">${message}</span>
+            <button class="thumbs-down-btn" onclick="handleThumbsDown(this, '${queryForButton.replace(/'/g, "\\'")}', '${message.replace(/'/g, "\\'")}')">
+                👎
+            </button>
+        `;
+    } else {
+        messageElement.textContent = message;
+        // Store user query for potential feedback
+        if (className === 'user-message') {
+            lastUserQuery = message;
+        }
+    }
+    
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
+
 
 // Function to generate random suggestions
 function generateSuggestions() {
@@ -3241,3 +3390,366 @@ window.resetToDefaults = resetToDefaults;
 window.processBatchQuestions = processBatchQuestions;
 window.clearTrainingResults = clearTrainingResults;
 window.saveTrainingConversation = saveTrainingConversation;
+
+
+// Fixed handleThumbsDown function with proper variable declarations
+async function handleThumbsDown(buttonElement, userQuery, botResponse) {
+    console.log('Thumbs down clicked for query:', userQuery);
+    
+    // Disable the button to prevent multiple clicks
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = '⏳';
+    
+    // Get the message element
+    const messageElement = buttonElement.closest('.message');
+    const messageText = messageElement.querySelector('.message-text');
+    const originalResponse = botResponse; // Store original for restoration
+    
+    // Show processing state
+    messageElement.classList.add('feedback-processing');
+    messageText.textContent = '🔄 Processing your feedback and generating better response...';
+    
+    try {
+        console.log('Calling generateImprovedResponse...');
+        
+        // Call the feedback improvement function
+        const improvementResult = await generateImprovedResponse(userQuery, botResponse);
+        
+        console.log('Improvement result:', improvementResult);
+        
+        if (improvementResult && improvementResult.success) {
+            // Show the improved response
+            messageElement.classList.remove('feedback-processing');
+            messageElement.classList.add('feedback-success');
+            messageText.textContent = improvementResult.newResponse;
+            
+            // Update button to show success
+            buttonElement.innerHTML = '✅';
+            buttonElement.style.background = '#28a745';
+            
+            console.log('Success! Showing confirmation...');
+            
+            // Show confirmation message
+            setTimeout(() => {
+                const confirmationElement = document.createElement('div');
+                confirmationElement.className = 'message bot-message';
+                confirmationElement.innerHTML = '<span class="message-text">✨ Response improved and knowledge added to database! Future similar questions will get better answers.</span>';
+                const chatBox = document.getElementById('chat-box');
+                if (chatBox) {
+                    chatBox.appendChild(confirmationElement);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            }, 1000);
+            
+        } else {
+            const errorMessage = (improvementResult && improvementResult.error) ? improvementResult.error : 'Unknown error occurred';
+            throw new Error(errorMessage);
+        }
+        
+    } catch (handleError) {
+        console.error('Feedback processing error:', handleError);
+        
+        // Show error state
+        messageElement.classList.remove('feedback-processing');
+        messageText.textContent = originalResponse; // Restore original message
+        
+        // Show error on button
+        buttonElement.innerHTML = '❌';
+        buttonElement.style.background = '#dc3545';
+        buttonElement.disabled = false; // Re-enable for retry
+        
+        // Add detailed error message
+        const errorElement = document.createElement('div');
+        errorElement.className = 'message bot-message';
+        errorElement.innerHTML = `<span class="message-text">❌ Error: ${handleError.message}. Please try again or check your API key.</span>`;
+        const chatBox = document.getElementById('chat-box');
+        if (chatBox) {
+            chatBox.appendChild(errorElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+}
+// Generate improved response using OpenAI API
+// Replace the generateImprovedResponse function in your rayanbotX.js with this fixed version
+
+
+async function generateImprovedResponse(userQuery, badResponse) {
+    console.log('Starting improvement process for:', userQuery);
+    
+    try {
+        // First, try server approach if we're on localhost:3000
+        if (window.location.hostname === 'localhost' && window.location.port === '3000') {
+            console.log('Attempting server approach...');
+            
+            try {
+                const serverResponse = await fetch('/api/improve-response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userQuery: userQuery,
+                        badResponse: badResponse
+                    })
+                });
+
+                console.log('Server response status:', serverResponse.status);
+
+                if (serverResponse.ok) {
+                    const serverResult = await serverResponse.json();
+                    console.log('✅ Server success - training data saved to responseData.js:', serverResult);
+                    return serverResult;
+                } else {
+                    const errorText = await serverResponse.text();
+                    console.log('Server error response:', errorText);
+                    throw new Error(`Server error: ${serverResponse.status} - ${errorText}`);
+                }
+            } catch (serverError) {
+                console.log('Server request failed, falling back to client-side:', serverError.message);
+                // Fall through to client-side approach
+            }
+        }
+        
+        console.log('Using client-side approach (Live Server)...');
+        
+        // Client-side approach - only for Live Server
+        const apiKey = prompt('Please enter your OpenAI API key to improve this response:');
+        
+        if (!apiKey || apiKey.trim() === '') {
+            console.log('No API key provided');
+            return {
+                success: false,
+                error: 'API key required to improve response'
+            };
+        }
+        
+        const promptText = `A user asked: "${userQuery}"
+The chatbot gave this unsatisfactory response: "${badResponse}"
+
+Please provide a much better, helpful response to the user's question: "${userQuery}"
+
+Your response should be:
+- Directly helpful and relevant to their question
+- Informative and accurate
+- Natural and conversational
+- Between 20-150 words
+- NOT mention that the previous response was bad
+
+Just give the improved response, nothing else.`;
+
+        console.log('Calling OpenAI API...');
+
+        // Call OpenAI API directly
+        const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey.trim()}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: [{
+                    role: "user",
+                    content: promptText
+                }],
+                max_tokens: 200,
+                temperature: 0.7
+            })
+        });
+
+        console.log('OpenAI response status:', openaiResponse.status);
+
+        if (!openaiResponse.ok) {
+            const errorText = await openaiResponse.text();
+            console.error('OpenAI API error:', errorText);
+            throw new Error(`OpenAI API error: ${openaiResponse.status} - ${errorText}`);
+        }
+
+        const apiData = await openaiResponse.json();
+        console.log('OpenAI response data:', apiData);
+
+        if (!apiData.choices || !apiData.choices[0] || !apiData.choices[0].message) {
+            throw new Error('Invalid response structure from OpenAI');
+        }
+
+        const improvedResponseText = apiData.choices[0].message.content.trim();
+        console.log('Generated improved response:', improvedResponseText);
+        
+        // Generate training data for this improvement (simplified for client-side)
+        let trainingResult = { success: false };
+        
+        try {
+            trainingResult = await generateTrainingDataFromFeedback(userQuery, improvedResponseText, apiKey.trim());
+            console.log('Training data generated:', trainingResult);
+            
+            // Add to responses object in memory (for Live Server only)
+            if (trainingResult.success) {
+                // Try to access responses object
+                let responsesObj = null;
+                
+                if (window.responses) {
+                    responsesObj = window.responses;
+                } else if (typeof responses !== 'undefined') {
+                    responsesObj = responses;
+                    window.responses = responses;
+                } else {
+                    responsesObj = { userdata: [] };
+                    window.responses = responsesObj;
+                }
+                
+                if (!responsesObj.userdata) {
+                    responsesObj.userdata = [];
+                }
+                responsesObj.userdata.push(trainingResult.entry);
+                console.log('✅ Added to userdata in memory - total entries:', responsesObj.userdata.length);
+                
+                // Re-initialize the TF-IDF matcher with new data
+                if (typeof initializeTFIDFMatcher === 'function') {
+                    initializeTFIDFMatcher();
+                    console.log('✅ Re-initialized TF-IDF matcher');
+                }
+            }
+        } catch (trainingError) {
+            console.warn('Training data generation failed:', trainingError.message);
+            // Continue anyway - we still have the improved response
+        }
+        
+        return {
+            success: true,
+            newResponse: improvedResponseText,
+            trainingAdded: trainingResult.success
+        };
+        
+    } catch (mainError) {
+        console.error('Error in generateImprovedResponse:', mainError);
+        return {
+            success: false,
+            error: `Failed to improve response: ${mainError.message}`
+        };
+    }
+}
+
+// Simplified training data generation (no file downloads)
+async function generateTrainingDataFromFeedback(userQuery, improvedResponse, apiKey) {
+    try {
+        console.log('Generating training data for:', userQuery);
+
+        // Create simple variations
+        const baseQuery = userQuery.toLowerCase().replace(/[^\w\s]/g, '').trim();
+        const questionVariations = [
+            baseQuery,
+            `${baseQuery} help`,
+            `${baseQuery} tips`,
+            `${baseQuery} advice`,
+            `how to ${baseQuery}`
+        ];
+
+        console.log('Generated variations:', questionVariations);
+
+        // Format as training data
+        const cleanedQuestions = questionVariations.filter(q => q.length > 0);
+        const escapedQuestions = cleanedQuestions.map(q => q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const patternString = escapedQuestions.join('|');
+
+        const trainingEntry = {
+            pattern: new RegExp(`(${patternString})`, 'i'),
+            responses: [
+                improvedResponse,
+                improvedResponse,
+                improvedResponse,
+                improvedResponse,
+                improvedResponse
+            ]
+        };
+
+        console.log('Created training entry:', trainingEntry);
+
+        return {
+            success: true,
+            entry: trainingEntry,
+            patterns: questionVariations
+        };
+
+    } catch (trainingError) {
+        console.error('Error generating training data:', trainingError);
+        return {
+            success: false,
+            error: trainingError.message
+        };
+    }
+}
+// Also update the handleThumbsDown function with better error handling
+async function handleThumbsDown(buttonElement, userQuery, botResponse) {
+    console.log('Thumbs down clicked for query:', userQuery);
+    
+    // Disable the button to prevent multiple clicks
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = '⏳';
+    
+    // Get the message element
+    const messageElement = buttonElement.closest('.message');
+    const messageText = messageElement.querySelector('.message-text');
+    const originalResponse = botResponse; // Store original for restoration
+    
+    // Show processing state
+    messageElement.classList.add('feedback-processing');
+    messageText.textContent = '🔄 Processing your feedback and generating better response...';
+    
+    try {
+        console.log('Calling generateImprovedResponse...');
+        
+        // Call the feedback improvement function
+        const improvedResponse = await generateImprovedResponse(userQuery, botResponse);
+        
+        console.log('Improvement result:', improvedResponse);
+        
+        if (improvedResponse.success) {
+            // Show the improved response
+            messageElement.classList.remove('feedback-processing');
+            messageElement.classList.add('feedback-success');
+            messageText.textContent = improvedResponse.newResponse;
+            
+            // Update button to show success
+            buttonElement.innerHTML = '✅';
+            buttonElement.style.background = '#28a745';
+            
+            console.log('Success! Showing confirmation...');
+            
+            // Show confirmation message
+            setTimeout(() => {
+                const confirmationElement = document.createElement('div');
+                confirmationElement.className = 'message bot-message';
+                confirmationElement.innerHTML = '<span class="message-text">✨ Response improved and knowledge added to database! Future similar questions will get better answers.</span>';
+                document.getElementById('chat-box').appendChild(confirmationElement);
+                document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+            }, 1000);
+            
+        } else {
+            throw new Error(improvedResponse.error || 'Failed to improve response');
+        }
+        
+    } catch (error) {
+        console.error('Feedback processing error:', error);
+        
+        // Show error state
+        messageElement.classList.remove('feedback-processing');
+        messageText.textContent = originalResponse; // Restore original message
+        
+        // Show error on button
+        buttonElement.innerHTML = '❌';
+        buttonElement.style.background = '#dc3545';
+        buttonElement.disabled = false; // Re-enable for retry
+        
+        // Add detailed error message
+        const errorElement = document.createElement('div');
+        errorElement.className = 'message bot-message';
+        errorElement.innerHTML = `<span class="message-text">❌ Error: ${error.message}. Please try again or check your API key.</span>`;
+        document.getElementById('chat-box').appendChild(errorElement);
+        document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+    }
+}
+
+
+
+// Make the function globally accessible
+window.handleThumbsDown = handleThumbsDown;

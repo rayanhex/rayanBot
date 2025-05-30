@@ -375,119 +375,142 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html')); // or whatever your HTML file is named
 });
 
-// Start server
+// API endpoint for improving responses via thumbs down
+app.post('/api/improve-response', async (req, res) => {
+  try {
+    const { userQuery, badResponse } = req.body;
+    
+    if (!userQuery || !badResponse) {
+      return res.status(400).json({ error: 'Missing userQuery or badResponse' });
+    }
+
+    console.log(`👎 Processing thumbs down feedback for: "${userQuery}"`);
+    
+    // Generate improved response
+    const improvedResponse = await generateImprovedResponseServer(userQuery, badResponse);
+    
+    // Generate training data for this improvement
+    const trainingData = await generateTrainingDataFromImprovedResponse(userQuery, improvedResponse);
+    
+    // Format the training data entry EXACTLY like Feed Knowledge does
+    const formattedEntry = formatAsTrainingData(trainingData.questions, [improvedResponse]);
+    
+    // Save to responseData.js using the SAME function as Feed Knowledge
+    console.log(`💾 Saving improved response to responseData.js...`);
+    const saveSuccess = await appendToResponseData(formattedEntry);
+    
+    if (saveSuccess) {
+      console.log(`✅ Response improved and saved to responseData.js for: "${userQuery}"`);
+      
+      res.json({
+        success: true,
+        newResponse: improvedResponse,
+        trainingAdded: true,
+        patterns: trainingData.questions,
+        message: 'Response improved and saved to database'
+      });
+    } else {
+      throw new Error('Failed to save improved response to responseData.js');
+    }
+    
+  } catch (error) {
+    console.error('👎 Improve response error:', error.message);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to improve response',
+      message: error.message
+    });
+  }
+});
+
+async function generateImprovedResponseServer(userQuery, badResponse) {
+  const prompt = `A user asked: "${userQuery}"
+The chatbot gave this unsatisfactory response: "${badResponse}"
+
+Please provide a much better, helpful response to the user's question: "${userQuery}"
+
+Your response should be:
+- Directly helpful and relevant to their question
+- Informative and accurate
+- Natural and conversational
+- Between 20-150 words
+- NOT mention that the previous response was bad
+
+Just give the improved response, nothing else.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 200,
+      temperature: 0.7
+    });
+
+    if (!response?.choices?.[0]?.message?.content) {
+      throw new Error('Invalid OpenAI response format');
+    }
+
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error('OpenAI error in improvement:', error.message);
+    // Fallback response
+    return `I understand you're asking about ${userQuery}. Let me provide a better response with more helpful information about this topic.`;
+  }
+}
+
+async function generateTrainingDataFromImprovedResponse(userQuery, improvedResponse) {
+  const trainingPrompt = `You are creating training data for a chatbot. A user asked: "${userQuery}" and we have a good response: "${improvedResponse}"
+
+Generate 5 EXTREMELY COMMON ways users would ask about THE SAME THING as "${userQuery}":
+
+QUESTIONS should be:
+- Natural, conversational variations of "${userQuery}"
+- Common keywords users would actually type
+- Different phrasings of the same question
+- Simple, everyday language
+
+Just list the 5 question variations, one per line, nothing else.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: trainingPrompt }],
+      max_tokens: 150,
+      temperature: 0.7
+    });
+
+    if (!response?.choices?.[0]?.message?.content) {
+      throw new Error('Invalid training data response');
+    }
+
+    const variations = response.choices[0].message.content
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .slice(0, 5);
+
+    // If no variations, use the original query
+    if (variations.length === 0) {
+      variations.push(userQuery);
+    }
+
+    return {
+      questions: variations,
+      responses: [improvedResponse]
+    };
+
+  } catch (error) {
+    console.error('Error generating training variations:', error.message);
+    return {
+      questions: [userQuery],
+      responses: [improvedResponse]
+    };
+  }
+}
 app.listen(PORT, () => {
   console.log(`🚀 Knowledge Feed Server running on http://localhost:${PORT}`);
   console.log(`💡 Make sure your OpenAI API key is set: ${process.env.OPENAI_API_KEY ? '✅ Set' : '❌ Missing'}`);
   console.log(`📁 Ready to accept knowledge feeds and expand responseData.js`);
 });
 
-
-// Add this endpoint to your server.js file (if you want persistent storage)
-
-// API endpoint for saving thumbs down feedback
-app.post('/api/save-feedback', async (req, res) => {
-    try {
-      const { entry } = req.body;
-      
-      if (!entry || !entry.pattern || !entry.responses) {
-        return res.status(400).json({ error: 'Invalid feedback entry' });
-      }
-      
-      console.log(`💾 Saving feedback pattern: ${entry.pattern}`);
-      
-      // Save to responseData.js
-      const saveSuccess = await appendToResponseData(entry);
-      
-      if (saveSuccess) {
-        console.log(`✅ Feedback saved successfully`);
-        res.json({ success: true, message: 'Feedback saved to database' });
-      } else {
-        throw new Error('Failed to save feedback');
-      }
-      
-    } catch (error) {
-      console.error('Save feedback error:', error.message);
-      res.status(500).json({
-        error: 'Failed to save feedback',
-        message: error.message
-      });
-    }
-  });
-  
-  // Helper function to append feedback to responseData.js
-  async function appendToResponseData(newEntry) {
-    const filename = 'responseData.js';
-    
-    try {
-      let existingContent = '';
-      let existingData = {};
-      
-      // Read existing file
-      if (fs.existsSync(filename)) {
-        try {
-          existingContent = fs.readFileSync(filename, 'utf8');
-          const match = existingContent.match(/const responses = ({[\s\S]*?});/);
-          
-          if (match) {
-            try {
-              existingData = eval('(' + match[1] + ')');
-            } catch (evalError) {
-              // Alternative parsing method
-              const tempFile = filename + '.temp.js';
-              const tempContent = existingContent.replace(/export default responses;?/g, 'module.exports = responses;');
-              fs.writeFileSync(tempFile, tempContent);
-              
-              delete require.cache[path.resolve(tempFile)];
-              existingData = require(path.resolve(tempFile));
-              
-              fs.unlinkSync(tempFile);
-            }
-          }
-        } catch (error) {
-          console.log('Could not parse existing file, creating backup...');
-          fs.writeFileSync(filename + '.backup', existingContent);
-          existingData = {};
-        }
-      }
-      
-      // Add to userdata domain
-      if (!existingData.userdata) {
-        existingData.userdata = [];
-      }
-      existingData.userdata.push(newEntry);
-      
-      // Format and save
-      let jsContent = 'const responses = {\n';
-      
-      for (const [domain, entries] of Object.entries(existingData)) {
-        if (Array.isArray(entries) && entries.length > 0) {
-          jsContent += `  ${domain}: [\n`;
-          
-          entries.forEach((entry, index) => {
-            if (entry && entry.pattern && Array.isArray(entry.responses)) {
-              jsContent += `    { pattern: ${entry.pattern}, responses: ${JSON.stringify(entry.responses, null, 0)} }`;
-              jsContent += index < entries.length - 1 ? ',\n' : '\n';
-            }
-          });
-          
-          jsContent += '  ],\n';
-        }
-      }
-      
-      jsContent += '};\n\nexport default responses;';
-      
-      fs.writeFileSync(filename, jsContent);
-      
-      // Save JSON backup
-      const jsonFilename = filename.replace('.js', '.json');
-      fs.writeFileSync(jsonFilename, JSON.stringify(existingData, null, 2));
-      
-      return true;
-    } catch (error) {
-      console.error('Error saving feedback to responseData.js:', error.message);
-      return false;
-    }
-  }
 module.exports = app;
-
