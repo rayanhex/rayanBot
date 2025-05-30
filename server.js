@@ -30,6 +30,26 @@ try {
 app.use(express.json());
 app.use(express.static('.')); // Serve static files from current directory
 
+// Add this CORS middleware right after your other middleware in server.js
+
+// CORS middleware - add this after app.use(express.json())
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+      return;
+    }
+    
+    next();
+  });
+  
+  // Your existing endpoints...
+
+
 // Utility functions
 function validateTopic(topic) {
   if (!topic || typeof topic !== 'string') {

@@ -3483,7 +3483,7 @@ async function generateImprovedResponse(userQuery, badResponse) {
             console.log('🏠 Using localhost server');
         } else {
             // Replace with your actual Vercel URL
-            apiBaseUrl = 'https://rayan-bot-openai-cq90cwtzm-rayanhexs-projects.vercel.app';
+            apiBaseUrl = 'https://rayanbot.onrender.com';
             console.log('☁️ Using Vercel server');
         }
         
