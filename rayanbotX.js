@@ -3472,45 +3472,52 @@ async function handleThumbsDown(buttonElement, userQuery, botResponse) {
 // Generate improved response using OpenAI API
 // Replace the generateImprovedResponse function in your rayanbotX.js with this fixed version
 
-
 async function generateImprovedResponse(userQuery, badResponse) {
     console.log('Starting improvement process for:', userQuery);
     
     try {
-        // First, try server approach if we're on localhost:3000
-        if (window.location.hostname === 'localhost' && window.location.port === '3000') {
-            console.log('Attempting server approach...');
-            
-            try {
-                const serverResponse = await fetch('/api/improve-response', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        userQuery: userQuery,
-                        badResponse: badResponse
-                    })
-                });
-
-                console.log('Server response status:', serverResponse.status);
-
-                if (serverResponse.ok) {
-                    const serverResult = await serverResponse.json();
-                    console.log('✅ Server success - training data saved to responseData.js:', serverResult);
-                    return serverResult;
-                } else {
-                    const errorText = await serverResponse.text();
-                    console.log('Server error response:', errorText);
-                    throw new Error(`Server error: ${serverResponse.status} - ${errorText}`);
-                }
-            } catch (serverError) {
-                console.log('Server request failed, falling back to client-side:', serverError.message);
-                // Fall through to client-side approach
-            }
+        // Determine the correct API base URL
+        let apiBaseUrl;
+        if (window.location.hostname === 'localhost') {
+            apiBaseUrl = 'http://localhost:3000';
+            console.log('🏠 Using localhost server');
+        } else {
+            // Replace with your actual Vercel URL
+            apiBaseUrl = 'https://rayan-bot-openai-cq90cwtzm-rayanhexs-projects.vercel.app';
+            console.log('☁️ Using Vercel server');
         }
         
-        console.log('Using client-side approach (Live Server)...');
+        console.log('🔗 Attempting server approach at:', apiBaseUrl);
+        
+        try {
+            const serverResponse = await fetch(`${apiBaseUrl}/api/improve-response`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userQuery: userQuery,
+                    badResponse: badResponse
+                })
+            });
+
+            console.log('📡 Server response status:', serverResponse.status);
+
+            if (serverResponse.ok) {
+                const serverResult = await serverResponse.json();
+                console.log('✅ Server success - training data saved to responseData.js:', serverResult);
+                return serverResult;
+            } else {
+                const errorText = await serverResponse.text();
+                console.log('❌ Server error response:', errorText);
+                throw new Error(`Server error: ${serverResponse.status} - ${errorText}`);
+            }
+        } catch (serverError) {
+            console.log('❌ Server request failed, falling back to client-side:', serverError.message);
+            // Fall through to client-side approach
+        }
+        
+        console.log('⚠️ Using client-side approach (Live Server)...');
         
         // Client-side approach - only for Live Server
         const apiKey = prompt('Please enter your OpenAI API key to improve this response:');
@@ -3628,7 +3635,6 @@ Just give the improved response, nothing else.`;
         };
     }
 }
-
 // Simplified training data generation (no file downloads)
 async function generateTrainingDataFromFeedback(userQuery, improvedResponse, apiKey) {
     try {
