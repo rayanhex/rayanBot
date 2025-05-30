@@ -3342,7 +3342,7 @@ window.processBatchQuestions = processBatchQuestions;
 window.clearTrainingResults = clearTrainingResults;
 window.saveTrainingConversation = saveTrainingConversation;
 
-
+/*
 // Fixed handleThumbsDown function with proper variable declarations
 async function handleThumbsDown(buttonElement, userQuery, botResponse) {
     console.log('Thumbs down clicked for query:', userQuery);
@@ -3419,7 +3419,9 @@ async function handleThumbsDown(buttonElement, userQuery, botResponse) {
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     }
-}
+}*/
+
+
 // Generate improved response using OpenAI API
 // Replace the generateImprovedResponse function in your rayanbotX.js with this fixed version
 
@@ -3635,6 +3637,7 @@ async function generateTrainingDataFromFeedback(userQuery, improvedResponse, api
         };
     }
 }
+
 // Also update the handleThumbsDown function with better error handling
 async function handleThumbsDown(buttonElement, userQuery, botResponse) {
     console.log('Thumbs down clicked for query:', userQuery);
