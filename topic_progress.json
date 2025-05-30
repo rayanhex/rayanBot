@@ -47,5 +47,16 @@
   "inventions": 50,
   "chemistry": 107,
   "prime_ministers": 104,
-  "vacation_ideas": 9
+  "vacation_ideas": 9,
+  "prime_ministers1": 104,
+  "vacation_ideas1": 9,
+  "where_is_queries": 50,
+  "what_is_fruit": 50,
+  "who_is_president_queries": 30,
+  "what_should_i_queries": 30,
+  "animal_queries": 99,
+  "color_mix": 97,
+  "space_queries": 104,
+  "random_facts": 77,
+  "colour_mixes1": 128
 }

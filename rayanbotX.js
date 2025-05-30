@@ -2258,7 +2258,96 @@ import responses from './responseData.js';
 
 }; */
 
+// Add these functions to your rayanbotX.js file
 
+// Feed Knowledge Mode Functions
+function toggleFeedKnowledgeMode() {
+    const feedKnowledgeMode = document.getElementById('feed-knowledge-mode');
+    if (feedKnowledgeMode.style.display === 'none' || feedKnowledgeMode.style.display === '') {
+        feedKnowledgeMode.style.display = 'block';
+        // Clear previous chat when opening
+        document.getElementById('feed-knowledge-chat-box').innerHTML = '';
+        addFeedKnowledgeMessage("Welcome! Ask questions that rayanBot doesn't know yet, and I'll help expand its knowledge base.", 'system');
+    } else {
+        feedKnowledgeMode.style.display = 'none';
+    }
+}
+
+function addFeedKnowledgeMessage(message, type) {
+    const chatBox = document.getElementById('feed-knowledge-chat-box');
+    const messageElement = document.createElement('div');
+    messageElement.className = `feed-knowledge-message feed-knowledge-${type}`;
+    messageElement.textContent = message;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function sendKnowledgeFeed() {
+    const input = document.getElementById('feed-knowledge-input');
+    const userQuestion = input.value.trim();
+    
+    if (userQuestion === '') return;
+
+    // Add user message to chat
+    addFeedKnowledgeMessage(userQuestion, 'user');
+    
+    // Clear input
+    input.value = '';
+    
+    // Show processing message
+    addFeedKnowledgeMessage('🔄 Processing your question and generating knowledge...', 'processing');
+    
+    try {
+        // Call the backend API to process the knowledge feed
+        const response = await fetch('/api/feed-knowledge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                question: userQuestion
+            })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            
+            // Show success message
+            addFeedKnowledgeMessage('✅ Knowledge added successfully! Your question has been processed and added to the database.', 'system');
+            addFeedKnowledgeMessage('💡 Try asking your question again in the main chat - rayanBot should now be able to answer it!', 'system');
+            
+            // Show the generated patterns for transparency
+            if (result.patterns && result.patterns.length > 0) {
+                addFeedKnowledgeMessage(`📝 Generated ${result.patterns.length} new response patterns for: "${result.patterns.join('", "')}"`, 'system');
+            }
+            
+        } else {
+            throw new Error('Failed to process knowledge feed');
+        }
+        
+    } catch (error) {
+        console.error('Feed knowledge error:', error);
+        addFeedKnowledgeMessage('❌ Sorry, there was an error processing your question. Please try again later.', 'system');
+        addFeedKnowledgeMessage('🔧 Make sure your OpenAI API is configured and accessible.', 'system');
+    }
+}
+
+// Add enter key support for feed knowledge input
+document.addEventListener('DOMContentLoaded', function() {
+    const feedKnowledgeInput = document.getElementById('feed-knowledge-input');
+    if (feedKnowledgeInput) {
+        feedKnowledgeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendKnowledgeFeed();
+            }
+        });
+    }
+});
+
+// Make functions globally accessible
+window.toggleFeedKnowledgeMode = toggleFeedKnowledgeMode;
+window.sendKnowledgeFeed = sendKnowledgeFeed;
 
 
 

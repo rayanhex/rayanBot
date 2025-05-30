@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,6 @@
             overflow-y: auto;
             border-bottom: 1px solid #e0e0e0;
         }
-
 
         .message {
             margin-bottom: 10px;
@@ -117,192 +115,303 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        /* Training Mode Styles */
+        #training-toggle {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #training-mode {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        #training-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+            height: 80%;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        #training-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+        #training-header h2 {
+            margin: 0;
+            color: #28a745;
+        }
+        #close-training {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #batch-input {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: monospace;
+            margin-bottom: 10px;
+        }
+        #training-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        #training-controls button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #process-batch {
+            background-color: #28a745;
+            color: white;
+        }
+        #clear-training {
+            background-color: #6c757d;
+            color: white;
+        }
+        #save-conversation {
+            background-color: #17a2b8;
+            color: white;
+        }
+        #training-results {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+        }
+        .training-exchange {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            background-color: white;
+        }
+        .training-question {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .training-answer {
+            color: #6c757d;
+            font-style: italic;
+        }
+        #batch-instructions {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
 
-        /* Add these styles to your existing CSS */
-#training-toggle {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#training-mode {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-}
-#training-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 800px;
-    height: 80%;
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-}
-#training-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #28a745;
-    padding-bottom: 10px;
-}
-#training-header h2 {
-    margin: 0;
-    color: #28a745;
-}
-#close-training {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#batch-input {
-    width: 100%;
-    height: 200px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-    font-family: monospace;
-    margin-bottom: 10px;
-}
-#training-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-#training-controls button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#process-batch {
-    background-color: #28a745;
-    color: white;
-}
-#clear-training {
-    background-color: #6c757d;
-    color: white;
-}
-#save-conversation {
-    background-color: #17a2b8;
-    color: white;
-}
-#training-results {
-    flex: 1;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    overflow-y: auto;
-    background-color: #f8f9fa;
-}
-.training-exchange {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-left: 4px solid #28a745;
-    background-color: white;
-}
-.training-question {
-    font-weight: bold;
-    color: #495057;
-    margin-bottom: 5px;
-}
-.training-answer {
-    color: #6c757d;
-    font-style: italic;
-}
-#batch-instructions {
-    background-color: #e7f3ff;
-    border: 1px solid #b3d9ff;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-/* Add these styles to your existing CSS */
-#customize-toggle {
-    position: absolute;
-    top: 50px;
-    right: 10px;
-    background-color: #6f42c1;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#customize-panel {
-    display: none;
-    position: absolute;
-    top: 90px;
-    right: 10px;
-    width: 250px;
-    padding: 15px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-}
-#customize-panel h3 {
-    margin-top: 0;
-    color: #6f42c1;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-}
-.color-option {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.color-option label {
-    font-size: 14px;
-    color: #333;
-}
-.color-option input[type="color"] {
-    width: 40px;
-    height: 30px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#reset-colors {
-    width: 100%;
-    padding: 8px;
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-#reset-colors:hover {
-    background-color: #5a6268;
-}
+        /* Customize Panel Styles */
+        #customize-toggle {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #customize-panel {
+            display: none;
+            position: absolute;
+            top: 90px;
+            right: 10px;
+            width: 250px;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+        #customize-panel h3 {
+            margin-top: 0;
+            color: #6f42c1;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .color-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .color-option label {
+            font-size: 14px;
+            color: #333;
+        }
+        .color-option input[type="color"] {
+            width: 40px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #reset-colors {
+            width: 100%;
+            padding: 8px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #reset-colors:hover {
+            background-color: #5a6268;
+        }
 
-
-
+        /* Feed Knowledge Styles */
+        #feed-knowledge-toggle {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background-color: #fd7e14;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #feed-knowledge-mode {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+        #feed-knowledge-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            height: 80%;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        #feed-knowledge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #fd7e14;
+            padding-bottom: 10px;
+        }
+        #feed-knowledge-header h2 {
+            margin: 0;
+            color: #fd7e14;
+        }
+        #close-feed-knowledge {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #feed-knowledge-instructions {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        #feed-knowledge-chat-box {
+            flex: 1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            margin-bottom: 15px;
+        }
+        #feed-knowledge-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        #feed-knowledge-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #feed-knowledge-send {
+            padding: 10px 20px;
+            border: none;
+            background-color: #fd7e14;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #feed-knowledge-send:hover {
+            background-color: #e8650e;
+        }
+        .feed-knowledge-message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .feed-knowledge-user {
+            background-color: #fff3cd;
+            border-left: 4px solid #fd7e14;
+        }
+        .feed-knowledge-system {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .feed-knowledge-processing {
+            background-color: #e2e3e5;
+            border-left: 4px solid #6c757d;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -313,70 +422,94 @@
             <input type="text" id="user-input" placeholder="Type a message...">
             <button onclick="sendMessage()">Send</button>
         </div>
+        
         <button id="help-toggle" onclick="toggleHelp()">New Updates</button>
         <div id="help-page">
             <strong>Training Mode:</strong> The AI can handle thousands of questions at once (used to train the AI)  <br><br>
             <strong>The Homework Update</strong> rayanBot can help with school work (Math, Geo, Phys, Bio, Chem AND more!) <br><br> 
-            <strong>More facts</strong> rayanBot knows 3x the amount of facts it did previously
-
+            <strong>More facts</strong> rayanBot knows 3x the amount of facts it did previously <br><br>
+            <strong>Feed Knowledge:</strong> Add new knowledge to the AI by asking questions it doesn't know!
         </div>
+
         <!-- Training Mode Button -->
-<button id="training-toggle" onclick="toggleTrainingMode()">Training Mode</button>
+        <button id="training-toggle" onclick="toggleTrainingMode()">Training Mode</button>
 
-<!-- Customize Button -->
-<button id="customize-toggle" onclick="toggleCustomizePanel()">Customise</button>
+        <!-- Feed Knowledge Button -->
+        <button id="feed-knowledge-toggle" onclick="toggleFeedKnowledgeMode()">Feed Knowledge</button>
 
-<!-- Customize Panel -->
-<div id="customize-panel">
-    <h3>Chat Customization</h3>
-    
-    <div class="color-option">
-        <label for="user-bubble-color">Your Messages:</label>
-        <input type="color" id="user-bubble-color" value="#d1f7c4" onchange="updateUserBubbleColor(this.value)">
-    </div>
-    
-    <div class="color-option">
-        <label for="chat-background-color">Chat Background:</label>
-        <input type="color" id="chat-background-color" value="#ffffff" onchange="updateChatBackground(this.value)">
-    </div>
-    
-    <button id="reset-colors" onclick="resetToDefaults()">Reset to Defaults</button>
-</div>
+        <!-- Customize Button -->
+        <button id="customize-toggle" onclick="toggleCustomizePanel()">Customise</button>
 
-<!-- Training Mode Interface -->
-<div id="training-mode">
-    <div id="training-container">
-        <div id="training-header">
-            <h2>Batch Training Mode</h2>
-            <button id="close-training" onclick="toggleTrainingMode()">Close</button>
+        <!-- Customize Panel -->
+        <div id="customize-panel">
+            <h3>Chat Customization</h3>
+            
+            <div class="color-option">
+                <label for="user-bubble-color">Your Messages:</label>
+                <input type="color" id="user-bubble-color" value="#d1f7c4" onchange="updateUserBubbleColor(this.value)">
+            </div>
+            
+            <div class="color-option">
+                <label for="chat-background-color">Chat Background:</label>
+                <input type="color" id="chat-background-color" value="#ffffff" onchange="updateChatBackground(this.value)">
+            </div>
+            
+            <button id="reset-colors" onclick="resetToDefaults()">Reset to Defaults</button>
         </div>
-        
-        <div id="batch-instructions">
-            <strong>Instructions:</strong> Enter questions one per line. The bot will process each question and show responses below. Use the save button to export the conversation for analysis.
-        </div>
-        
-        <textarea id="batch-input" placeholder="Enter questions here, one per line:
+
+        <!-- Training Mode Interface -->
+        <div id="training-mode">
+            <div id="training-container">
+                <div id="training-header">
+                    <h2>Batch Training Mode</h2>
+                    <button id="close-training" onclick="toggleTrainingMode()">Close</button>
+                </div>
+                
+                <div id="batch-instructions">
+                    <strong>Instructions:</strong> Enter questions one per line. The bot will process each question and show responses below. Use the save button to export the conversation for analysis.
+                </div>
+                
+                <textarea id="batch-input" placeholder="Enter questions here, one per line:
 What is your name?
 How are you today?
 Tell me about programming"></textarea>
-        
-        <div id="training-controls">
-            <button id="process-batch" onclick="processBatchQuestions()">Process Batch</button>
-            <button id="clear-training" onclick="clearTrainingResults()">Clear Results</button>
-            <button id="save-conversation" onclick="saveTrainingConversation()">Save Conversation</button>
+                
+                <div id="training-controls">
+                    <button id="process-batch" onclick="processBatchQuestions()">Process Batch</button>
+                    <button id="clear-training" onclick="clearTrainingResults()">Clear Results</button>
+                    <button id="save-conversation" onclick="saveTrainingConversation()">Save Conversation</button>
+                </div>
+                
+                <div id="training-results"></div>
+            </div>
         </div>
-        
-        <div id="training-results"></div>
-    </div>
-</div>
-    </div>
-    <div id="footer">rayanBotX</div>
-    <script>
-        function sendMessage() {
-            // Your existing sendMessage function
-        }
 
-        
+        <!-- Feed Knowledge Interface -->
+        <div id="feed-knowledge-mode">
+            <div id="feed-knowledge-container">
+                <div id="feed-knowledge-header">
+                    <h2>Feed Knowledge Mode</h2>
+                    <button id="close-feed-knowledge" onclick="toggleFeedKnowledgeMode()">Close</button>
+                </div>
+                
+                <div id="feed-knowledge-instructions">
+                    <strong>🧠 Help Expand the AI's Knowledge!</strong><br>
+                    Ask questions that the main chatbot doesn't know yet. Each question will be processed and added to the database so future users can get answers!
+                </div>
+                
+                <div id="feed-knowledge-chat-box"></div>
+                
+                <div id="feed-knowledge-input-container">
+                    <input type="text" id="feed-knowledge-input" placeholder="Ask a question the AI doesn't know yet...">
+                    <button id="feed-knowledge-send" onclick="sendKnowledgeFeed()">Feed Knowledge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">rayanBotX</div>
+
+    <script>
         function toggleHelp() {
             const helpPage = document.getElementById('help-page');
             if (helpPage.style.display === 'none' || helpPage.style.display === '') {
