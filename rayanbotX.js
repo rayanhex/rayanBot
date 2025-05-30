@@ -3173,24 +3173,6 @@ function addMessageToChat(message, className, userQuery = null) {
 }
 
 
-// Function to generate random suggestions
-function generateSuggestions() {
-    const suggestionsContainer = document.getElementById('suggestions');
-    suggestionsContainer.innerHTML = '';
-
-    const randomSuggestions = getRandomSuggestions(3);
-    randomSuggestions.forEach(suggestion => {
-        const bubble = document.createElement('div');
-        bubble.className = 'suggestion-bubble';
-        bubble.textContent = suggestion;
-        bubble.onclick = () => {
-            document.getElementById('user-input').value = suggestion;
-            sendMessage();
-        };
-        suggestionsContainer.appendChild(bubble);
-    });
-}
-
 // Function to get random suggestions from the responses
 function getRandomSuggestions(count) {
     const allResponses = [];
@@ -3780,3 +3762,21 @@ async function handleThumbsDown(buttonElement, userQuery, botResponse) {
 
 // Make the function globally accessible
 window.handleThumbsDown = handleThumbsDown;
+
+// Ensure all functions are globally accessible
+window.sendMessage = sendMessage;
+window.generateSuggestions = generateSuggestions;
+window.toggleHelp = toggleHelp;
+window.handleThumbsDown = handleThumbsDown;
+window.toggleFeedKnowledgeMode = toggleFeedKnowledgeMode;
+window.sendKnowledgeFeed = sendKnowledgeFeed;
+
+// Call generateSuggestions on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, generating suggestions...');
+    if (typeof generateSuggestions === 'function') {
+        generateSuggestions();
+    } else {
+        console.error('generateSuggestions function not found!');
+    }
+});
