@@ -2264,6 +2264,27 @@ import responses from './responseData.js';
 // Add this at the very top of your rayanbotX.js file (after the import)
 // This ensures the responses object is accessible globally
 
+
+
+// Debug responses object on mobile
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔍 Checking responses object on mobile...');
+    console.log('🔍 window.responses exists:', !!window.responses);
+    console.log('🔍 global responses exists:', typeof responses !== 'undefined');
+    
+    if (window.responses) {
+        console.log('🔍 Responses object keys:', Object.keys(window.responses));
+        console.log('🔍 Total responses:', Object.keys(window.responses).length);
+    } else if (typeof responses !== 'undefined') {
+        console.log('🔍 Global responses keys:', Object.keys(responses));
+    } else {
+        console.error('❌ No responses object found on mobile!');
+    }
+});
+
+
+
+
 // Make sure responses is globally accessible
 if (typeof responses !== 'undefined') {
     window.responses = responses;
